@@ -1,4 +1,4 @@
-package com.tom.school.business;
+package com.tom.school.model.business;
 
 public class Student {
 
