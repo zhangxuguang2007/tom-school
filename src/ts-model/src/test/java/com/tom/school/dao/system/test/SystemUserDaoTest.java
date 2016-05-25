@@ -15,12 +15,9 @@ public class SystemUserDaoTest {
 
 	private SystemUserDao systemUserDao;
 
-	@SuppressWarnings("resource")
 	@Before
 	public void set() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				"applicationContext.xml", "testApplicationContext.xml");
-		this.systemUserDao = applicationContext.getBean(SystemUserDao.class);
+		this.systemUserDao = TestContext.getSystemUserDao();
 	}
 
 	@Test
