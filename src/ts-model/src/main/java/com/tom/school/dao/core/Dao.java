@@ -4,5 +4,6 @@ import java.io.Serializable;
 
 public interface Dao<E> {
 	public void persist(E entity);
+	public void delete(E entity);
 	public E get(Serializable id);
 }

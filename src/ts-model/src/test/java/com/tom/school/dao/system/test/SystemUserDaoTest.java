@@ -1,5 +1,8 @@
 package com.tom.school.dao.system.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -21,19 +24,23 @@ public class SystemUserDaoTest {
 	}
 
 	@Test
-	public void testGet() {
-		SystemUser user = this.systemUserDao.get(new Integer(2));
-		if(user != null){
-			System.out.println(user.getName());
-		}
+	public void testPersist() {
+		SystemUser newUser = generateUser();
+		this.systemUserDao.persist(newUser);
+
+		SystemUser gotUser = this.systemUserDao.get(newUser.getId());
+		assertEquals(newUser, gotUser);
+
+		this.systemUserDao.delete(newUser);
+		gotUser = this.systemUserDao.get(newUser.getId());
+		assertNull(gotUser);
 	}
-	
-	@Test
-	public void testSave(){
+
+	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
 		user.setName("Tom");
 		user.setPassword("Cogent01");
-		this.systemUserDao.persist(user);
+		return user;
 	}
 
 }

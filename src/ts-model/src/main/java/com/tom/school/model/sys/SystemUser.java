@@ -21,17 +21,17 @@ public class SystemUser implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private int id;
+	private Long id;
 	@Column(name = "user_name", length = 30, nullable = false, unique = true)
 	private String name;
 	@Column(name = "password", length = 32, nullable = false)
 	private String password;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -51,4 +51,16 @@ public class SystemUser implements Serializable {
 		this.password = password;
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof SystemUser)) {
+			return false;
+		}
+		SystemUser otherUser = (SystemUser) other;
+		return this.id.equals(otherUser.id) && this.name.equals(otherUser.name)
+				&& this.password.equals(otherUser.password);
+	}
 }

@@ -51,6 +51,24 @@ public class BaseDao<E> implements Dao<E> {
 			session.close();
 		}
 	}
+	
+	@Override
+	public void delete(E entity) {
+		Session session = sessionFactory.openSession();
+	    Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.delete(entity);
+			tx.commit();
+		} catch (RuntimeException e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
 
 	@Override
 	public E get(Serializable id) {
