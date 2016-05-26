@@ -8,7 +8,6 @@ import com.tom.school.dao.sys.SystemUserDao;
 public class TestContext {
 
 	private static ApplicationContext applicationContext;
-	private static SystemUserDao systemUserDao;
 	
 	private static ApplicationContext getApplicationContext(){
 		if(applicationContext == null){
@@ -19,10 +18,7 @@ public class TestContext {
 	}
 	
 	public static SystemUserDao getSystemUserDao(){
-		if(systemUserDao == null){
-			systemUserDao = getApplicationContext().getBean(SystemUserDao.class);
-		}
-		return systemUserDao;
+		return getApplicationContext().getBean(SystemUserDao.class);
 	}
 	
 }
