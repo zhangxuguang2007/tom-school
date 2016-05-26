@@ -35,7 +35,7 @@ public class SystemUserDaoTest {
 
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
-		user.setName("Tom");
+		user.setName("Jack");
 		user.setPassword("Cogent01");
 		return user;
 	}

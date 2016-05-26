@@ -8,17 +8,17 @@ import com.tom.school.dao.sys.SystemUserDao;
 public class TestContext {
 
 	private static ApplicationContext applicationContext;
-	
-	private static ApplicationContext getApplicationContext(){
-		if(applicationContext == null){
+
+	private static ApplicationContext getApplicationContext() {
+		if (applicationContext == null) {
 			applicationContext = new ClassPathXmlApplicationContext(
-					"applicationContext.xml", "testApplicationContext.xml");
+					"applicationContext.xml");
 		}
 		return applicationContext;
 	}
-	
-	public static SystemUserDao getSystemUserDao(){
+
+	public static SystemUserDao getSystemUserDao() {
 		return getApplicationContext().getBean(SystemUserDao.class);
 	}
-	
+
 }
