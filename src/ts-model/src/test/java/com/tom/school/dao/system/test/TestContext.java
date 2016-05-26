@@ -3,7 +3,7 @@ package com.tom.school.dao.system.test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.tom.schoo.dao.sys.SystemUserDao;
+import com.tom.school.dao.sys.SystemUserDao;
 
 public class TestContext {
 

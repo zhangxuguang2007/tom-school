@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.tom.schoo.dao.sys.SystemUserDao;
+import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 
 public class SystemUserDaoTest {
