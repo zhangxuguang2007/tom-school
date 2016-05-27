@@ -19,7 +19,6 @@ public class JsonUtility {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T decode(String jsonStr, Class<T> clazz) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
