@@ -1,4 +1,4 @@
-package com.tom.school.dao.system.test;
+package com.tom.school.test;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

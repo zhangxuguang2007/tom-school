@@ -52,6 +52,12 @@ public class SystemUser implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "SystemUser [id=" + id + ", name=" + name + ", password="
+				+ password + "]";
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
