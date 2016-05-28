@@ -8,13 +8,14 @@ import javax.annotation.Resource;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tom.school.core.support.BaseParameter;
 import com.tom.school.core.support.QueryResult;
 
+@Transactional
 public class BaseDao<E> implements Dao<E> {
 
 	private SessionFactory sessionFactory;
@@ -34,107 +35,81 @@ public class BaseDao<E> implements Dao<E> {
 		return this.sessionFactory;
 	}
 
+	public Session getSession() {
+		return this.sessionFactory.getCurrentSession();
+	}
+
 	@Resource(name = "sessionFactory")
 	public void setSF(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 	}
 
 	@Override
+	@Transactional
 	public void persist(E entity) {
-		Session session = sessionFactory.openSession();
-	    Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.save(entity);
-			tx.commit();
-		} catch (RuntimeException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			throw e;
-		} finally {
-			session.close();
-		}
-	}
-	
-	@Override
-	public void delete(E entity) {
-		Session session = sessionFactory.openSession();
-	    Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.delete(entity);
-			tx.commit();
-		} catch (RuntimeException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			throw e;
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public E get(Serializable id) {
-		Session session = sessionFactory.openSession();
-		try{
-			return session.get(this.entityClass, id);
-		}finally{
-			session.close();
-		}
+		getSession().save(entity);
 	}
 
 	@Override
 	public boolean deleteByPK(Serializable... id) {
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void delete(E entity) {
+		getSession().delete(entity);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public E get(Serializable id) {
+		return (E) getSession().get(this.entityClass, id);
 	}
 
 	@Override
 	public void deleteByProperties(String propName, Object propValue) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(E entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
 			String[] propetyValue) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
 			String propertyValue) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateByProperties(String conditionName, String conditionValue, String[] propertyName,
 			String[] propetyValue) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateByPropertyies(String conditionName, String conditionValue, String propertyName,
 			String propertyValue) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void update(E entity, Serializable oldId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -214,13 +189,13 @@ public class BaseDao<E> implements Dao<E> {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void evict(E entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

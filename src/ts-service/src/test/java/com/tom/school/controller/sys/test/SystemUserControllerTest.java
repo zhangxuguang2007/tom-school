@@ -18,7 +18,7 @@ public class SystemUserControllerTest {
 
 	@Test
 	public void testGetUser() {
-		Long id = new Long(2);
+		Long id = new Long(13);
 		String jsonResponse = HttpUtility.readString(TestContext.ServiceUrl
 				+ String.format("/sys/user/getUser/%s", id));
 		SystemUser user = JsonUtility.decode(jsonResponse, SystemUser.class);

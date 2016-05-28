@@ -1,14 +1,16 @@
 package com.tom.school.dao.system.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 import com.tom.school.test.TestContext;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.util.Random;
 
 public class SystemUserDaoTest {
 
@@ -34,7 +36,7 @@ public class SystemUserDaoTest {
 
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
-		user.setName("Jack");
+		user.setName("Jack" + (new Random()).nextInt(10000));
 		user.setPassword("Cogent01");
 		return user;
 	}

@@ -19,10 +19,11 @@ USE tomschool;
 -- ----------------------------
 -- Table structure for system_user
 -- ----------------------------
-DROP TABLE IF EXISTS `system_user`;
-CREATE TABLE `system_user` (
-  `id` int(11) NOT NULL,
-  `user_name` varchar(30) DEFAULT NULL,
-  `password` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `password` varchar(32) NOT NULL,
+  `user_name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_cb0fsvip6qow952a07et2k9xv` (`user_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
