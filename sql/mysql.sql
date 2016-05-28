@@ -13,7 +13,8 @@ File Encoding         : 65001
 Date: 2016-05-25 09:02:23
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+CREATE DATABASE tomschool;
+USE tomschool;
 
 -- ----------------------------
 -- Table structure for system_user
