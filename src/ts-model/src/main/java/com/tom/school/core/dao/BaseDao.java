@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tom.school.core.support.BaseParameter;
@@ -45,7 +46,6 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	@Transactional
 	public void persist(E entity) {
 		getSession().save(entity);
 	}
@@ -61,6 +61,7 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	@Override
 	public E get(Serializable id) {
 		return (E) getSession().get(this.entityClass, id);
