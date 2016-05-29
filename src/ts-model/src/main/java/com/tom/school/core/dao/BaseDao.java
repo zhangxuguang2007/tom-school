@@ -1,11 +1,13 @@
 package com.tom.school.core.dao;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -53,16 +55,73 @@ public class BaseDao<E> implements Dao<E> {
 	@Override
 	public boolean deleteByPK(Serializable... id) {
 		boolean result = false;
-		if(id != null && id.length > 0){
-			for(int i = 0; i < id.length; i++){
+		if (id != null && id.length > 0) {
+			for (int i = 0; i < id.length; i++) {
 				E entity = get(id[i]);
-				if(entity != null){
+				if (entity != null) {
 					getSession().delete(entity);
 					result = true;
 				}
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public void deleteByProperties(String propName, Object propValue) {
+		deleteByProperties(new String[] { propName }, new Object[] { propValue });
+	}
+
+	@Override
+	public void deleteByProperties(String[] propName, Object[] propValue) {
+		if (propName != null && propName.length > 0 && propValue != null && propValue.length > 0
+				&& propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("delete from " + entityClass.getName() + " o where 1=1 ");
+			appendQL(sb, propName, propValue);
+			Query query = getSession().createQuery(sb.toString());
+			setParameter(query, propName, propValue);
+			query.executeUpdate();
+		}
+	}
+
+	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value instanceof Object[]) {
+				Object[] arraySerializable = (Object[]) value;
+				if (arraySerializable != null && arraySerializable.length > 0) {
+					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+				}
+			} else if (value instanceof Collection<?>) {
+				Collection<?> arraySerializable = (Collection<?>) value;
+				if (arraySerializable != null && arraySerializable.size() > 0) {
+					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+				}
+			} else {
+				if (value == null) {
+					sb.append(" and o." + name + " is null ");
+				} else {
+					sb.append(" and o." + name + "=:" + name.replace(".", ""));
+				}
+			}
+		}
+	}
+
+	private void setParameter(Query query, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value != null) {
+				if (value instanceof Object[]) {
+					query.setParameterList(name.replace(".", ""), (Object[]) value);
+				} else if (value instanceof Collection<?>) {
+					query.setParameterList(name.replace(".", ""), (Collection<?>) value);
+				} else {
+					query.setParameter(name.replace(".", ""), value);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -75,12 +134,6 @@ public class BaseDao<E> implements Dao<E> {
 	@Override
 	public E get(Serializable id) {
 		return (E) getSession().get(this.entityClass, id);
-	}
-
-	@Override
-	public void deleteByProperties(String propName, Object propValue) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

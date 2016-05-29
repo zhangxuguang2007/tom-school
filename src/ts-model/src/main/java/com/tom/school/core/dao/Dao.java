@@ -39,6 +39,14 @@ public interface Dao<E> {
 	 * @param propValue
 	 */
 	public void deleteByProperties(String propName, Object propValue);
+	
+	/**
+	 * Delete entity by property by HQL
+	 * 
+	 * @param propName
+	 * @param propValue
+	 */
+	public void deleteByProperties(String[] propName, Object[] propValue);
 
 	/**
 	 * Update the persistent instance with the identifier of the given detached
