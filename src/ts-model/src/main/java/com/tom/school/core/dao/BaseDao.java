@@ -52,7 +52,17 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public boolean deleteByPK(Serializable... id) {
-		return false;
+		boolean result = false;
+		if(id != null && id.length > 0){
+			for(int i = 0; i < id.length; i++){
+				E entity = get(id[i]);
+				if(entity != null){
+					getSession().delete(entity);
+					result = true;
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override

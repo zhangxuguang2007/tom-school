@@ -24,7 +24,7 @@ public class SystemUserDaoTest {
 	@Test
 	public void testPersist() {
 		SystemUser newUser = generateUser();
-		this.systemUserDao.persist(newUser);
+		this.systemUserDao.persist(newUser);  //persist
 
 		SystemUser gotUser = this.systemUserDao.get(newUser.getId());
 		assertEquals(newUser, gotUser);
@@ -32,6 +32,29 @@ public class SystemUserDaoTest {
 		this.systemUserDao.delete(newUser);
 		gotUser = this.systemUserDao.get(newUser.getId());
 		assertNull(gotUser);
+	}
+
+	@Test
+	public void testDeleteByPK() {
+		SystemUser user1, user2, user3;
+
+		user1 = generateUser();
+		user2 = generateUser();
+		user3 = generateUser();
+
+		this.systemUserDao.persist(user1);
+		this.systemUserDao.persist(user2);
+		this.systemUserDao.persist(user3);
+		
+		assertEquals(user1, this.systemUserDao.get(user1.getId()));
+		assertEquals(user2, this.systemUserDao.get(user2.getId()));
+		assertEquals(user3, this.systemUserDao.get(user3.getId()));
+
+		this.systemUserDao.deleteByPK(user1.getId(), user2.getId(), user3.getId());  //deletByPK
+
+		assertNull(this.systemUserDao.get(user1.getId()));
+		assertNull(this.systemUserDao.get(user2.getId()));
+		assertNull(this.systemUserDao.get(user3.getId()));
 	}
 
 	private SystemUser generateUser() {
