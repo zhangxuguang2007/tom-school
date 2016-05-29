@@ -53,6 +53,11 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
+	public void delete(E entity) {
+		getSession().delete(entity);
+	}
+
+	@Override
 	public boolean deleteByPK(Serializable... id) {
 		boolean result = false;
 		if (id != null && id.length > 0) {
@@ -81,7 +86,66 @@ public class BaseDao<E> implements Dao<E> {
 			Query query = getSession().createQuery(sb.toString());
 			setParameter(query, propName, propValue);
 			query.executeUpdate();
+		} else {
+			throw new IllegalArgumentException("Method deleteByProperties in BaseDao argument is illegal!");
 		}
+	}
+
+	@Override
+	public void update(E entity) {
+		getSession().update(entity);
+	}
+
+	@Override
+	public void update(E entity, Serializable oldId) {
+		deleteByPK(oldId);
+		persist(entity);
+	}
+
+	@Override
+	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
+			String[] propetyValue) {
+		if (propertyName != null && propertyName.length > 0 && propetyValue != null && propetyValue.length > 0
+				&& propertyName.length == propetyValue.length && conditionName != null && conditionName.length > 0
+				&& conditonValue != null && conditonValue.length > 0 && conditionName.length == conditonValue.length) {
+			StringBuffer sb = new StringBuffer();
+			sb.append("update " + this.entityClass.getName() + " o set ");
+			for (int i = 0; i < propertyName.length; i++) {
+				sb.append(propertyName[i] + " = :p_" + propertyName[i] + ",");
+			}
+			sb.deleteCharAt(sb.length() - 1); // delete the last char ','
+			sb.append(" where 1=1 ");
+			appendQL(sb, conditionName, conditonValue);
+			Query query = getSession().createQuery(sb.toString());
+			for (int i = 0; i < propertyName.length; i++) {
+				query.setParameter("p_" + propertyName[i], propetyValue[i]);
+			}
+			setParameter(query, conditionName, conditonValue);
+			query.executeUpdate();
+		} else {
+			throw new IllegalArgumentException("Method updateByProperties in BaseDao argument is illegal!");
+		}
+	}
+
+	@Override
+	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
+			String propertyValue) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateByProperties(String conditionName, String conditionValue, String[] propertyName,
+			String[] propetyValue) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateByPropertyies(String conditionName, String conditionValue, String propertyName,
+			String propertyValue) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
@@ -124,56 +188,11 @@ public class BaseDao<E> implements Dao<E> {
 		}
 	}
 
-	@Override
-	public void delete(E entity) {
-		getSession().delete(entity);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	@Override
 	public E get(Serializable id) {
 		return (E) getSession().get(this.entityClass, id);
-	}
-
-	@Override
-	public void update(E entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
-			String[] propetyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
-			String propertyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByProperties(String conditionName, String conditionValue, String[] propertyName,
-			String[] propetyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByPropertyies(String conditionName, String conditionValue, String propertyName,
-			String propertyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(E entity, Serializable oldId) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -130,12 +130,31 @@ public class SystemUserDaoTest {
 		assertNull(this.systemUserDao.get(user5.getId()));
 		assertNull(this.systemUserDao.get(user6.getId()));
 	}
+	
+	@Test
+	public void testUpdate(){
+		SystemUser user = generateUser();
+		this.systemUserDao.persist(user);
+		assertEquals(user, this.systemUserDao.get(user.getId()));
+		
+		updateUser(user);
+		this.systemUserDao.update(user);
+		assertEquals(user, this.systemUserDao.get(user.getId()));
+		
+		this.systemUserDao.delete(user);
+		assertNull(this.systemUserDao.get(user.getId()));
+	}
 
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
-		user.setName("Jack" + (new Random()).nextInt(10000));
+		user.setName("Tom" + (new Random()).nextInt(10000));
 		user.setPassword("Cogent01");
 		return user;
+	}
+	
+	private void updateUser(SystemUser user){
+		user.setName("Jack" + (new Random()).nextInt(10000));
+		user.setPassword("Cogent01");
 	}
 
 }
