@@ -271,8 +271,7 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-
+		this.getSession().clear();
 	}
 
 	@Override
