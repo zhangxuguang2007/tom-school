@@ -104,7 +104,7 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
-			String[] propetyValue) {
+			Object[] propetyValue) {
 		if (propertyName != null && propertyName.length > 0 && propetyValue != null && propetyValue.length > 0
 				&& propertyName.length == propetyValue.length && conditionName != null && conditionName.length > 0
 				&& conditonValue != null && conditonValue.length > 0 && conditionName.length == conditonValue.length) {
@@ -129,21 +129,21 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
-			String propertyValue) {
+			Object propertyValue) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void updateByProperties(String conditionName, String conditionValue, String[] propertyName,
-			String[] propetyValue) {
+	public void updateByProperties(String conditionName, Object conditionValue, String[] propertyName,
+			Object[] propetyValue) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void updateByPropertyies(String conditionName, String conditionValue, String propertyName,
-			String propertyValue) {
+	public void updateByPropertyies(String conditionName, Object conditionValue, String propertyName,
+			Object propertyValue) {
 		// TODO Auto-generated method stub
 
 	}

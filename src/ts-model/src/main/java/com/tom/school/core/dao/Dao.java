@@ -65,7 +65,7 @@ public interface Dao<E> {
 	 * @param propetyValue
 	 */
 	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
-			String[] propetyValue);
+			Object[] propetyValue);
 
 	/**
 	 * update single property by condition batch
@@ -76,7 +76,7 @@ public interface Dao<E> {
 	 * @param propertyValue
 	 */
 	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
-			String propertyValue);
+			Object propertyValue);
 
 	/**
 	 * update property batch by single condition
@@ -86,8 +86,8 @@ public interface Dao<E> {
 	 * @param propertyName
 	 * @param propetyValue
 	 */
-	public void updateByProperties(String conditionName, String conditionValue, String[] propertyName,
-			String[] propetyValue);
+	public void updateByProperties(String conditionName, Object conditionValue, String[] propertyName,
+			Object[] propetyValue);
 
 	/**
 	 * update single property batch by single condition
@@ -97,8 +97,8 @@ public interface Dao<E> {
 	 * @param propertyName
 	 * @param propertyValue
 	 */
-	public void updateByPropertyies(String conditionName, String conditionValue, String propertyName,
-			String propertyValue);
+	public void updateByPropertyies(String conditionName, Object conditionValue, String propertyName,
+			Object propertyValue);
 
 	/**
 	 * cautiously use this method, through delete then insert to update an

@@ -1,5 +1,6 @@
 package com.tom.school.dao.system.test;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +53,8 @@ public class SystemUserDaoTest {
 		assertEquals(user2, this.systemUserDao.get(user2.getId()));
 		assertEquals(user3, this.systemUserDao.get(user3.getId()));
 
-		this.systemUserDao.deleteByPK(user1.getId(), user2.getId(), user3.getId()); // deletByPK
+		this.systemUserDao.deleteByPK(user1.getId(), user2.getId(),
+				user3.getId()); // deletByPK
 
 		assertNull(this.systemUserDao.get(user1.getId()));
 		assertNull(this.systemUserDao.get(user2.getId()));
@@ -80,7 +82,7 @@ public class SystemUserDaoTest {
 		/*
 		 * id = :id and name = :name
 		 */
-		
+
 		SystemUser user2;
 		user2 = generateUser();
 		this.systemUserDao.persist(user2);
@@ -98,7 +100,7 @@ public class SystemUserDaoTest {
 		/*
 		 * id in(value1, value2), parameter is array
 		 */
-		
+
 		SystemUser user3, user4;
 		user3 = generateUser();
 		user4 = generateUser();
@@ -107,14 +109,15 @@ public class SystemUserDaoTest {
 		assertEquals(user3, this.systemUserDao.get(user3.getId()));
 		assertEquals(user4, this.systemUserDao.get(user4.getId()));
 
-		this.systemUserDao.deleteByProperties("id", new Object[] { user3.getId(), user4.getId() });
+		this.systemUserDao.deleteByProperties("id",
+				new Object[] { user3.getId(), user4.getId() });
 		assertNull(this.systemUserDao.get(user3.getId()));
 		assertNull(this.systemUserDao.get(user4.getId()));
 
 		/*
 		 * id in(value1, value2), parameter is list
 		 */
-		
+
 		SystemUser user5, user6;
 		user5 = generateUser();
 		user6 = generateUser();
@@ -130,19 +133,53 @@ public class SystemUserDaoTest {
 		assertNull(this.systemUserDao.get(user5.getId()));
 		assertNull(this.systemUserDao.get(user6.getId()));
 	}
-	
+
 	@Test
-	public void testUpdate(){
+	public void testUpdate() {
 		SystemUser user = generateUser();
 		this.systemUserDao.persist(user);
 		assertEquals(user, this.systemUserDao.get(user.getId()));
-		
+
 		updateUser(user);
 		this.systemUserDao.update(user);
 		assertEquals(user, this.systemUserDao.get(user.getId()));
-		
+
 		this.systemUserDao.delete(user);
 		assertNull(this.systemUserDao.get(user.getId()));
+	}
+
+	@Test
+	public void updateByProperties() {
+		/*
+		 * id = :id
+		 */
+
+		SystemUser user1;
+		user1 = generateUser();
+		this.systemUserDao.persist(user1);
+		assertEquals(user1, this.systemUserDao.get(user1.getId()));
+
+		String[] propName = new String[2];
+		Object[] propValue = new Object[2];
+		propName[0] = "name";
+		propValue[0] = user1.getName() + (new Random()).nextInt(10000);
+		propName[1] = "password";
+		propValue[1] = user1.getPassword() + (new Random()).nextInt(10000);
+
+		String[] conditionName = new String[1];
+		Object[] conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = user1.getId();
+
+		this.systemUserDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+
+		SystemUser updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getName(), propValue[0]);
+		assertEquals(updatedUser.getPassword(), propValue[1]);
+
+		this.systemUserDao.delete(user1);
+		assertNull(this.systemUserDao.get(user1.getId()));
 	}
 
 	private SystemUser generateUser() {
@@ -151,8 +188,8 @@ public class SystemUserDaoTest {
 		user.setPassword("Cogent01");
 		return user;
 	}
-	
-	private void updateUser(SystemUser user){
+
+	private void updateUser(SystemUser user) {
 		user.setName("Jack" + (new Random()).nextInt(10000));
 		user.setPassword("Cogent01");
 	}
