@@ -1,11 +1,14 @@
 package com.tom.school.dao.system.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -317,12 +320,62 @@ public class SystemUserDaoTest {
 	public void testMerge() {
 		SystemUser user1 = addUserToDB();
 		SystemUser user2 = this.systemUserDao.merge(user1);
+
 		assertFalse(user1 == user2);
 		assertEquals(user1, user2);
+
+		SystemUser user3 = this.systemUserDao.get(user2.getId());
+		assertFalse(user2 == user3);
 	}
 
-	private SystemUser addUserToDB() {
+	@Test
+	public void testLoad() {
+		SystemUser user = addUserToDB();
+		try {
+			SystemUser gotUser = this.systemUserDao.load(user.getId());
+			System.out.println(gotUser.getName()); // 抛出异常，因为此时的session已经关闭，延迟加载会失败
+			fail();
+		} catch (Exception e) {
+		}
+	}
+
+	@Test
+	public void testGetByProperties() {
+		String password = "Cogent01";
+		SystemUser user1 = addUserToDB(password);
+		SystemUser user2 = addUserToDB(password);
+
+		// Condition
+		String[] propName = new String[1];
+		Object[] propValue = new Object[1];
+		propName[0] = "password";
+		propValue[0] = password;
+
+		// Sort
+		Map<String, String> sortedCondition = new HashMap<String, String>();
+		sortedCondition.put("id", "desc");
+
+		SystemUser gotUser = this.systemUserDao.getByProperties(propName,
+				propValue, sortedCondition);
+		assertEquals(gotUser, user2);
+
+		sortedCondition.replace("id", "asc");
+		gotUser = this.systemUserDao.getByProperties(propName, propValue,
+				sortedCondition);
+		assertEquals(gotUser, user1);
+		
+		/*
+		 * polymorphic
+		 */
+		gotUser = this.systemUserDao.getByProperties(propName, propValue);
+		assertEquals(gotUser, user1);
+	}
+
+	private SystemUser addUserToDB(String... password) {
 		SystemUser newUser = generateUser();
+		if(password != null && password.length > 0){
+			newUser.setPassword(password[0]);
+		}
 		this.userList.add(newUser);
 		this.systemUserDao.persist(newUser);
 		return newUser;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -104,7 +105,7 @@ public class BaseDao<E> implements Dao<E> {
 		deleteByPK(oldId);
 		persist(entity);
 	}
-	
+
 	@Override
 	public void updateByProperties(String[] conditionName,
 			Object[] conditionValue, String propertyName, Object propertyValue) {
@@ -120,8 +121,8 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public void updateByProperties(String conditionName,
-			Object conditionValue, String propertyName, Object propertyValue) {
+	public void updateByProperties(String conditionName, Object conditionValue,
+			String propertyName, Object propertyValue) {
 		updateByProperties(new String[] { conditionName },
 				new Object[] { conditionValue }, new String[] { propertyName },
 				new Object[] { propertyValue });
@@ -155,54 +156,10 @@ public class BaseDao<E> implements Dao<E> {
 					"Method updateByProperties in BaseDao argument is illegal!");
 		}
 	}
-	
+
 	@Override
 	public E merge(E entity) {
-		return (E)getSession().merge(entity);
-	}
-
-	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
-		for (int i = 0; i < propName.length; i++) {
-			String name = propName[i];
-			Object value = propValue[i];
-			if (value instanceof Object[]) {
-				Object[] arraySerializable = (Object[]) value;
-				if (arraySerializable != null && arraySerializable.length > 0) {
-					sb.append(" and o." + name + " in (:"
-							+ name.replace(".", "") + ")");
-				}
-			} else if (value instanceof Collection<?>) {
-				Collection<?> arraySerializable = (Collection<?>) value;
-				if (arraySerializable != null && arraySerializable.size() > 0) {
-					sb.append(" and o." + name + " in (:"
-							+ name.replace(".", "") + ")");
-				}
-			} else {
-				if (value == null) {
-					sb.append(" and o." + name + " is null ");
-				} else {
-					sb.append(" and o." + name + "=:" + name.replace(".", ""));
-				}
-			}
-		}
-	}
-
-	private void setParameter(Query query, String[] propName, Object[] propValue) {
-		for (int i = 0; i < propName.length; i++) {
-			String name = propName[i];
-			Object value = propValue[i];
-			if (value != null) {
-				if (value instanceof Object[]) {
-					query.setParameterList(name.replace(".", ""),
-							(Object[]) value);
-				} else if (value instanceof Collection<?>) {
-					query.setParameterList(name.replace(".", ""),
-							(Collection<?>) value);
-				} else {
-					query.setParameter(name.replace(".", ""), value);
-				}
-			}
-		}
+		return (E) getSession().merge(entity);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -212,24 +169,41 @@ public class BaseDao<E> implements Dao<E> {
 		return (E) getSession().get(this.entityClass, id);
 	}
 
-	
-
 	@Override
 	public E load(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (E) getSession().load(this.entityClass, id);
 	}
 
 	@Override
 	public E getByProperties(String[] propName, Object[] propValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return getByProperties(propName, propValue, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public E getByProperties(String[] propName, Object[] propValue,
 			Map<String, String> sortedCondition) {
-		// TODO Auto-generated method stub
+		if (propName != null && propName.length > 0 && propValue != null
+				&& propValue.length > 0 && propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("select o from "
+					+ this.entityClass.getName() + " o  where 1=1 ");
+			appendQL(sb, propName, propValue);
+			if(sortedCondition != null && sortedCondition.size() > 0){
+				sb.append(" order by ");
+				for(Entry<String, String> e : sortedCondition.entrySet()){
+					sb.append(e.getKey() + " " + e.getValue() + ",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+			}
+			Query query = getSession().createQuery(sb.toString());
+			setParameter(query, propName, propValue);
+			List<E> list = query.list();
+			if(list != null && list.size() != 0){
+				return list.get(0);
+			}
+			return null;
+		}
+
 		return null;
 	}
 
@@ -345,6 +319,50 @@ public class BaseDao<E> implements Dao<E> {
 			boolean bool) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value instanceof Object[]) {
+				Object[] arraySerializable = (Object[]) value;
+				if (arraySerializable != null && arraySerializable.length > 0) {
+					sb.append(" and o." + name + " in (:"
+							+ name.replace(".", "") + ")");
+				}
+			} else if (value instanceof Collection<?>) {
+				Collection<?> arraySerializable = (Collection<?>) value;
+				if (arraySerializable != null && arraySerializable.size() > 0) {
+					sb.append(" and o." + name + " in (:"
+							+ name.replace(".", "") + ")");
+				}
+			} else {
+				if (value == null) {
+					sb.append(" and o." + name + " is null ");
+				} else {
+					sb.append(" and o." + name + "=:" + name.replace(".", ""));
+				}
+			}
+		}
+	}
+
+	private void setParameter(Query query, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value != null) {
+				if (value instanceof Object[]) {
+					query.setParameterList(name.replace(".", ""),
+							(Object[]) value);
+				} else if (value instanceof Collection<?>) {
+					query.setParameterList(name.replace(".", ""),
+							(Collection<?>) value);
+				} else {
+					query.setParameter(name.replace(".", ""), value);
+				}
+			}
+		}
 	}
 
 }

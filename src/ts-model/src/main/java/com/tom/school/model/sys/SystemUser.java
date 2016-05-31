@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "sys_user")
-//@Cache(region = "all", usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(region = "all", usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SystemUser implements Serializable {
 
 	private static final long serialVersionUID = -7537206161063738544L;
