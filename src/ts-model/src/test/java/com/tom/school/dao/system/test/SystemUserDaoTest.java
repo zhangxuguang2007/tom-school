@@ -240,6 +240,77 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), newPassword);
 		updatedUser = this.systemUserDao.get(user2.getId());
 		assertEquals(updatedUser.getPassword(), newPassword);
+		
+		/**
+		 * polymorphic function1
+		 */
+		
+		user1 = addUserToDB();
+
+		// Condition
+		String singleConditionName = "id";
+		Object singleConditionValue = user1.getId();
+
+		// Property
+		modifyUser(user1);
+		propName = new String[2];
+		propValue = new Object[2];
+		propName[0] = "name";
+		propValue[0] = user1.getName();
+		propName[1] = "password";
+		propValue[1] = user1.getPassword();
+
+		this.systemUserDao.updateByProperties(singleConditionName, singleConditionValue,
+				propName, propValue);
+
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getName(), user1.getName());
+		assertEquals(updatedUser.getPassword(), user1.getPassword());
+		
+		/*
+		 * polymorphic function2
+		 */
+
+		user1 = addUserToDB();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = user1.getId();
+
+		// Property
+		modifyUser(user1);
+		String singlePropName = "name";
+		Object singlePropVale = user1.getName();
+
+		this.systemUserDao.updateByProperties(conditionName, conditionValue,
+				singlePropName, singlePropVale);
+
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getName(), user1.getName());
+		
+		/*
+		 * polymorphic function3
+		 */
+
+		user1 = addUserToDB();
+
+		// Condition
+		singleConditionName = "id";
+		singleConditionValue = user1.getId();
+
+		// Property
+		modifyUser(user1);
+		singlePropName = "name";
+		singlePropVale = user1.getName();
+
+		this.systemUserDao.updateByProperties(singleConditionName, singleConditionValue,
+				singlePropName, singlePropVale);
+
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getName(), user1.getName());
+		
 	}
 
 	private SystemUser addUserToDB() {

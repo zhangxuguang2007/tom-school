@@ -74,20 +74,23 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public void deleteByProperties(String propName, Object propValue) {
-		deleteByProperties(new String[] { propName }, new Object[] { propValue });
+		deleteByProperties(new String[] { propName },
+				new Object[] { propValue });
 	}
 
 	@Override
 	public void deleteByProperties(String[] propName, Object[] propValue) {
-		if (propName != null && propName.length > 0 && propValue != null && propValue.length > 0
-				&& propName.length == propValue.length) {
-			StringBuffer sb = new StringBuffer("delete from " + entityClass.getName() + " o where 1=1 ");
+		if (propName != null && propName.length > 0 && propValue != null
+				&& propValue.length > 0 && propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("delete from "
+					+ entityClass.getName() + " o where 1=1 ");
 			appendQL(sb, propName, propValue);
 			Query query = getSession().createQuery(sb.toString());
 			setParameter(query, propName, propValue);
 			query.executeUpdate();
 		} else {
-			throw new IllegalArgumentException("Method deleteByProperties in BaseDao argument is illegal!");
+			throw new IllegalArgumentException(
+					"Method deleteByProperties in BaseDao argument is illegal!");
 		}
 	}
 
@@ -101,13 +104,38 @@ public class BaseDao<E> implements Dao<E> {
 		deleteByPK(oldId);
 		persist(entity);
 	}
+	
+	@Override
+	public void updateByProperties(String[] conditionName,
+			Object[] conditionValue, String propertyName, Object propertyValue) {
+		updateByProperties(conditionName, conditionValue,
+				new String[] { propertyName }, new Object[] { propertyValue });
+	}
 
 	@Override
-	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName,
-			Object[] propetyValue) {
-		if (propertyName != null && propertyName.length > 0 && propetyValue != null && propetyValue.length > 0
-				&& propertyName.length == propetyValue.length && conditionName != null && conditionName.length > 0
-				&& conditonValue != null && conditonValue.length > 0 && conditionName.length == conditonValue.length) {
+	public void updateByProperties(String conditionName, Object conditionValue,
+			String[] propertyName, Object[] propetyValue) {
+		updateByProperties(new String[] { conditionName },
+				new Object[] { conditionValue }, propertyName, propetyValue);
+	}
+
+	@Override
+	public void updateByProperties(String conditionName,
+			Object conditionValue, String propertyName, Object propertyValue) {
+		updateByProperties(new String[] { conditionName },
+				new Object[] { conditionValue }, new String[] { propertyName },
+				new Object[] { propertyValue });
+	}
+
+	@Override
+	public void updateByProperties(String[] conditionName,
+			Object[] conditonValue, String[] propertyName, Object[] propetyValue) {
+		if (propertyName != null && propertyName.length > 0
+				&& propetyValue != null && propetyValue.length > 0
+				&& propertyName.length == propetyValue.length
+				&& conditionName != null && conditionName.length > 0
+				&& conditonValue != null && conditonValue.length > 0
+				&& conditionName.length == conditonValue.length) {
 			StringBuffer sb = new StringBuffer();
 			sb.append("update " + this.entityClass.getName() + " o set ");
 			for (int i = 0; i < propertyName.length; i++) {
@@ -123,29 +151,9 @@ public class BaseDao<E> implements Dao<E> {
 			setParameter(query, conditionName, conditonValue);
 			query.executeUpdate();
 		} else {
-			throw new IllegalArgumentException("Method updateByProperties in BaseDao argument is illegal!");
+			throw new IllegalArgumentException(
+					"Method updateByProperties in BaseDao argument is illegal!");
 		}
-	}
-
-	@Override
-	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName,
-			Object propertyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByProperties(String conditionName, Object conditionValue, String[] propertyName,
-			Object[] propetyValue) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateByPropertyies(String conditionName, Object conditionValue, String propertyName,
-			Object propertyValue) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
@@ -155,12 +163,14 @@ public class BaseDao<E> implements Dao<E> {
 			if (value instanceof Object[]) {
 				Object[] arraySerializable = (Object[]) value;
 				if (arraySerializable != null && arraySerializable.length > 0) {
-					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+					sb.append(" and o." + name + " in (:"
+							+ name.replace(".", "") + ")");
 				}
 			} else if (value instanceof Collection<?>) {
 				Collection<?> arraySerializable = (Collection<?>) value;
 				if (arraySerializable != null && arraySerializable.size() > 0) {
-					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+					sb.append(" and o." + name + " in (:"
+							+ name.replace(".", "") + ")");
 				}
 			} else {
 				if (value == null) {
@@ -178,9 +188,11 @@ public class BaseDao<E> implements Dao<E> {
 			Object value = propValue[i];
 			if (value != null) {
 				if (value instanceof Object[]) {
-					query.setParameterList(name.replace(".", ""), (Object[]) value);
+					query.setParameterList(name.replace(".", ""),
+							(Object[]) value);
 				} else if (value instanceof Collection<?>) {
-					query.setParameterList(name.replace(".", ""), (Collection<?>) value);
+					query.setParameterList(name.replace(".", ""),
+							(Collection<?>) value);
 				} else {
 					query.setParameter(name.replace(".", ""), value);
 				}
@@ -214,26 +226,29 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public E getByProperties(String[] propName, Object[] propValue, Map<String, String> sortedCondition) {
+	public E getByProperties(String[] propName, Object[] propValue,
+			Map<String, String> sortedCondition) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue, Map<String, String> sortedConidtion,
+	public List<E> queryByProperties(String[] propName, Object[] propValue,
+			Map<String, String> sortedConidtion, Integer top) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> queryByProperties(String[] propName, Object[] propValue,
+			Map<String, String> sortedCondition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> queryByProperties(String[] propName, Object[] propValue,
 			Integer top) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue, Map<String, String> sortedCondition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue, Integer top) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -245,20 +260,22 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public List<E> queryByProperties(String propName, Object propValue, Map<String, String> sortedCondition,
+	public List<E> queryByProperties(String propName, Object propValue,
+			Map<String, String> sortedCondition, Integer top) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> queryByProperties(String propName, Object propValue,
+			Map<String, String> sortedCondition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> queryByProperties(String propName, Object propValue,
 			Integer top) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<E> queryByProperties(String propName, Object propValue, Map<String, String> sortedCondition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<E> queryByProperties(String propName, Object propValue, Integer top) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -323,7 +340,8 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter, boolean bool) {
+	public QueryResult<E> doPaginationQuery(BaseParameter parameter,
+			boolean bool) {
 		// TODO Auto-generated method stub
 		return null;
 	}

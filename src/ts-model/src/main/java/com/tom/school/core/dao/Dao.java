@@ -97,7 +97,7 @@ public interface Dao<E> {
 	 * @param propertyName
 	 * @param propertyValue
 	 */
-	public void updateByPropertyies(String conditionName, Object conditionValue, String propertyName,
+	public void updateByProperties(String conditionName, Object conditionValue, String propertyName,
 			Object propertyValue);
 
 	/**
