@@ -2,6 +2,7 @@ package com.tom.school.dao.system.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -201,19 +202,19 @@ public class SystemUserDaoTest {
 		propValue = new Object[1];
 		propName[0] = "password";
 		propValue[0] = newPassword;
-		
+
 		this.systemUserDao.updateByProperties(conditionName, conditionValue,
 				propName, propValue);
-		
+
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getPassword(), newPassword);
 		updatedUser = this.systemUserDao.get(user2.getId());
 		assertEquals(updatedUser.getPassword(), newPassword);
-		
+
 		/*
 		 * where : name in list(:name1, :name2)
 		 */
-		
+
 		user1 = addUserToDB();
 		user2 = addUserToDB();
 
@@ -232,19 +233,19 @@ public class SystemUserDaoTest {
 		propValue = new Object[1];
 		propName[0] = "password";
 		propValue[0] = newPassword;
-		
+
 		this.systemUserDao.updateByProperties(conditionName, conditionValue,
 				propName, propValue);
-		
+
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getPassword(), newPassword);
 		updatedUser = this.systemUserDao.get(user2.getId());
 		assertEquals(updatedUser.getPassword(), newPassword);
-		
+
 		/**
 		 * polymorphic function1
 		 */
-		
+
 		user1 = addUserToDB();
 
 		// Condition
@@ -260,13 +261,13 @@ public class SystemUserDaoTest {
 		propName[1] = "password";
 		propValue[1] = user1.getPassword();
 
-		this.systemUserDao.updateByProperties(singleConditionName, singleConditionValue,
-				propName, propValue);
+		this.systemUserDao.updateByProperties(singleConditionName,
+				singleConditionValue, propName, propValue);
 
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), user1.getName());
 		assertEquals(updatedUser.getPassword(), user1.getPassword());
-		
+
 		/*
 		 * polymorphic function2
 		 */
@@ -289,7 +290,7 @@ public class SystemUserDaoTest {
 
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), user1.getName());
-		
+
 		/*
 		 * polymorphic function3
 		 */
@@ -305,12 +306,19 @@ public class SystemUserDaoTest {
 		singlePropName = "name";
 		singlePropVale = user1.getName();
 
-		this.systemUserDao.updateByProperties(singleConditionName, singleConditionValue,
-				singlePropName, singlePropVale);
+		this.systemUserDao.updateByProperties(singleConditionName,
+				singleConditionValue, singlePropName, singlePropVale);
 
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), user1.getName());
-		
+	}
+
+	@Test
+	public void testMerge() {
+		SystemUser user1 = addUserToDB();
+		SystemUser user2 = this.systemUserDao.merge(user1);
+		assertFalse(user1 == user2);
+		assertEquals(user1, user2);
 	}
 
 	private SystemUser addUserToDB() {
@@ -323,7 +331,8 @@ public class SystemUserDaoTest {
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
 		user.setName("name_" + System.currentTimeMillis() + this.userIndex++);
-		user.setPassword("password_" + System.currentTimeMillis() + this.userIndex++);
+		user.setPassword("password_" + System.currentTimeMillis()
+				+ this.userIndex++);
 		return user;
 	}
 

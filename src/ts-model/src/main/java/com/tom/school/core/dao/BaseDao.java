@@ -155,6 +155,11 @@ public class BaseDao<E> implements Dao<E> {
 					"Method updateByProperties in BaseDao argument is illegal!");
 		}
 	}
+	
+	@Override
+	public E merge(E entity) {
+		return (E)getSession().merge(entity);
+	}
 
 	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
 		for (int i = 0; i < propName.length; i++) {
@@ -207,11 +212,7 @@ public class BaseDao<E> implements Dao<E> {
 		return (E) getSession().get(this.entityClass, id);
 	}
 
-	@Override
-	public E merge(E entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public E load(Serializable id) {
