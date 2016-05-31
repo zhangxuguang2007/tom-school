@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -63,7 +62,7 @@ public class SystemUserDaoTest {
 		SystemUser user1, user2;
 
 		/*
-		 * id = :id
+		 * where : id = :id
 		 */
 
 		user1 = addUserToDB();
@@ -75,7 +74,7 @@ public class SystemUserDaoTest {
 		assertNull(this.systemUserDao.get(user1.getId()));
 
 		/*
-		 * id = :id and name = :name
+		 * where : id = :id, name = :name
 		 */
 
 		user1 = addUserToDB();
@@ -89,7 +88,7 @@ public class SystemUserDaoTest {
 		assertNull(this.systemUserDao.get(user1.getId()));
 
 		/*
-		 * id in(value1, value2), parameter is array
+		 * where : id in array(:id1, :id2)
 		 */
 
 		user1 = addUserToDB();
@@ -100,7 +99,7 @@ public class SystemUserDaoTest {
 		assertNull(this.systemUserDao.get(user2.getId()));
 
 		/*
-		 * id in(value1, value2), parameter is list
+		 * where : name in list(:name1, :name2)
 		 */
 
 		user1 = addUserToDB();
@@ -122,31 +121,125 @@ public class SystemUserDaoTest {
 	}
 
 	@Test
-	public void updateByProperties() {
+	public void testUpdateByProperties() {
+		SystemUser user1, user2;
+
 		/*
-		 * id = :id
+		 * where : id = :id
 		 */
 
-		SystemUser user1 = addUserToDB();
+		user1 = addUserToDB();
 
-		String[] propName = new String[2];
-		Object[] propValue = new Object[2];
-		propName[0] = "name";
-		propValue[0] = user1.getName() + (new Random()).nextInt(10000);
-		propName[1] = "password";
-		propValue[1] = user1.getPassword() + (new Random()).nextInt(10000);
-
+		// Condition
 		String[] conditionName = new String[1];
 		Object[] conditionValue = new Object[1];
 		conditionName[0] = "id";
 		conditionValue[0] = user1.getId();
 
+		// Property
+		modifyUser(user1);
+		String[] propName = new String[2];
+		Object[] propValue = new Object[2];
+		propName[0] = "name";
+		propValue[0] = user1.getName();
+		propName[1] = "password";
+		propValue[1] = user1.getPassword();
+
 		this.systemUserDao.updateByProperties(conditionName, conditionValue,
 				propName, propValue);
 
 		SystemUser updatedUser = this.systemUserDao.get(user1.getId());
-		assertEquals(updatedUser.getName(), propValue[0]);
-		assertEquals(updatedUser.getPassword(), propValue[1]);
+		assertEquals(updatedUser.getName(), user1.getName());
+		assertEquals(updatedUser.getPassword(), user1.getPassword());
+
+		/*
+		 * where : id = :id, name = :name
+		 */
+
+		user1 = addUserToDB();
+
+		// Condition
+		conditionName = new String[2];
+		conditionValue = new Object[2];
+		conditionName[0] = "id";
+		conditionValue[0] = user1.getId();
+		conditionName[1] = "name";
+		conditionValue[1] = user1.getName();
+
+		// Property
+		modifyUser(user1);
+		propName = new String[2];
+		propValue = new Object[2];
+		propName[0] = "name";
+		propValue[0] = user1.getName();
+		propName[1] = "password";
+		propValue[1] = user1.getPassword();
+
+		this.systemUserDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getName(), user1.getName());
+		assertEquals(updatedUser.getPassword(), user1.getPassword());
+
+		/*
+		 * where : id in array(:id1, :id2)
+		 */
+
+		user1 = addUserToDB();
+		user2 = addUserToDB();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = new Object[] { user1.getId(), user2.getId() };
+
+		// Property
+		String newPassword = generateUser().getPassword();
+		propName = new String[1];
+		propValue = new Object[1];
+		propName[0] = "password";
+		propValue[0] = newPassword;
+		
+		this.systemUserDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+		
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getPassword(), newPassword);
+		updatedUser = this.systemUserDao.get(user2.getId());
+		assertEquals(updatedUser.getPassword(), newPassword);
+		
+		/*
+		 * where : name in list(:name1, :name2)
+		 */
+		
+		user1 = addUserToDB();
+		user2 = addUserToDB();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		List<String> userNameList = new ArrayList<String>();
+		userNameList.add(user1.getName());
+		userNameList.add(user2.getName());
+		conditionName[0] = "name";
+		conditionValue[0] = userNameList;
+
+		// Property
+		newPassword = generateUser().getPassword();
+		propName = new String[1];
+		propValue = new Object[1];
+		propName[0] = "password";
+		propValue[0] = newPassword;
+		
+		this.systemUserDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+		
+		updatedUser = this.systemUserDao.get(user1.getId());
+		assertEquals(updatedUser.getPassword(), newPassword);
+		updatedUser = this.systemUserDao.get(user2.getId());
+		assertEquals(updatedUser.getPassword(), newPassword);
 	}
 
 	private SystemUser addUserToDB() {
@@ -158,13 +251,13 @@ public class SystemUserDaoTest {
 
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
-		user.setName("Tom" + System.currentTimeMillis() + this.userIndex++);
-		user.setPassword("Cogent01");
+		user.setName("name_" + System.currentTimeMillis() + this.userIndex++);
+		user.setPassword("password_" + System.currentTimeMillis() + this.userIndex++);
 		return user;
 	}
 
 	private void modifyUser(SystemUser user) {
-		user.setName("Jack" + System.currentTimeMillis() + this.userIndex++);
-		user.setPassword("Cogent01");
+		user.setName(user.getName() + "*");
+		user.setPassword(user.getPassword() + "*");
 	}
 }
