@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,17 +18,32 @@ import com.tom.school.test.TestContext;
 public class SystemUserDaoTest {
 
 	private SystemUserDao systemUserDao;
+	private List<SystemUser> userList = new ArrayList<SystemUser>();
 	private int userIndex = 0;
 
 	@Before
 	public void init() {
 		this.systemUserDao = TestContext.getSystemUserDao();
-		
-		//Test persist and delete
-		SystemUser newUser = addUserToDB();
-		removeUserFromDB(newUser);
+
+		// Test persist
+		SystemUser user = generateUser();
+		this.systemUserDao.persist(user);
+		assertEquals(user, this.systemUserDao.get(user.getId()));
+
+		// Test delete
+		this.systemUserDao.delete(user);
+		assertNull(this.systemUserDao.get(user.getId()));
 	}
-	
+
+	@After
+	public void clear() {
+		for (SystemUser user : this.userList) {
+			if (this.systemUserDao.get(user.getId()) != null) {
+				this.systemUserDao.delete(user);
+			}
+		}
+	}
+
 	@Test
 	public void testDeleteByPK() {
 		SystemUser user1 = addUserToDB();
@@ -45,7 +61,7 @@ public class SystemUserDaoTest {
 	@Test
 	public void testdeleteByProperties() {
 		SystemUser user1, user2;
-		
+
 		/*
 		 * id = :id
 		 */
@@ -100,12 +116,9 @@ public class SystemUserDaoTest {
 	@Test
 	public void testUpdate() {
 		SystemUser user = addUserToDB();
-		
 		modifyUser(user);
 		this.systemUserDao.update(user);
 		assertEquals(user, this.systemUserDao.get(user.getId()));
-		
-		removeUserFromDB(user);
 	}
 
 	@Test
@@ -134,23 +147,13 @@ public class SystemUserDaoTest {
 		SystemUser updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), propValue[0]);
 		assertEquals(updatedUser.getPassword(), propValue[1]);
+	}
 
-		removeUserFromDB(user1);
-	}
-	
-	private SystemUser addUserToDB(){
+	private SystemUser addUserToDB() {
 		SystemUser newUser = generateUser();
-		
+		this.userList.add(newUser);
 		this.systemUserDao.persist(newUser);
-		SystemUser gotUser = this.systemUserDao.get(newUser.getId());
-		assertEquals(newUser, gotUser);
-		
 		return newUser;
-	}
-	
-	private void removeUserFromDB(SystemUser user){
-		this.systemUserDao.delete(user);
-		assertNull(this.systemUserDao.get(user.getId()));
 	}
 
 	private SystemUser generateUser() {
