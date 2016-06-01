@@ -316,6 +316,11 @@ public class SystemUserDaoTest {
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), user1.getName());
 	}
+	
+	private void modifyUser(SystemUser user) {
+		user.setName(user.getName() + "*");
+		user.setPassword(user.getPassword() + "*");
+	}
 
 	@Test
 	public void testMerge() {
@@ -509,11 +514,6 @@ public class SystemUserDaoTest {
 		user.setPassword("password_" + System.currentTimeMillis()
 				+ this.userIndex++);
 		return user;
-	}
-
-	private void modifyUser(SystemUser user) {
-		user.setName(user.getName() + "*");
-		user.setPassword(user.getPassword() + "*");
 	}
 	
 	private String getRandomNumber(){
