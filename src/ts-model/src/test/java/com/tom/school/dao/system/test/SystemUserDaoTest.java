@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.tom.school.core.support.BaseParameter;
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 import com.tom.school.test.TestContext;
@@ -496,6 +498,53 @@ public class SystemUserDaoTest {
 			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
+	}
+	
+	@Test
+	public void testCountAll(){
+		for(int i = 0; i < 10; i++){
+			addUserToDB();
+		}
+		List<SystemUser> allUsers = this.systemUserDao.doQueryAll();
+		Long allUsersCount = this.systemUserDao.countAll();
+		assertEquals(allUsers.size(), allUsersCount.intValue());
+	}
+	
+	@Test
+	public void testDoQueryAll(){
+		for(int i = 0; i < 10; i++){
+			addUserToDB();
+		}
+		Map<String, String> sortedCondition = new LinkedHashMap<String, String>();
+		sortedCondition.put("id", BaseParameter.SORTED_DESC);
+		sortedCondition.put("name", BaseParameter.SORTED_ASC);
+		List<SystemUser> allUsers = this.systemUserDao.doQueryAll(sortedCondition, 10);
+		assertEquals(allUsers.size(), 10);
+		
+		Long lastId = Long.MAX_VALUE;
+		for(SystemUser user : allUsers){
+			assertTrue(user.getId() < lastId);
+			lastId = user.getId();
+		}
+		
+		/*
+		 * polymorphic1
+		 */
+		allUsers = this.systemUserDao.doQueryAll(10);
+		assertEquals(allUsers.size(), 10);
+		
+		lastId = Long.MIN_VALUE;
+		for(SystemUser user : allUsers){
+			assertTrue(user.getId() > lastId);
+			lastId = user.getId();
+		}
+		
+		/*
+		 * polymorphic2
+		 */
+		allUsers = this.systemUserDao.doQueryAll();
+		Long allUsersCount = this.systemUserDao.countAll();
+		assertEquals(allUsers.size(), allUsersCount.intValue());
 	}
 
 	private SystemUser addUserToDB(String... password) {

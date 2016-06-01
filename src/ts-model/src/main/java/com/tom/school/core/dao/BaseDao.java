@@ -2,20 +2,24 @@ package com.tom.school.core.dao;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.cj.api.x.CreateCollectionIndexStatement;
 import com.tom.school.core.support.BaseParameter;
 import com.tom.school.core.support.QueryResult;
 
@@ -279,38 +283,51 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
+	public Long countAll() {
+		return (Long) getSession().createQuery(
+				"select count(*) from " + this.entityClass.getName())
+				.uniqueResult();
+	}
+
+	@Override
 	public void clear() {
 		this.getSession().clear();
 	}
 
 	@Override
 	public void evict(E entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Long countAll() {
-		// TODO Auto-generated method stub
-		return null;
+		getSession().evict(entity);
 	}
 
 	@Override
 	public List<E> doQueryAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return doQueryAll(null, null);
 	}
-
-	@Override
-	public List<E> doQueryAll(Map<String, String> soredCondition, Integer top) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public List<E> doQueryAll(Integer top) {
-		// TODO Auto-generated method stub
-		return null;
+		return doQueryAll(null, top);
+	}
+
+	@Override
+	public List<E> doQueryAll(Map<String, String> sortedCondition, Integer top) {
+		Criteria criteria = getSession().createCriteria(entityClass);
+		if(sortedCondition != null && sortedCondition.size() > 0){
+			Iterator<String> it = sortedCondition.keySet().iterator();
+			while(it.hasNext()){
+				String pm = it.next();
+				if(BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition.get(pm))){
+					criteria.addOrder(Order.desc(pm));
+				} else if(BaseParameter.SORTED_DESC.equalsIgnoreCase(sortedCondition.get(pm))){
+					criteria.addOrder(Order.desc(pm));
+				}
+			}
+		}
+		if(top != null){
+			criteria.setMaxResults(top);
+			criteria.setFirstResult(0);
+		}
+		return criteria.list();
 	}
 
 	@Override
