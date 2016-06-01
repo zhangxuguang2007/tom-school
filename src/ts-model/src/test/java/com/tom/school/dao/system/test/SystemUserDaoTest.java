@@ -1,6 +1,7 @@
 package com.tom.school.dao.system.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -363,7 +364,7 @@ public class SystemUserDaoTest {
 		gotUser = this.systemUserDao.getByProperties(propName, propValue,
 				sortedCondition);
 		assertEquals(gotUser, user1);
-		
+
 		/*
 		 * polymorphic
 		 */
@@ -371,9 +372,38 @@ public class SystemUserDaoTest {
 		assertEquals(gotUser, user1);
 	}
 
+	@Test
+	public void testQueryByProperties() {
+		String password = "Cogent01";
+		List<SystemUser> userList = new ArrayList<SystemUser>();
+		for (int i = 0; i < 10; i++) {
+			userList.add(addUserToDB(password));
+		}
+
+		// Condition
+		String[] propName = new String[1];
+		Object[] propValue = new Object[1];
+		propName[0] = "password";
+		propValue[0] = password;
+
+		// Sort
+		Map<String, String> sortedCondition = new HashMap<String, String>();
+		sortedCondition.put("id", "desc");
+		
+		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, new Integer(5));
+		assertEquals(queriedUserList.size(), 5);
+		
+		Long lastUserId = Long.MAX_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() < lastUserId);
+			lastUserId = user.getId();
+		}
+	}
+
 	private SystemUser addUserToDB(String... password) {
 		SystemUser newUser = generateUser();
-		if(password != null && password.length > 0){
+		if (password != null && password.length > 0) {
 			newUser.setPassword(password[0]);
 		}
 		this.userList.add(newUser);

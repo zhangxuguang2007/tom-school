@@ -188,9 +188,9 @@ public class BaseDao<E> implements Dao<E> {
 			StringBuffer sb = new StringBuffer("select o from "
 					+ this.entityClass.getName() + " o  where 1=1 ");
 			appendQL(sb, propName, propValue);
-			if(sortedCondition != null && sortedCondition.size() > 0){
+			if (sortedCondition != null && sortedCondition.size() > 0) {
 				sb.append(" order by ");
-				for(Entry<String, String> e : sortedCondition.entrySet()){
+				for (Entry<String, String> e : sortedCondition.entrySet()) {
 					sb.append(e.getKey() + " " + e.getValue() + ",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
@@ -198,19 +198,12 @@ public class BaseDao<E> implements Dao<E> {
 			Query query = getSession().createQuery(sb.toString());
 			setParameter(query, propName, propValue);
 			List<E> list = query.list();
-			if(list != null && list.size() != 0){
+			if (list != null && list.size() != 0) {
 				return list.get(0);
 			}
 			return null;
 		}
 
-		return null;
-	}
-
-	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue,
-			Map<String, String> sortedConidtion, Integer top) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -258,6 +251,32 @@ public class BaseDao<E> implements Dao<E> {
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> queryByProperties(String[] propName, Object[] propValue,
+			Map<String, String> sortedConidtion, Integer top) {
+
+		if (propName != null && propName.length > 0 && propValue != null
+				&& propValue.length > 0 && propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("select o from " + this.entityClass.getName() + " o where 1=1 ");
+			appendQL(sb, propName, propValue);
+			if(sortedConidtion != null && sortedConidtion.size() > 0){
+				sb.append(" order by ");
+				for(Entry<String, String> e : sortedConidtion.entrySet()){
+					sb.append(e.getKey() + " " + e.getValue() + ",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+			}
+			Query query = getSession().createQuery(sb.toString());
+			setParameter(query, propName, propValue);
+			if(top != null){
+				query.setFirstResult(0);
+				query.setMaxResults(top);
+			}
+			return query.list();
+		}
 		return null;
 	}
 
