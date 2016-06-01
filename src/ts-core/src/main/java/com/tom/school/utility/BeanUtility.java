@@ -45,5 +45,13 @@ public class BeanUtility {
 		}
 		return description;
 	}
+	
+	public static String getParamOpt(String value) {
+		return (value.substring(0, value.indexOf('_', 1))).substring(1);
+	}
+
+	public static String getParamPropName(String value) {
+		return value.substring(value.indexOf('_', 1) + 1);
+	}
 
 }

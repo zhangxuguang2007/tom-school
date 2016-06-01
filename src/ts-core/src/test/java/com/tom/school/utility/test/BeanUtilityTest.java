@@ -13,36 +13,43 @@ public class BeanUtilityTest {
 
 	@Test
 	public void testDescribleAvaliableParameter() {
-		Student student = new Student();
-		student.setId(Long.valueOf(100));
-		student.setName("Tom");
-		student.setPassword("Cogent01");
-		student.set$email("zhangxuguang2007@126.com");
-		student.set$realName("Xuguang");
+		TestUser user = new TestUser();
+		user.setId(Long.valueOf(100));
+		user.setName("Tom");
+		user.setPassword("Cogent01");
+		user.set$like_email("%@126.com%");
+		user.set$isNull_realName("%Xuguang%");
 		try {
 			Map<String, String> map = BeanUtility
-					.describleAvaliableParameter(student);
-			
+					.describleAvaliableParameter(user);
+
 			assertEquals(map.size(), 2);
-			
-			assertTrue(map.keySet().contains("$email"));
-			assertEquals(map.get("$email"), "zhangxuguang2007@126.com");
-			
-			assertTrue(map.keySet().contains("$realName"));
-			assertEquals(map.get("$realName"), "Xuguang");
-			
+
+			String emailKey = "$like_email";
+			assertTrue(map.keySet().contains(emailKey));
+			String emailValue = map.get(emailKey);
+			assertEquals(emailValue, "%@126.com%");
+			assertEquals(BeanUtility.getParamOpt(emailKey), "like");
+			assertEquals(BeanUtility.getParamPropName(emailKey), "email");
+
+			String realNameKey = "$isNull_realName";
+			assertTrue(map.keySet().contains(realNameKey));
+			String realNameValue = map.get(realNameKey);
+			assertEquals(realNameValue, "%Xuguang%");
+			assertEquals(BeanUtility.getParamOpt(realNameKey), "isNull");
+			assertEquals(BeanUtility.getParamPropName(realNameKey), "realName");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public class Student {
+	public class TestUser {
+		
 		private Long id;
 		private String name;
 		private String password;
-		private String $email;
-		private String $realName;
+		private String $like_email;
+		private String $isNull_realName;
 
 		public Long getId() {
 			return id;
@@ -67,22 +74,23 @@ public class BeanUtilityTest {
 		public void setPassword(String password) {
 			this.password = password;
 		}
-		
-		public String get$email() {
-			return $email;
+
+		public String get$like_email() {
+			return $like_email;
 		}
 
-		public void set$email(String $email) {
-			this.$email = $email;
+		public void set$like_email(String $like_email) {
+			this.$like_email = $like_email;
 		}
 
-		public String get$realName() {
-			return $realName;
+		public String get$isNull_realName() {
+			return $isNull_realName;
 		}
 
-		public void set$realName(String $realName) {
-			this.$realName = $realName;
+		public void set$isNull_realName(String $isNull_realName) {
+			this.$isNull_realName = $isNull_realName;
 		}
+
 	}
 
 }
