@@ -1,7 +1,9 @@
 package com.tom.school.core.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,22 +15,27 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.cj.api.x.CreateCollectionIndexStatement;
 import com.tom.school.core.support.BaseParameter;
 import com.tom.school.core.support.QueryResult;
+import com.tom.school.utility.BeanUtility;
 
 @Transactional
 public class BaseDao<E> implements Dao<E> {
 
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	private static Map<String, Method> MAP_METHOD = new HashMap<String, Method>();
+
 	private SessionFactory sessionFactory;
 
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	protected Class<E> entityClass;
 
 	public BaseDao(Class<E> entityClass) {
@@ -282,79 +289,6 @@ public class BaseDao<E> implements Dao<E> {
 		return null;
 	}
 
-	@Override
-	public Long countAll() {
-		return (Long) getSession().createQuery(
-				"select count(*) from " + this.entityClass.getName())
-				.uniqueResult();
-	}
-
-	@Override
-	public void clear() {
-		this.getSession().clear();
-	}
-
-	@Override
-	public void evict(E entity) {
-		getSession().evict(entity);
-	}
-
-	@Override
-	public List<E> doQueryAll() {
-		return doQueryAll(null, null);
-	}
-	
-	@Override
-	public List<E> doQueryAll(Integer top) {
-		return doQueryAll(null, top);
-	}
-
-	@Override
-	public List<E> doQueryAll(Map<String, String> sortedCondition, Integer top) {
-		Criteria criteria = getSession().createCriteria(entityClass);
-		if(sortedCondition != null && sortedCondition.size() > 0){
-			Iterator<String> it = sortedCondition.keySet().iterator();
-			while(it.hasNext()){
-				String pm = it.next();
-				if(BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition.get(pm))){
-					criteria.addOrder(Order.desc(pm));
-				} else if(BaseParameter.SORTED_DESC.equalsIgnoreCase(sortedCondition.get(pm))){
-					criteria.addOrder(Order.desc(pm));
-				}
-			}
-		}
-		if(top != null){
-			criteria.setMaxResults(top);
-			criteria.setFirstResult(0);
-		}
-		return criteria.list();
-	}
-
-	@Override
-	public Long doCount(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<E> doQuery(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter,
-			boolean bool) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
 		for (int i = 0; i < propName.length; i++) {
 			String name = propName[i];
@@ -399,4 +333,125 @@ public class BaseDao<E> implements Dao<E> {
 		}
 	}
 
+	@Override
+	public Long countAll() {
+		return (Long) getSession().createQuery(
+				"select count(*) from " + this.entityClass.getName())
+				.uniqueResult();
+	}
+
+	@Override
+	public void clear() {
+		this.getSession().clear();
+	}
+
+	@Override
+	public void evict(E entity) {
+		getSession().evict(entity);
+	}
+
+	@Override
+	public List<E> doQueryAll() {
+		return doQueryAll(null, null);
+	}
+
+	@Override
+	public List<E> doQueryAll(Integer top) {
+		return doQueryAll(null, top);
+	}
+
+	@Override
+	public List<E> doQueryAll(Map<String, String> sortedCondition, Integer top) {
+		Criteria criteria = getSession().createCriteria(entityClass);
+		if (sortedCondition != null && sortedCondition.size() > 0) {
+			Iterator<String> it = sortedCondition.keySet().iterator();
+			while (it.hasNext()) {
+				String pm = it.next();
+				if (BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition
+						.get(pm))) {
+					criteria.addOrder(Order.desc(pm));
+				} else if (BaseParameter.SORTED_DESC
+						.equalsIgnoreCase(sortedCondition.get(pm))) {
+					criteria.addOrder(Order.desc(pm));
+				}
+			}
+		}
+		if (top != null) {
+			criteria.setMaxResults(top);
+			criteria.setFirstResult(0);
+		}
+		return criteria.list();
+	}
+
+	@Override
+	public Long doCount(BaseParameter parameter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<E> doQuery(BaseParameter parameter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public QueryResult<E> doPaginationQuery(BaseParameter parameter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public QueryResult<E> doPaginationQuery(BaseParameter parameter,
+			boolean bool) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// ---------------------------------------------------------------------
+	// For QBC
+	// ---------------------------------------------------------------------
+
+	private void processQuery(Criteria criteria, BaseParameter param) {
+		try {
+			Map<String, Object> staticConditionMap = BeanUtility
+					.describleAvaliableParameter(param);
+			Map<String, Object> dynamicConditionMap = param
+					.getQueryDynamicConditions();
+			if (staticConditionMap != null && staticConditionMap.size() > 0) {
+				for (Entry<String, Object> e : staticConditionMap.entrySet()) {
+					String propName = BeanUtility.getParamPropName(e.getKey());
+					String optName = BeanUtility.getParamOpt(e.getKey());
+					Method method = getMethod(optName);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private Method getMethod(String name) {
+		if (!MAP_METHOD.containsKey(name)) {
+			Class<Restrictions> clazz = Restrictions.class;
+			Class[] paramType = new Class[] { String.class, Object.class };
+			Class[] likeParamType = new Class[] { String.class, String.class,
+					MatchMode.class };
+			Class[] isNullType = new Class[] { String.class };
+			try {
+				Method method = null;
+				if ("like".equalsIgnoreCase(name)) {
+					method = clazz.getMethod(name, likeParamType);
+				} else if ("isNull".equalsIgnoreCase(name)) {
+					method = clazz.getMethod(name, isNullType);
+				} else {
+					method = clazz.getMethod(name, paramType);
+				}
+				MAP_METHOD.put(name, method);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return MAP_METHOD.get(name);
+	}
 }
