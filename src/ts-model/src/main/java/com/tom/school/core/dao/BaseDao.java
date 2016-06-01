@@ -210,48 +210,45 @@ public class BaseDao<E> implements Dao<E> {
 	@Override
 	public List<E> queryByProperties(String[] propName, Object[] propValue,
 			Map<String, String> sortedCondition) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(propName, propValue, sortedCondition, null);
 	}
 
 	@Override
 	public List<E> queryByProperties(String[] propName, Object[] propValue,
 			Integer top) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(propName, propValue, null, top);
 	}
 
 	@Override
 	public List<E> queryByProperties(String[] propName, Object[] propValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(propName, propValue, null, null);
 	}
 
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue,
 			Map<String, String> sortedCondition, Integer top) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(new String[] { propName },
+				new Object[] { propValue }, sortedCondition, top);
 	}
 
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue,
 			Map<String, String> sortedCondition) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(new String[] { propName },
+				new Object[] { propValue }, sortedCondition, null);
 	}
 
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue,
 			Integer top) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(new String[] { propName },
+				new Object[] { propValue }, null, top);
 	}
 
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return queryByProperties(new String[] { propName },
+				new Object[] { propValue }, null, null);
 	}
 
 	@Override
@@ -260,18 +257,19 @@ public class BaseDao<E> implements Dao<E> {
 
 		if (propName != null && propName.length > 0 && propValue != null
 				&& propValue.length > 0 && propName.length == propValue.length) {
-			StringBuffer sb = new StringBuffer("select o from " + this.entityClass.getName() + " o where 1=1 ");
+			StringBuffer sb = new StringBuffer("select o from "
+					+ this.entityClass.getName() + " o where 1=1 ");
 			appendQL(sb, propName, propValue);
-			if(sortedConidtion != null && sortedConidtion.size() > 0){
+			if (sortedConidtion != null && sortedConidtion.size() > 0) {
 				sb.append(" order by ");
-				for(Entry<String, String> e : sortedConidtion.entrySet()){
+				for (Entry<String, String> e : sortedConidtion.entrySet()) {
 					sb.append(e.getKey() + " " + e.getValue() + ",");
 				}
 				sb.deleteCharAt(sb.length() - 1);
 			}
 			Query query = getSession().createQuery(sb.toString());
 			setParameter(query, propName, propValue);
-			if(top != null){
+			if (top != null) {
 				query.setFirstResult(0);
 				query.setMaxResults(top);
 			}

@@ -342,7 +342,7 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testGetByProperties() {
-		String password = "Cogent01";
+		String password = "p_" + getRandomNumber();
 		SystemUser user1 = addUserToDB(password);
 		SystemUser user2 = addUserToDB(password);
 
@@ -374,7 +374,8 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testQueryByProperties() {
-		String password = "Cogent01";
+		String password = "p_" + getRandomNumber();
+		int top = 5;
 		List<SystemUser> userList = new ArrayList<SystemUser>();
 		for (int i = 0; i < 10; i++) {
 			userList.add(addUserToDB(password));
@@ -390,13 +391,104 @@ public class SystemUserDaoTest {
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
 		
-		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, new Integer(5));
-		assertEquals(queriedUserList.size(), 5);
+		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, top);
+		assertEquals(queriedUserList.size(), top);
 		
 		Long lastUserId = Long.MAX_VALUE;
 		for(SystemUser user : queriedUserList){
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() < lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic1
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition);
+		assertEquals(queriedUserList.size(), userList.size());
+		
+		lastUserId = Long.MAX_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() < lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic2
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, top);
+		assertEquals(queriedUserList.size(), top);
+		
+		lastUserId = Long.MIN_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() > lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic3
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue);
+		assertEquals(queriedUserList.size(), userList.size());
+		
+		lastUserId = Long.MIN_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() > lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic3
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition, top);
+		assertEquals(queriedUserList.size(), top);
+		
+		lastUserId = Long.MAX_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() < lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic4
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition);
+		assertEquals(queriedUserList.size(), userList.size());
+		
+		lastUserId = Long.MAX_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() < lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic5
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], top);
+		assertEquals(queriedUserList.size(), top);
+		
+		lastUserId = Long.MIN_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() > lastUserId);
+			lastUserId = user.getId();
+		}
+		
+		/*
+		 * polymorphic6
+		 */
+		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0]);
+		assertEquals(queriedUserList.size(), this.userList.size());
+		
+		lastUserId = Long.MIN_VALUE;
+		for(SystemUser user : queriedUserList){
+			assertTrue(userList.contains(user));
+			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
 	}
@@ -413,7 +505,7 @@ public class SystemUserDaoTest {
 
 	private SystemUser generateUser() {
 		SystemUser user = new SystemUser();
-		user.setName("name_" + System.currentTimeMillis() + this.userIndex++);
+		user.setName("name_" + getRandomNumber());
 		user.setPassword("password_" + System.currentTimeMillis()
 				+ this.userIndex++);
 		return user;
@@ -422,5 +514,10 @@ public class SystemUserDaoTest {
 	private void modifyUser(SystemUser user) {
 		user.setName(user.getName() + "*");
 		user.setPassword(user.getPassword() + "*");
+	}
+	
+	private String getRandomNumber(){
+		long randomNumber = System.currentTimeMillis() + this.userIndex++;
+		return randomNumber + "";
 	}
 }
