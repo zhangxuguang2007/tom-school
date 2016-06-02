@@ -52,9 +52,9 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testDeleteByPK() {
-		SystemUser user1 = addUserToDB();
-		SystemUser user2 = addUserToDB();
-		SystemUser user3 = addUserToDB();
+		SystemUser user1 = addUser();
+		SystemUser user2 = addUser();
+		SystemUser user3 = addUser();
 
 		this.systemUserDao.deleteByPK(user1.getId(), user2.getId(),
 				user3.getId()); // deletByPK
@@ -72,7 +72,7 @@ public class SystemUserDaoTest {
 		 * where : id = :id
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 		String[] propName = new String[1];
 		Object[] propValue = new Object[1];
 		propName[0] = "id";
@@ -84,7 +84,7 @@ public class SystemUserDaoTest {
 		 * where : id = :id, name = :name
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 		propName = new String[2];
 		propValue = new Object[2];
 		propName[0] = "id";
@@ -98,8 +98,8 @@ public class SystemUserDaoTest {
 		 * where : id in array(:id1, :id2)
 		 */
 
-		user1 = addUserToDB();
-		user2 = addUserToDB();
+		user1 = addUser();
+		user2 = addUser();
 		this.systemUserDao.deleteByProperties("id",
 				new Object[] { user1.getId(), user2.getId() });
 		assertNull(this.systemUserDao.get(user1.getId()));
@@ -109,8 +109,8 @@ public class SystemUserDaoTest {
 		 * where : name in list(:name1, :name2)
 		 */
 
-		user1 = addUserToDB();
-		user2 = addUserToDB();
+		user1 = addUser();
+		user2 = addUser();
 		List<String> userNameList = new ArrayList<String>();
 		userNameList.add(user1.getName());
 		userNameList.add(user2.getName());
@@ -121,7 +121,7 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testUpdate() {
-		SystemUser user = addUserToDB();
+		SystemUser user = addUser();
 		modifyUser(user);
 		this.systemUserDao.update(user);
 		assertEquals(user, this.systemUserDao.get(user.getId()));
@@ -135,7 +135,7 @@ public class SystemUserDaoTest {
 		 * where : id = :id
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 
 		// Condition
 		String[] conditionName = new String[1];
@@ -163,7 +163,7 @@ public class SystemUserDaoTest {
 		 * where : id = :id, name = :name
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 
 		// Condition
 		conditionName = new String[2];
@@ -193,8 +193,8 @@ public class SystemUserDaoTest {
 		 * where : id in array(:id1, :id2)
 		 */
 
-		user1 = addUserToDB();
-		user2 = addUserToDB();
+		user1 = addUser();
+		user2 = addUser();
 
 		// Condition
 		conditionName = new String[1];
@@ -221,8 +221,8 @@ public class SystemUserDaoTest {
 		 * where : name in list(:name1, :name2)
 		 */
 
-		user1 = addUserToDB();
-		user2 = addUserToDB();
+		user1 = addUser();
+		user2 = addUser();
 
 		// Condition
 		conditionName = new String[1];
@@ -252,7 +252,7 @@ public class SystemUserDaoTest {
 		 * polymorphic function1
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 
 		// Condition
 		String singleConditionName = "id";
@@ -278,7 +278,7 @@ public class SystemUserDaoTest {
 		 * polymorphic function2
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 
 		// Condition
 		conditionName = new String[1];
@@ -301,7 +301,7 @@ public class SystemUserDaoTest {
 		 * polymorphic function3
 		 */
 
-		user1 = addUserToDB();
+		user1 = addUser();
 
 		// Condition
 		singleConditionName = "id";
@@ -318,7 +318,7 @@ public class SystemUserDaoTest {
 		updatedUser = this.systemUserDao.get(user1.getId());
 		assertEquals(updatedUser.getName(), user1.getName());
 	}
-	
+
 	private void modifyUser(SystemUser user) {
 		user.setName(user.getName() + "*");
 		user.setPassword(user.getPassword() + "*");
@@ -326,7 +326,7 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testMerge() {
-		SystemUser user1 = addUserToDB();
+		SystemUser user1 = addUser();
 		SystemUser user2 = this.systemUserDao.merge(user1);
 
 		assertFalse(user1 == user2);
@@ -338,7 +338,7 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testLoad() {
-		SystemUser user = addUserToDB();
+		SystemUser user = addUser();
 		try {
 			SystemUser gotUser = this.systemUserDao.load(user.getId());
 			System.out.println(gotUser.getName()); // 抛出异常，因为此时的session已经关闭，延迟加载会失败
@@ -350,8 +350,8 @@ public class SystemUserDaoTest {
 	@Test
 	public void testGetByProperties() {
 		String password = "p_" + getRandomNumber();
-		SystemUser user1 = addUserToDB(password);
-		SystemUser user2 = addUserToDB(password);
+		SystemUser user1 = addUser(password);
+		SystemUser user2 = addUser(password);
 
 		// Condition
 		String[] propName = new String[1];
@@ -385,7 +385,7 @@ public class SystemUserDaoTest {
 		int top = 5;
 		List<SystemUser> userList = new ArrayList<SystemUser>();
 		for (int i = 0; i < 10; i++) {
-			userList.add(addUserToDB(password));
+			userList.add(addUser(password));
 		}
 
 		// Condition
@@ -397,148 +397,148 @@ public class SystemUserDaoTest {
 		// Sort
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
-		
+
 		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, top);
 		assertEquals(queriedUserList.size(), top);
-		
+
 		Long lastUserId = Long.MAX_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() < lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic1
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
-		
+
 		lastUserId = Long.MAX_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() < lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic2
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedUserList.size(), top);
-		
+
 		lastUserId = Long.MIN_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic3
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue);
 		assertEquals(queriedUserList.size(), userList.size());
-		
+
 		lastUserId = Long.MIN_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic3
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition, top);
 		assertEquals(queriedUserList.size(), top);
-		
+
 		lastUserId = Long.MAX_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() < lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic4
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
-		
+
 		lastUserId = Long.MAX_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() < lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic5
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], top);
 		assertEquals(queriedUserList.size(), top);
-		
+
 		lastUserId = Long.MIN_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic6
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0]);
 		assertEquals(queriedUserList.size(), this.userList.size());
-		
+
 		lastUserId = Long.MIN_VALUE;
-		for(SystemUser user : queriedUserList){
+		for (SystemUser user : queriedUserList) {
 			assertTrue(userList.contains(user));
 			assertTrue(user.getId() > lastUserId);
 			lastUserId = user.getId();
 		}
 	}
-	
+
 	@Test
-	public void testCountAll(){
-		for(int i = 0; i < 10; i++){
-			addUserToDB();
+	public void testCountAll() {
+		for (int i = 0; i < 10; i++) {
+			addUser();
 		}
 		List<SystemUser> allUsers = this.systemUserDao.doQueryAll();
 		Long allUsersCount = this.systemUserDao.countAll();
 		assertEquals(allUsers.size(), allUsersCount.intValue());
 	}
-	
+
 	@Test
-	public void testDoQueryAll(){
-		for(int i = 0; i < 10; i++){
-			addUserToDB();
+	public void testDoQueryAll() {
+		for (int i = 0; i < 10; i++) {
+			addUser();
 		}
 		Map<String, String> sortedCondition = new LinkedHashMap<String, String>();
 		sortedCondition.put("id", BaseParameter.SORTED_DESC);
 		sortedCondition.put("name", BaseParameter.SORTED_ASC);
 		List<SystemUser> allUsers = this.systemUserDao.doQueryAll(sortedCondition, 10);
 		assertEquals(allUsers.size(), 10);
-		
+
 		Long lastId = Long.MAX_VALUE;
-		for(SystemUser user : allUsers){
+		for (SystemUser user : allUsers) {
 			assertTrue(user.getId() < lastId);
 			lastId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic1
 		 */
 		allUsers = this.systemUserDao.doQueryAll(10);
 		assertEquals(allUsers.size(), 10);
-		
+
 		lastId = Long.MIN_VALUE;
-		for(SystemUser user : allUsers){
+		for (SystemUser user : allUsers) {
 			assertTrue(user.getId() > lastId);
 			lastId = user.getId();
 		}
-		
+
 		/*
 		 * polymorphic2
 		 */
@@ -547,14 +547,46 @@ public class SystemUserDaoTest {
 		assertEquals(allUsers.size(), allUsersCount.intValue());
 	}
 
-	private SystemUser addUserToDB(String... password) {
+	@Test
+	public void testDoCount() {
+		String userNamePatter1 = "name" + getRandomNumber() + "_";
+		String userNamePatter2 = "name" + getRandomNumber() + "_";
+		String passworkPattern = "pass" + getRandomNumber() + "_";
+		int userNamePatter1Count = 6;
+		for (int i = 0; i < 10; i++) {
+			if (i < userNamePatter1Count) {
+				addUser(userNamePatter1 + i, passworkPattern + i);
+			} else {
+				addUser(userNamePatter2 + i, passworkPattern + i);
+			}
+		}
+		SystemUserParameter param = new SystemUserParameter();
+		param.set$like_name(userNamePatter2);
+		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
+		Long count = this.systemUserDao.doCount(param);
+		assertEquals(Long.valueOf(10 - userNamePatter1Count), count);
+	}
+
+	private SystemUser addUser(String name, String password) {
+		SystemUser user = new SystemUser();
+		user.setName(name);
+		user.setPassword(password);
+		addUser(user);
+		return user;
+	}
+
+	private SystemUser addUser(String... password) {
 		SystemUser newUser = generateUser();
 		if (password != null && password.length > 0) {
 			newUser.setPassword(password[0]);
 		}
-		this.userList.add(newUser);
-		this.systemUserDao.persist(newUser);
+		addUser(newUser);
 		return newUser;
+	}
+
+	private void addUser(SystemUser user) {
+		this.userList.add(user);
+		this.systemUserDao.persist(user);
 	}
 
 	private SystemUser generateUser() {
@@ -564,8 +596,8 @@ public class SystemUserDaoTest {
 				+ this.userIndex++);
 		return user;
 	}
-	
-	private String getRandomNumber(){
+
+	private String getRandomNumber() {
 		long randomNumber = System.currentTimeMillis() + this.userIndex++;
 		return randomNumber + "";
 	}

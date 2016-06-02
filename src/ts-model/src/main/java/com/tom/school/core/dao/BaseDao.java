@@ -11,18 +11,23 @@ import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mchange.v2.util.PropertiesUtils;
 import com.tom.school.core.support.BaseParameter;
 import com.tom.school.core.support.QueryResult;
 import com.tom.school.utility.BeanUtility;
@@ -86,23 +91,21 @@ public class BaseDao<E> implements Dao<E> {
 
 	@Override
 	public void deleteByProperties(String propName, Object propValue) {
-		deleteByProperties(new String[] { propName },
-				new Object[] { propValue });
+		deleteByProperties(new String[] { propName }, new Object[] { propValue });
 	}
 
 	@Override
 	public void deleteByProperties(String[] propName, Object[] propValue) {
-		if (propName != null && propName.length > 0 && propValue != null
-				&& propValue.length > 0 && propName.length == propValue.length) {
-			StringBuffer sb = new StringBuffer("delete from "
-					+ entityClass.getName() + " o where 1=1 ");
+		if (propName != null && propName.length > 0
+				&& propValue != null && propValue.length > 0
+				&& propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("delete from " + entityClass.getName() + " o where 1=1 ");
 			appendQL(sb, propName, propValue);
 			Query query = getSession().createQuery(sb.toString());
 			setParameter(query, propName, propValue);
 			query.executeUpdate();
 		} else {
-			throw new IllegalArgumentException(
-					"Method deleteByProperties in BaseDao argument is illegal!");
+			throw new IllegalArgumentException("Method deleteByProperties in BaseDao argument is illegal!");
 		}
 	}
 
@@ -118,30 +121,22 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public void updateByProperties(String[] conditionName,
-			Object[] conditionValue, String propertyName, Object propertyValue) {
-		updateByProperties(conditionName, conditionValue,
-				new String[] { propertyName }, new Object[] { propertyValue });
+	public void updateByProperties(String[] conditionName, Object[] conditionValue, String propertyName, Object propertyValue) {
+		updateByProperties(conditionName, conditionValue, new String[] { propertyName }, new Object[] { propertyValue });
 	}
 
 	@Override
-	public void updateByProperties(String conditionName, Object conditionValue,
-			String[] propertyName, Object[] propetyValue) {
-		updateByProperties(new String[] { conditionName },
-				new Object[] { conditionValue }, propertyName, propetyValue);
+	public void updateByProperties(String conditionName, Object conditionValue, String[] propertyName, Object[] propetyValue) {
+		updateByProperties(new String[] { conditionName }, new Object[] { conditionValue }, propertyName, propetyValue);
 	}
 
 	@Override
-	public void updateByProperties(String conditionName, Object conditionValue,
-			String propertyName, Object propertyValue) {
-		updateByProperties(new String[] { conditionName },
-				new Object[] { conditionValue }, new String[] { propertyName },
-				new Object[] { propertyValue });
+	public void updateByProperties(String conditionName, Object conditionValue, String propertyName, Object propertyValue) {
+		updateByProperties(new String[] { conditionName }, new Object[] { conditionValue }, new String[] { propertyName }, new Object[] { propertyValue });
 	}
 
 	@Override
-	public void updateByProperties(String[] conditionName,
-			Object[] conditonValue, String[] propertyName, Object[] propetyValue) {
+	public void updateByProperties(String[] conditionName, Object[] conditonValue, String[] propertyName, Object[] propetyValue) {
 		if (propertyName != null && propertyName.length > 0
 				&& propetyValue != null && propetyValue.length > 0
 				&& propertyName.length == propetyValue.length
@@ -163,8 +158,7 @@ public class BaseDao<E> implements Dao<E> {
 			setParameter(query, conditionName, conditonValue);
 			query.executeUpdate();
 		} else {
-			throw new IllegalArgumentException(
-					"Method updateByProperties in BaseDao argument is illegal!");
+			throw new IllegalArgumentException("Method updateByProperties " + "" + "in BaseDao argument is illegal!");
 		}
 	}
 
@@ -192,12 +186,9 @@ public class BaseDao<E> implements Dao<E> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public E getByProperties(String[] propName, Object[] propValue,
-			Map<String, String> sortedCondition) {
-		if (propName != null && propName.length > 0 && propValue != null
-				&& propValue.length > 0 && propName.length == propValue.length) {
-			StringBuffer sb = new StringBuffer("select o from "
-					+ this.entityClass.getName() + " o  where 1=1 ");
+	public E getByProperties(String[] propName, Object[] propValue, Map<String, String> sortedCondition) {
+		if (propName != null && propName.length > 0 && propValue != null && propValue.length > 0 && propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("select o from " + this.entityClass.getName() + " o  where 1=1 ");
 			appendQL(sb, propName, propValue);
 			if (sortedCondition != null && sortedCondition.size() > 0) {
 				sb.append(" order by ");
@@ -219,14 +210,12 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue,
-			Map<String, String> sortedCondition) {
+	public List<E> queryByProperties(String[] propName, Object[] propValue, Map<String, String> sortedCondition) {
 		return queryByProperties(propName, propValue, sortedCondition, null);
 	}
 
 	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue,
-			Integer top) {
+	public List<E> queryByProperties(String[] propName, Object[] propValue, Integer top) {
 		return queryByProperties(propName, propValue, null, top);
 	}
 
@@ -236,40 +225,30 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public List<E> queryByProperties(String propName, Object propValue,
-			Map<String, String> sortedCondition, Integer top) {
-		return queryByProperties(new String[] { propName },
-				new Object[] { propValue }, sortedCondition, top);
+	public List<E> queryByProperties(String propName, Object propValue, Map<String, String> sortedCondition, Integer top) {
+		return queryByProperties(new String[] { propName }, new Object[] { propValue }, sortedCondition, top);
 	}
 
 	@Override
-	public List<E> queryByProperties(String propName, Object propValue,
-			Map<String, String> sortedCondition) {
-		return queryByProperties(new String[] { propName },
-				new Object[] { propValue }, sortedCondition, null);
+	public List<E> queryByProperties(String propName, Object propValue, Map<String, String> sortedCondition) {
+		return queryByProperties(new String[] { propName }, new Object[] { propValue }, sortedCondition, null);
 	}
 
 	@Override
-	public List<E> queryByProperties(String propName, Object propValue,
-			Integer top) {
-		return queryByProperties(new String[] { propName },
-				new Object[] { propValue }, null, top);
+	public List<E> queryByProperties(String propName, Object propValue, Integer top) {
+		return queryByProperties(new String[] { propName }, new Object[] { propValue }, null, top);
 	}
 
 	@Override
 	public List<E> queryByProperties(String propName, Object propValue) {
-		return queryByProperties(new String[] { propName },
-				new Object[] { propValue }, null, null);
+		return queryByProperties(new String[] { propName }, new Object[] { propValue }, null, null);
 	}
 
 	@Override
-	public List<E> queryByProperties(String[] propName, Object[] propValue,
-			Map<String, String> sortedConidtion, Integer top) {
+	public List<E> queryByProperties(String[] propName, Object[] propValue, Map<String, String> sortedConidtion, Integer top) {
 
-		if (propName != null && propName.length > 0 && propValue != null
-				&& propValue.length > 0 && propName.length == propValue.length) {
-			StringBuffer sb = new StringBuffer("select o from "
-					+ this.entityClass.getName() + " o where 1=1 ");
+		if (propName != null && propName.length > 0 && propValue != null && propValue.length > 0 && propName.length == propValue.length) {
+			StringBuffer sb = new StringBuffer("select o from " + this.entityClass.getName() + " o where 1=1 ");
 			appendQL(sb, propName, propValue);
 			if (sortedConidtion != null && sortedConidtion.size() > 0) {
 				sb.append(" order by ");
@@ -289,55 +268,9 @@ public class BaseDao<E> implements Dao<E> {
 		return null;
 	}
 
-	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
-		for (int i = 0; i < propName.length; i++) {
-			String name = propName[i];
-			Object value = propValue[i];
-			if (value instanceof Object[]) {
-				Object[] arraySerializable = (Object[]) value;
-				if (arraySerializable != null && arraySerializable.length > 0) {
-					sb.append(" and o." + name + " in (:"
-							+ name.replace(".", "") + ")");
-				}
-			} else if (value instanceof Collection<?>) {
-				Collection<?> arraySerializable = (Collection<?>) value;
-				if (arraySerializable != null && arraySerializable.size() > 0) {
-					sb.append(" and o." + name + " in (:"
-							+ name.replace(".", "") + ")");
-				}
-			} else {
-				if (value == null) {
-					sb.append(" and o." + name + " is null ");
-				} else {
-					sb.append(" and o." + name + "=:" + name.replace(".", ""));
-				}
-			}
-		}
-	}
-
-	private void setParameter(Query query, String[] propName, Object[] propValue) {
-		for (int i = 0; i < propName.length; i++) {
-			String name = propName[i];
-			Object value = propValue[i];
-			if (value != null) {
-				if (value instanceof Object[]) {
-					query.setParameterList(name.replace(".", ""),
-							(Object[]) value);
-				} else if (value instanceof Collection<?>) {
-					query.setParameterList(name.replace(".", ""),
-							(Collection<?>) value);
-				} else {
-					query.setParameter(name.replace(".", ""), value);
-				}
-			}
-		}
-	}
-
 	@Override
 	public Long countAll() {
-		return (Long) getSession().createQuery(
-				"select count(*) from " + this.entityClass.getName())
-				.uniqueResult();
+		return (Long) getSession().createQuery("select count(*) from " + this.entityClass.getName()).uniqueResult();
 	}
 
 	@Override
@@ -367,11 +300,9 @@ public class BaseDao<E> implements Dao<E> {
 			Iterator<String> it = sortedCondition.keySet().iterator();
 			while (it.hasNext()) {
 				String pm = it.next();
-				if (BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition
-						.get(pm))) {
+				if (BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition.get(pm))) {
 					criteria.addOrder(Order.desc(pm));
-				} else if (BaseParameter.SORTED_DESC
-						.equalsIgnoreCase(sortedCondition.get(pm))) {
+				} else if (BaseParameter.SORTED_DESC.equalsIgnoreCase(sortedCondition.get(pm))) {
 					criteria.addOrder(Order.desc(pm));
 				}
 			}
@@ -384,9 +315,14 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public Long doCount(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
+	public Long doCount(BaseParameter param) {
+		if (param == null) {
+			return null;
+		}
+		Criteria criteria = getSession().createCriteria(this.entityClass);
+		processQuery(criteria, param);
+		criteria.setProjection(Projections.rowCount());
+		return ((Number) criteria.uniqueResult()).longValue();
 	}
 
 	@Override
@@ -402,10 +338,53 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter,
-			boolean bool) {
+	public QueryResult<E> doPaginationQuery(BaseParameter parameter, boolean bool) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	// ---------------------------------------------------------------------
+	// For HQL
+	// ---------------------------------------------------------------------
+
+	private void appendQL(StringBuffer sb, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value instanceof Object[]) {
+				Object[] arraySerializable = (Object[]) value;
+				if (arraySerializable != null && arraySerializable.length > 0) {
+					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+				}
+			} else if (value instanceof Collection<?>) {
+				Collection<?> arraySerializable = (Collection<?>) value;
+				if (arraySerializable != null && arraySerializable.size() > 0) {
+					sb.append(" and o." + name + " in (:" + name.replace(".", "") + ")");
+				}
+			} else {
+				if (value == null) {
+					sb.append(" and o." + name + " is null ");
+				} else {
+					sb.append(" and o." + name + "=:" + name.replace(".", ""));
+				}
+			}
+		}
+	}
+
+	private void setParameter(Query query, String[] propName, Object[] propValue) {
+		for (int i = 0; i < propName.length; i++) {
+			String name = propName[i];
+			Object value = propValue[i];
+			if (value != null) {
+				if (value instanceof Object[]) {
+					query.setParameterList(name.replace(".", ""), (Object[]) value);
+				} else if (value instanceof Collection<?>) {
+					query.setParameterList(name.replace(".", ""), (Collection<?>) value);
+				} else {
+					query.setParameter(name.replace(".", ""), value);
+				}
+			}
+		}
 	}
 
 	// ---------------------------------------------------------------------
@@ -414,29 +393,67 @@ public class BaseDao<E> implements Dao<E> {
 
 	private void processQuery(Criteria criteria, BaseParameter param) {
 		try {
-			Map<String, Object> staticConditionMap = BeanUtility
-					.describleAvaliableParameter(param);
-			Map<String, Object> dynamicConditionMap = param
-					.getQueryDynamicConditions();
+			Map<String, Object> staticConditionMap = BeanUtility.describleAvaliableParameter(param);
 			if (staticConditionMap != null && staticConditionMap.size() > 0) {
 				for (Entry<String, Object> e : staticConditionMap.entrySet()) {
-					String propName = BeanUtility.getParamPropName(e.getKey());
-					String optName = BeanUtility.getParamOpt(e.getKey());
-					Method method = getMethod(optName);
+					Object value = e.getValue();
+					if (value != null && !(value instanceof String && "".equals((String) value))) {
+						String propName = BeanUtility.getParamPropName(e.getKey());
+						String methodName = BeanUtility.getParamOpt(e.getKey());
+						Method method = getMethod(methodName);
+						if ("like".equalsIgnoreCase(methodName)) {
+							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value, MatchMode.ANYWHERE }));
+						} else if ("isNull".equalsIgnoreCase(methodName) && value instanceof Boolean) {
+							if ((Boolean) value) {
+								criteria.add(Restrictions.isNull(propName));
+							} else {
+								criteria.add(Restrictions.isNull(propName));
+							}
+						} else {
+							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value }));
+						}
+					}
+				}
+			}
+			Map<String, Object> dynamicConditionMap = param.getQueryDynamicConditions();
+			if (dynamicConditionMap != null && dynamicConditionMap.size() > 0) {
+				Object bean = this.entityClass.newInstance();
+				Map<String, Object> map = new HashMap<String, Object>();
+				for(Entry<String, Object> e : dynamicConditionMap.entrySet()){
+					map.put(BeanUtility.getParamPropName(e.getKey()), e.getValue());
+				}
+				BeanUtils.populate(bean, map);
+				for (Entry<String, Object> e : dynamicConditionMap.entrySet()) {
+					String pn = e.getKey();
+					String propName = BeanUtility.getParamPropName(pn);
+					String methodName = BeanUtility.getParamOpt(pn);
+					Method method = getMethod(methodName);
+					Object value = PropertyUtils.getNestedProperty(bean, propName);
+					if (value != null && !(value instanceof String && "".equals((String) value))) {
+						if ("like".equalsIgnoreCase(methodName)) {
+							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value, MatchMode.ANYWHERE }));
+						} else if ("isNull".equalsIgnoreCase(methodName) && value instanceof Boolean) {
+							if ((Boolean) value) {
+								criteria.add(Restrictions.isNull(propName));
+							} else {
+								criteria.add(Restrictions.isNull(propName));
+							}
+						} else {
+							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value }));
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private Method getMethod(String name) {
 		if (!MAP_METHOD.containsKey(name)) {
 			Class<Restrictions> clazz = Restrictions.class;
 			Class[] paramType = new Class[] { String.class, Object.class };
-			Class[] likeParamType = new Class[] { String.class, String.class,
-					MatchMode.class };
+			Class[] likeParamType = new Class[] { String.class, String.class, MatchMode.class };
 			Class[] isNullType = new Class[] { String.class };
 			try {
 				Method method = null;
