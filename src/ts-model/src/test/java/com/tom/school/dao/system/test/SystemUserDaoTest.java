@@ -582,6 +582,49 @@ public class SystemUserDaoTest {
 		assertEquals(Long.valueOf(10), count);
 	}
 
+	@Test
+	public void testDoQuery(){
+		/*
+		 * like
+		 */
+		String userNamePatter1 = "name" + getRandomNumber() + "_";
+		String userNamePatter2 = "name" + getRandomNumber() + "_";
+		String passworkPattern = "pass" + getRandomNumber() + "_";
+		int userNamePatter1Count = 6;
+		List<SystemUser> addUserList = new ArrayList<SystemUser>();
+		for (int i = 0; i < 10; i++) {
+			if (i < userNamePatter1Count) {
+				addUserList.add(addUser(userNamePatter1 + i, passworkPattern + i));
+			} else {
+				addUserList.add(addUser(userNamePatter2 + i, passworkPattern + i));
+			}
+		}
+		SystemUserParameter param = new SystemUserParameter();
+		param.set$like_name(userNamePatter2);
+		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
+		List<SystemUser> queryUserList = this.systemUserDao.doQuery(param);
+		assertEquals(10 - userNamePatter1Count, queryUserList.size());
+		for(SystemUser user : queryUserList){
+			assertTrue(addUserList.contains(user));
+		}
+		
+		/*
+		 * equal
+		 */
+		String password = "pass_" + getRandomNumber();
+		addUserList = new ArrayList<SystemUser>();
+		for(int i = 0; i < 10; i++){
+			addUserList.add(addUser(password));
+		}
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$eq_password", password);
+		queryUserList = this.systemUserDao.doQuery(param);
+		assertEquals(10, queryUserList.size());
+		for(SystemUser user : queryUserList){
+			assertTrue(addUserList.contains(user));
+		}
+	}
+
 	private SystemUser addUser(String name, String password) {
 		SystemUser user = new SystemUser();
 		user.setName(name);

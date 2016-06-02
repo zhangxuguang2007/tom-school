@@ -326,9 +326,27 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public List<E> doQuery(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<E> doQuery(BaseParameter param) {
+		if (param == null) {
+			return null;
+		}
+		Criteria criteria = getSession().createCriteria(this.entityClass);
+		processQuery(criteria, param);
+		if (param.getSortedConditions() != null && param.getSortedConditions().size() > 0) {
+			Map<String, String> sortedCondition = param.getSortedConditions();
+			if (sortedCondition != null && sortedCondition.size() > 0) {
+				Iterator<String> it = sortedCondition.keySet().iterator();
+				while (it.hasNext()) {
+					String pm = it.next();
+					if (BaseParameter.SORTED_ASC.equalsIgnoreCase(sortedCondition.get(pm))) {
+						criteria.addOrder(Order.desc(pm));
+					} else if (BaseParameter.SORTED_DESC.equalsIgnoreCase(sortedCondition.get(pm))) {
+						criteria.addOrder(Order.desc(pm));
+					}
+				}
+			}
+		}
+		return criteria.list();
 	}
 
 	@Override
@@ -419,7 +437,7 @@ public class BaseDao<E> implements Dao<E> {
 			if (dynamicConditionMap != null && dynamicConditionMap.size() > 0) {
 				Object bean = this.entityClass.newInstance();
 				Map<String, Object> map = new HashMap<String, Object>();
-				for(Entry<String, Object> e : dynamicConditionMap.entrySet()){
+				for (Entry<String, Object> e : dynamicConditionMap.entrySet()) {
 					map.put(BeanUtility.getParamPropName(e.getKey()), e.getValue());
 				}
 				BeanUtils.populate(bean, map);
