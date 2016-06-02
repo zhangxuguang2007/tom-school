@@ -549,6 +549,9 @@ public class SystemUserDaoTest {
 
 	@Test
 	public void testDoCount() {
+		/*
+		 * like
+		 */
 		String userNamePatter1 = "name" + getRandomNumber() + "_";
 		String userNamePatter2 = "name" + getRandomNumber() + "_";
 		String passworkPattern = "pass" + getRandomNumber() + "_";
@@ -565,6 +568,18 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
 		Long count = this.systemUserDao.doCount(param);
 		assertEquals(Long.valueOf(10 - userNamePatter1Count), count);
+		
+		/*
+		 * equal
+		 */
+		String password = "pass_" + getRandomNumber();
+		for(int i = 0; i < 10; i++){
+			addUser(password);
+		}
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$eq_password", password);
+		count = this.systemUserDao.doCount(param);
+		assertEquals(Long.valueOf(10), count);
 	}
 
 	private SystemUser addUser(String name, String password) {

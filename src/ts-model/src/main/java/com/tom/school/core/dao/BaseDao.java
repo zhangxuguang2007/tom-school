@@ -402,7 +402,7 @@ public class BaseDao<E> implements Dao<E> {
 						String methodName = BeanUtility.getParamOpt(e.getKey());
 						Method method = getMethod(methodName);
 						if ("like".equalsIgnoreCase(methodName)) {
-							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value, MatchMode.ANYWHERE }));
+							criteria.add(Restrictions.like(propName, value.toString(), MatchMode.ANYWHERE));
 						} else if ("isNull".equalsIgnoreCase(methodName) && value instanceof Boolean) {
 							if ((Boolean) value) {
 								criteria.add(Restrictions.isNull(propName));
@@ -431,7 +431,7 @@ public class BaseDao<E> implements Dao<E> {
 					Object value = PropertyUtils.getNestedProperty(bean, propName);
 					if (value != null && !(value instanceof String && "".equals((String) value))) {
 						if ("like".equalsIgnoreCase(methodName)) {
-							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value, MatchMode.ANYWHERE }));
+							criteria.add(Restrictions.like(propName, value.toString(), MatchMode.ANYWHERE));
 						} else if ("isNull".equalsIgnoreCase(methodName) && value instanceof Boolean) {
 							if ((Boolean) value) {
 								criteria.add(Restrictions.isNull(propName));
