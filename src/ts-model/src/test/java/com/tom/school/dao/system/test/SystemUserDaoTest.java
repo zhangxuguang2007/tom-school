@@ -580,6 +580,26 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$eq_password", password);
 		count = this.systemUserDao.doCount(param);
 		assertEquals(Long.valueOf(10), count);
+		
+		/*
+		 * in
+		 */
+		Long[] ids = new Long[10];
+		List<Long> idList = new ArrayList<Long>();
+		for(int i = 0; i < 10; i++){
+			SystemUser addUser = addUser();
+			ids[i] = addUser.getId();
+			idList.add(addUser.getId());
+		}
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$in_id", ids);
+		count = this.systemUserDao.doCount(param);
+		assertEquals(Long.valueOf(10), count);
+		
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$in_id", idList);
+		count = this.systemUserDao.doCount(param);
+		assertEquals(Long.valueOf(10), count);
 	}
 
 	@Test
@@ -618,6 +638,33 @@ public class SystemUserDaoTest {
 		}
 		param = new SystemUserParameter();
 		param.getQueryDynamicConditions().put("$eq_password", password);
+		queryUserList = this.systemUserDao.doQuery(param);
+		assertEquals(10, queryUserList.size());
+		for(SystemUser user : queryUserList){
+			assertTrue(addUserList.contains(user));
+		}
+		
+		/*
+		 * in
+		 */
+		Long[] ids = new Long[10];
+		List<Long> idList = new ArrayList<Long>();
+		for(int i = 0; i < 10; i++){
+			SystemUser addUser = addUser();
+			addUserList.add(addUser);
+			ids[i] = addUser.getId();
+			idList.add(addUser.getId());
+		}
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$in_id", ids);
+		queryUserList = this.systemUserDao.doQuery(param);
+		assertEquals(10, queryUserList.size());
+		for(SystemUser user : queryUserList){
+			assertTrue(addUserList.contains(user));
+		}
+		
+		param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$in_id", idList);
 		queryUserList = this.systemUserDao.doQuery(param);
 		assertEquals(10, queryUserList.size());
 		for(SystemUser user : queryUserList){

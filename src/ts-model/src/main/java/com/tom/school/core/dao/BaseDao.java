@@ -412,41 +412,18 @@ public class BaseDao<E> implements Dao<E> {
 	private void processQuery(Criteria criteria, BaseParameter param) {
 		try {
 			Map<String, Object> staticConditionMap = BeanUtility.describleAvaliableParameter(param);
-			if (staticConditionMap != null && staticConditionMap.size() > 0) {
-				for (Entry<String, Object> e : staticConditionMap.entrySet()) {
-					Object value = e.getValue();
-					if (value != null && !(value instanceof String && "".equals((String) value))) {
-						String propName = BeanUtility.getParamPropName(e.getKey());
-						String methodName = BeanUtility.getParamOpt(e.getKey());
-						Method method = getMethod(methodName);
-						if ("like".equalsIgnoreCase(methodName)) {
-							criteria.add(Restrictions.like(propName, value.toString(), MatchMode.ANYWHERE));
-						} else if ("isNull".equalsIgnoreCase(methodName) && value instanceof Boolean) {
-							if ((Boolean) value) {
-								criteria.add(Restrictions.isNull(propName));
-							} else {
-								criteria.add(Restrictions.isNull(propName));
-							}
-						} else {
-							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value }));
-						}
-					}
-				}
-			}
 			Map<String, Object> dynamicConditionMap = param.getQueryDynamicConditions();
-			if (dynamicConditionMap != null && dynamicConditionMap.size() > 0) {
-				Object bean = this.entityClass.newInstance();
-				Map<String, Object> map = new HashMap<String, Object>();
-				for (Entry<String, Object> e : dynamicConditionMap.entrySet()) {
-					map.put(BeanUtility.getParamPropName(e.getKey()), e.getValue());
-				}
-				BeanUtils.populate(bean, map);
-				for (Entry<String, Object> e : dynamicConditionMap.entrySet()) {
+			Map<String, Object> conditonMap = new HashMap<String, Object>();
+			conditonMap.putAll(staticConditionMap);
+			conditonMap.putAll(dynamicConditionMap);
+			
+			if (conditonMap != null && conditonMap.size() > 0) {
+				for (Entry<String, Object> e : conditonMap.entrySet()) {
 					String pn = e.getKey();
 					String propName = BeanUtility.getParamPropName(pn);
 					String methodName = BeanUtility.getParamOpt(pn);
 					Method method = getMethod(methodName);
-					Object value = PropertyUtils.getNestedProperty(bean, propName);
+					Object value = e.getValue();
 					if (value != null && !(value instanceof String && "".equals((String) value))) {
 						if ("like".equalsIgnoreCase(methodName)) {
 							criteria.add(Restrictions.like(propName, value.toString(), MatchMode.ANYWHERE));
@@ -456,6 +433,13 @@ public class BaseDao<E> implements Dao<E> {
 							} else {
 								criteria.add(Restrictions.isNull(propName));
 							}
+						} else if ("IN".equalsIgnoreCase(methodName) && (value instanceof Object[] || value instanceof Collection) ) {
+							if(value instanceof Object[]){
+								criteria.add(Restrictions.in(propName, (Object[])value));
+							}else{
+								criteria.add(Restrictions.in(propName, (Collection)value));
+							}
+							
 						} else {
 							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value }));
 						}
