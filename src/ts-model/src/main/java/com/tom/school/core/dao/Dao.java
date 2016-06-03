@@ -281,7 +281,7 @@ public interface Dao<E> {
 	 * @param parameter
 	 * @return
 	 */
-	public Long doCount(BaseParameter parameter);
+	public Long doCount(BaseParameter param);
 	
 	/**
 	 * query by parameter
@@ -289,7 +289,7 @@ public interface Dao<E> {
 	 * @param parameter
 	 * @return
 	 */
-	public List<E> doQuery(BaseParameter parameter);
+	public List<E> doQuery(BaseParameter param);
 	
 	/**
 	 * pagination query
@@ -297,14 +297,6 @@ public interface Dao<E> {
 	 * @param parameter
 	 * @return
 	 */
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter);
+	public QueryResult<E> doPaginationQuery(BaseParameter param);
 	
-	/**
-	 * pagination query
-	 * 
-	 * @param parameter
-	 * @param bool
-	 * @return
-	 */
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter, boolean bool);
 }

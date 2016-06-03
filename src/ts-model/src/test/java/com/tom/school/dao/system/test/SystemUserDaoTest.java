@@ -1,9 +1,9 @@
 package com.tom.school.dao.system.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.tom.school.core.support.BaseParameter;
+import com.tom.school.core.support.QueryResult;
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 import com.tom.school.test.TestContext;
@@ -669,6 +670,28 @@ public class SystemUserDaoTest {
 		assertEquals(10, queryUserList.size());
 		for(SystemUser user : queryUserList){
 			assertTrue(addUserList.contains(user));
+		}
+	}
+	
+	@Test
+	public void testDoPaginationQuery(){
+		String passworkPattern = "pass" + getRandomNumber() + "_";
+		List<SystemUser> addUserList = new ArrayList<SystemUser>();
+		for (int i = 0; i < 10; i++) {
+			addUserList.add(addUser(passworkPattern + i));
+		}
+		SystemUserParameter param = new SystemUserParameter();
+		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
+		param.getSortedConditions().put("id", "asc");
+		param.setFirstResult(3);
+		param.setMaxResults(3);
+		QueryResult<SystemUser> qr = this.systemUserDao.doPaginationQuery(param);
+		assertEquals(10, qr.getTotalCount().intValue());
+		assertEquals(3, qr.getResultList().size());
+		for(int i = 0; i < 3; i++){
+			SystemUser uesr1 = addUserList.get(i + 3);
+			SystemUser uesr2 = qr.getResultList().get(i);
+			assertEquals(uesr1, uesr2);
 		}
 	}
 

@@ -13,8 +13,8 @@ public class BaseParameter implements Serializable {
 	public static final String SORTED_ASC = "ASC";
 	public static final String SORTED_DESC = "DESC";
 
-	private Integer maxResult = 20;
-	private Integer firstRersult = 0;
+	private Integer maxResults = 20;
+	private Integer firstResult = 0;
 	private Integer topCount = 0;
 	private String[] sortColumns;
 	private String cmd;
@@ -22,20 +22,20 @@ public class BaseParameter implements Serializable {
 	private Map<String, String> sortedConditions = new LinkedHashMap<String, String>();
 	private Map<String, Object> dynamicProperties = new HashMap<String, Object>();
 
-	public Integer getMaxResult() {
-		return maxResult;
+	public Integer getMaxResults() {
+		return maxResults;
 	}
 
-	public void setMaxResult(Integer maxResult) {
-		this.maxResult = maxResult;
+	public void setMaxResults(Integer maxResult) {
+		this.maxResults = maxResult;
 	}
 
-	public Integer getFirstRersult() {
-		return firstRersult;
+	public Integer getFirstResult() {
+		return firstResult;
 	}
 
-	public void setFirstRersult(Integer firstRersult) {
-		this.firstRersult = firstRersult;
+	public void setFirstResult(Integer firstRersult) {
+		this.firstResult = firstRersult;
 	}
 
 	public Integer getTopCount() {

@@ -350,15 +350,32 @@ public class BaseDao<E> implements Dao<E> {
 	}
 
 	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public QueryResult<E> doPaginationQuery(BaseParameter parameter, boolean bool) {
-		// TODO Auto-generated method stub
-		return null;
+	public QueryResult<E> doPaginationQuery(BaseParameter param) {
+		if (param == null) {
+			return null;
+		}
+		Criteria criteria = getSession().createCriteria(this.entityClass);
+		processQuery(criteria, param);
+		QueryResult<E> qr = new QueryResult<E>();
+		criteria.setProjection(Projections.rowCount());
+		qr.setTotalCount(((Number) criteria.uniqueResult()).longValue());
+		if (qr.getTotalCount() > 0) {
+			if (param.getSortedConditions() != null && param.getSortedConditions().size() > 0) {
+				Map<String, String> sortedConditions = param.getSortedConditions();
+				for (Entry<String, String> e : sortedConditions.entrySet()) {
+					if (BaseParameter.SORTED_DESC.equalsIgnoreCase(e.getValue())) {
+						criteria.addOrder(Order.desc(e.getKey()));
+					} else {
+						criteria.addOrder(Order.asc(e.getKey()));
+					}
+				}
+			}
+			criteria.setProjection(null);
+			criteria.setFirstResult(param.getFirstResult());
+			criteria.setMaxResults(param.getMaxResults());
+			qr.setResultList(criteria.list());
+		}
+		return qr;
 	}
 
 	// ---------------------------------------------------------------------
@@ -416,7 +433,7 @@ public class BaseDao<E> implements Dao<E> {
 			Map<String, Object> conditonMap = new HashMap<String, Object>();
 			conditonMap.putAll(staticConditionMap);
 			conditonMap.putAll(dynamicConditionMap);
-			
+
 			if (conditonMap != null && conditonMap.size() > 0) {
 				for (Entry<String, Object> e : conditonMap.entrySet()) {
 					String pn = e.getKey();
@@ -433,13 +450,13 @@ public class BaseDao<E> implements Dao<E> {
 							} else {
 								criteria.add(Restrictions.isNull(propName));
 							}
-						} else if ("IN".equalsIgnoreCase(methodName) && (value instanceof Object[] || value instanceof Collection) ) {
-							if(value instanceof Object[]){
-								criteria.add(Restrictions.in(propName, (Object[])value));
-							}else{
-								criteria.add(Restrictions.in(propName, (Collection)value));
+						} else if ("IN".equalsIgnoreCase(methodName) && (value instanceof Object[] || value instanceof Collection)) {
+							if (value instanceof Object[]) {
+								criteria.add(Restrictions.in(propName, (Object[]) value));
+							} else {
+								criteria.add(Restrictions.in(propName, (Collection) value));
 							}
-							
+
 						} else {
 							criteria.add((Criterion) method.invoke(Restrictions.class, new Object[] { propName, value }));
 						}

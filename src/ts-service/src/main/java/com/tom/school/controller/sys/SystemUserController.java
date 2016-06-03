@@ -23,5 +23,4 @@ public class SystemUserController {
 	public SystemUser getUserById(@PathVariable Long id){
 		return this.systemUserService.get(id);
 	}
-	
 }
