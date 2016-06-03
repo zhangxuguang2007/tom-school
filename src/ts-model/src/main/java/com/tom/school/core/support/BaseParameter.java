@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class BaseParameter implements Serializable {
 
@@ -15,12 +14,9 @@ public class BaseParameter implements Serializable {
 
 	private Integer maxResults = 20;
 	private Integer firstResult = 0;
-	private Integer topCount = 0;
-	private String[] sortColumns;
 	private String cmd;
 	private Map<String, Object> queryDynamicConditions = new HashMap<String, Object>();
 	private Map<String, String> sortedConditions = new LinkedHashMap<String, String>();
-	private Map<String, Object> dynamicProperties = new HashMap<String, Object>();
 
 	public Integer getMaxResults() {
 		return maxResults;
@@ -36,22 +32,6 @@ public class BaseParameter implements Serializable {
 
 	public void setFirstResult(Integer firstRersult) {
 		this.firstResult = firstRersult;
-	}
-
-	public Integer getTopCount() {
-		return topCount;
-	}
-
-	public void setTopCount(Integer topCount) {
-		this.topCount = topCount;
-	}
-
-	public String[] getSortColumns() {
-		return sortColumns;
-	}
-
-	public void setSortColumns(String[] sortColumns) {
-		this.sortColumns = sortColumns;
 	}
 
 	public String getCmd() {
@@ -77,14 +57,6 @@ public class BaseParameter implements Serializable {
 
 	public void setSortedConditions(Map<String, String> sortedConditions) {
 		this.sortedConditions = sortedConditions;
-	}
-
-	public Map<String, Object> getDynamicProperties() {
-		return dynamicProperties;
-	}
-
-	public void setDynamicProperties(Map<String, Object> dynamicProperties) {
-		this.dynamicProperties = dynamicProperties;
 	}
 
 	public static long getSerialversionuid() {
