@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.tom.school.core.support.BaseParameter;
@@ -24,26 +24,44 @@ import com.tom.school.test.TestContext;
 
 public class SystemUserDaoTest {
 
+	private static int userIndex = 0;
+
 	private SystemUserDao systemUserDao;
 	private List<SystemUser> userList = new ArrayList<SystemUser>();
-	private int userIndex = 0;
 
-	@Before
-	public void init() {
-		this.systemUserDao = TestContext.getSystemUserDao();
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		SystemUserDao systemUserDao = TestContext.getSystemUserDao();
 
 		// Test persist
 		SystemUser user = generateUser();
-		this.systemUserDao.persist(user);
-		assertEquals(user, this.systemUserDao.get(user.getId()));
+		systemUserDao.persist(user);
+		assertEquals(user, systemUserDao.get(user.getId()));
 
 		// Test delete
-		this.systemUserDao.delete(user);
-		assertNull(this.systemUserDao.get(user.getId()));
+		systemUserDao.delete(user);
+		assertNull(systemUserDao.get(user.getId()));
+	}
+
+	private static SystemUser generateUser() {
+		SystemUser user = new SystemUser();
+		user.setName("name_" + getRandomNumber());
+		user.setPassword("password_" + System.currentTimeMillis()
+				+ userIndex++);
+		return user;
+	}
+
+	private static String getRandomNumber() {
+		long randomNumber = System.currentTimeMillis() + userIndex++;
+		return randomNumber + "";
+	}
+
+	public SystemUserDaoTest(){
+		this.systemUserDao = TestContext.getSystemUserDao();
 	}
 
 	@After
-	public void clear() {
+	public void tearDown() {
 		for (SystemUser user : this.userList) {
 			if (this.systemUserDao.get(user.getId()) != null) {
 				this.systemUserDao.delete(user);
@@ -569,25 +587,25 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
 		Long count = this.systemUserDao.doCount(param);
 		assertEquals(Long.valueOf(10 - userNamePatter1Count), count);
-		
+
 		/*
 		 * equal
 		 */
 		String password = "pass_" + getRandomNumber();
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			addUser(password);
 		}
 		param = new SystemUserParameter();
 		param.getQueryDynamicConditions().put("$eq_password", password);
 		count = this.systemUserDao.doCount(param);
 		assertEquals(Long.valueOf(10), count);
-		
+
 		/*
 		 * in
 		 */
 		Long[] ids = new Long[10];
 		List<Long> idList = new ArrayList<Long>();
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			SystemUser addUser = addUser();
 			ids[i] = addUser.getId();
 			idList.add(addUser.getId());
@@ -596,7 +614,7 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$in_id", ids);
 		count = this.systemUserDao.doCount(param);
 		assertEquals(Long.valueOf(10), count);
-		
+
 		param = new SystemUserParameter();
 		param.getQueryDynamicConditions().put("$in_id", idList);
 		count = this.systemUserDao.doCount(param);
@@ -604,7 +622,7 @@ public class SystemUserDaoTest {
 	}
 
 	@Test
-	public void testDoQuery(){
+	public void testDoQuery() {
 		/*
 		 * like
 		 */
@@ -625,32 +643,32 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$like_password", passworkPattern);
 		List<SystemUser> queryUserList = this.systemUserDao.doQuery(param);
 		assertEquals(10 - userNamePatter1Count, queryUserList.size());
-		for(SystemUser user : queryUserList){
+		for (SystemUser user : queryUserList) {
 			assertTrue(addUserList.contains(user));
 		}
-		
+
 		/*
 		 * equal
 		 */
 		String password = "pass_" + getRandomNumber();
 		addUserList = new ArrayList<SystemUser>();
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			addUserList.add(addUser(password));
 		}
 		param = new SystemUserParameter();
 		param.getQueryDynamicConditions().put("$eq_password", password);
 		queryUserList = this.systemUserDao.doQuery(param);
 		assertEquals(10, queryUserList.size());
-		for(SystemUser user : queryUserList){
+		for (SystemUser user : queryUserList) {
 			assertTrue(addUserList.contains(user));
 		}
-		
+
 		/*
 		 * in
 		 */
 		Long[] ids = new Long[10];
 		List<Long> idList = new ArrayList<Long>();
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			SystemUser addUser = addUser();
 			addUserList.add(addUser);
 			ids[i] = addUser.getId();
@@ -660,21 +678,21 @@ public class SystemUserDaoTest {
 		param.getQueryDynamicConditions().put("$in_id", ids);
 		queryUserList = this.systemUserDao.doQuery(param);
 		assertEquals(10, queryUserList.size());
-		for(SystemUser user : queryUserList){
+		for (SystemUser user : queryUserList) {
 			assertTrue(addUserList.contains(user));
 		}
-		
+
 		param = new SystemUserParameter();
 		param.getQueryDynamicConditions().put("$in_id", idList);
 		queryUserList = this.systemUserDao.doQuery(param);
 		assertEquals(10, queryUserList.size());
-		for(SystemUser user : queryUserList){
+		for (SystemUser user : queryUserList) {
 			assertTrue(addUserList.contains(user));
 		}
 	}
-	
+
 	@Test
-	public void testDoPaginationQuery(){
+	public void testDoPaginationQuery() {
 		String passworkPattern = "pass" + getRandomNumber() + "_";
 		List<SystemUser> addUserList = new ArrayList<SystemUser>();
 		for (int i = 0; i < 10; i++) {
@@ -688,7 +706,7 @@ public class SystemUserDaoTest {
 		QueryResult<SystemUser> qr = this.systemUserDao.doPaginationQuery(param);
 		assertEquals(10, qr.getTotalCount().intValue());
 		assertEquals(3, qr.getResultList().size());
-		for(int i = 0; i < 3; i++){
+		for (int i = 0; i < 3; i++) {
 			SystemUser uesr1 = addUserList.get(i + 3);
 			SystemUser uesr2 = qr.getResultList().get(i);
 			assertEquals(uesr1, uesr2);
@@ -717,16 +735,4 @@ public class SystemUserDaoTest {
 		this.systemUserDao.persist(user);
 	}
 
-	private SystemUser generateUser() {
-		SystemUser user = new SystemUser();
-		user.setName("name_" + getRandomNumber());
-		user.setPassword("password_" + System.currentTimeMillis()
-				+ this.userIndex++);
-		return user;
-	}
-
-	private String getRandomNumber() {
-		long randomNumber = System.currentTimeMillis() + this.userIndex++;
-		return randomNumber + "";
-	}
 }
