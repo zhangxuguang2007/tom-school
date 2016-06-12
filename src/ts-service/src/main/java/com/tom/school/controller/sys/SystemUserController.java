@@ -20,8 +20,9 @@ public class SystemUserController {
 	private SystemUserService systemUserService;
 	
 	@ResponseBody
-	@RequestMapping(value="/getUser/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public SystemUser getUserById(@PathVariable Long id){
 		return this.systemUserService.get(id);
 	}
+	
 }

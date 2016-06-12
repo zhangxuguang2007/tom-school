@@ -1,6 +1,6 @@
 package com.tom.school.controller.sys;
 
-import static com.tom.school.utility.HttpResponseUtility.*;
+import static com.tom.school.utility.HttpUtility.*;
 
 import java.util.UUID;
 

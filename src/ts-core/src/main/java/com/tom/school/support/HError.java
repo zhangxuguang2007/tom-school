@@ -1,6 +1,9 @@
 package com.tom.school.support;
 
-public class ErrorResult {
+/*
+ * HTTP error
+ */
+public class HError {
 	private String error;
 	private int error_code;
 	
