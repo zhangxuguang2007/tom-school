@@ -15,8 +15,7 @@ public class SystemUserControlTest {
 	
 	@Test
 	public void test(){
-		
-		Long userId = Long.valueOf(5332);
+		Long userId = Long.valueOf(156);
 		String url = TestContext.ServiceUrl + String.format("/sys/user/%s?token=%s", userId, TestContext.Token);
 		HResult result = HttpUtility.read(url);
 		result.getResult();

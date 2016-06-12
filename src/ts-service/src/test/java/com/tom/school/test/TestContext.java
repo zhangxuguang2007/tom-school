@@ -11,8 +11,8 @@ public class TestContext {
 	
 	static{
 		try {
-			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("test.properties");
 			Properties properties = new Properties();
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("test.properties");
 			properties.load(is);
 			ServiceUrl = properties.getProperty("server.url");
 		} catch (IOException e) {
