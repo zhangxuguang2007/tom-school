@@ -1,13 +1,8 @@
-package com.tom.school.core.dao;
+package com.tom.school.dao.core;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import com.tom.school.core.support.BaseParameter;
-import com.tom.school.core.support.QueryResult;
 
 public interface Dao<E> {
 	/**

@@ -1,4 +1,4 @@
-package com.tom.school.core.dao;
+package com.tom.school.dao.core;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -11,8 +11,6 @@ import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,9 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mchange.v2.util.PropertiesUtils;
-import com.tom.school.core.support.BaseParameter;
-import com.tom.school.core.support.QueryResult;
 import com.tom.school.utility.BeanUtility;
 
 @Transactional

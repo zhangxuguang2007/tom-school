@@ -1,4 +1,4 @@
-package com.tom.school.core.support;
+package com.tom.school.dao.core;
 
 import java.util.List;
 

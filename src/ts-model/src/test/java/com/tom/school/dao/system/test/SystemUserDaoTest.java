@@ -16,8 +16,8 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.tom.school.core.support.BaseParameter;
-import com.tom.school.core.support.QueryResult;
+import com.tom.school.dao.core.BaseParameter;
+import com.tom.school.dao.core.QueryResult;
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 import com.tom.school.test.TestContext;
@@ -56,7 +56,7 @@ public class SystemUserDaoTest {
 		return randomNumber + "";
 	}
 
-	public SystemUserDaoTest(){
+	public SystemUserDaoTest() {
 		this.systemUserDao = TestContext.getSystemUserDao();
 	}
 

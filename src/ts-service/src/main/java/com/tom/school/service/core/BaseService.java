@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tom.school.core.dao.Dao;
+import com.tom.school.dao.core.Dao;
 
 @Transactional
 public class BaseService<E> implements Service<E> {
