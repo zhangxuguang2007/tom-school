@@ -1,6 +1,6 @@
 package com.tom.school.filter;
 
-import static com.tom.school.utility.HttpUtility.autorityError;
+import static com.tom.school.utility.HttpResponseUtility.*;
 
 import java.io.IOException;
 

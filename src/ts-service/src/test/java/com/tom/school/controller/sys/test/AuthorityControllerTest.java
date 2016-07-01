@@ -1,48 +1,48 @@
 package com.tom.school.controller.sys.test;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.tom.school.support.HInnerError;
-import com.tom.school.support.HResult;
+import com.tom.school.support.HttpReponseError;
+import com.tom.school.support.HttpRequestResult;
 import com.tom.school.test.TestContext;
-import com.tom.school.utility.HttpUtility;
+import com.tom.school.utility.HttpRequestUtility;
 import com.tom.school.utility.JsonUtility;
 
-@SuppressWarnings("deprecation")
 public class AuthorityControllerTest {
-	
+
 	@Test
-	public void testLogin(){
+	public void testLogin() {
 		/*
 		 * Missing arguments
 		 */
 		String url = TestContext.ServiceUrl + "/authority/login";
-		HResult result = HttpUtility.read(url);
-		HInnerError error = JsonUtility.decode(result.getResult().toString(), HInnerError.class);
-		System.out.println(JsonUtility.encode(error));
-		assertEquals(HInnerError.MISSING_ARGUMENTS.getHttpStatus(), error.getHttpStatus());
-		assertEquals(HInnerError.MISSING_ARGUMENTS.getError_code(), error.getError_code());
-		
+		HttpRequestResult responseResult = HttpRequestUtility.doGet(url);
+		String errorStr = new String(responseResult.getData());
+		HttpReponseError error = JsonUtility.decode(errorStr, HttpReponseError.class);
+		assertEquals(error.getError_code(), HttpReponseError.MISSING_ARGUMENTS.getError_code());
+		assertTrue(error.getError().equals(HttpReponseError.MISSING_ARGUMENTS.getError()));
+
 		/*
 		 * Authority error
 		 */
 		url = TestContext.ServiceUrl + "/authority/login?name=jack&password=Cogent01";
-		result = HttpUtility.read(url);
-		error = JsonUtility.decode(result.getResult().toString(), HInnerError.class);
-		System.out.println(JsonUtility.encode(error));
-		assertEquals(HInnerError.AUTHORIZATION_ERROR.getHttpStatus(), error.getHttpStatus());
-		assertEquals(HInnerError.AUTHORIZATION_ERROR.getError_code(), error.getError_code());
-		
+		responseResult = HttpRequestUtility.doGet(url);
+		errorStr = new String(responseResult.getData());
+		error = JsonUtility.decode(errorStr, HttpReponseError.class);
+		assertEquals(error.getError_code(), HttpReponseError.AUTHORIZATION_ERROR.getError_code());
+		assertTrue(error.getError().equals(HttpReponseError.AUTHORIZATION_ERROR.getError()));
+
 		/*
 		 * Login success
 		 */
 		url = TestContext.ServiceUrl + "/authority/login?name=tom&password=Cogent01";
-		result = HttpUtility.read(url);
-		assertEquals(result.getStatus(), 200);
-		TestContext.Token = result.getResult().toString();
+		responseResult = HttpRequestUtility.doGet(url);
+		assertEquals(responseResult.getStatus(), 200);
+		TestContext.Token = new String(responseResult.getData());
 		System.out.println("token:" + TestContext.Token);
 	}
-	
+
 }

@@ -1,6 +1,6 @@
 package com.tom.school.controller.sys;
 
-import static com.tom.school.utility.HttpUtility.*;
+import static com.tom.school.utility.HttpResponseUtility.*;
 
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ public class AuthorityController {
 			if (userName.equals("tom") && password.equals("Cogent01")) {
 				String token = UUID.randomUUID().toString();
 				Cache.Tokens.put(token, userName);
-				write(response, token, ContentType.Text);
+				write(response, token, ContentType.Text_PLAIN);
 			} else {
 				autorityError(response);
 			}
