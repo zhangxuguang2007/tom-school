@@ -39,9 +39,9 @@
             'Ext.app.ChartPortlet'
         ]);
 		
-		$(function(){
-			Ext.create('Ext.app.Portal');
-		});
+        Ext.onReady(function(){
+            Ext.create('Ext.app.Portal');
+        });
     </script>
 <title>学校管理系统</title>
 </head>
