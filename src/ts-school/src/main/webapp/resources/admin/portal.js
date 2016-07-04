@@ -1,42 +1,21 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class Ext.app.Portal
  * @extends Object
  * A sample portal layout application class.
  */
-// TODO: Fill in the content panel -- no AccordionLayout at the moment
-// TODO: Fix container drag/scroll support (waiting on Ext.lib.Anim)
-// TODO: Fix Ext.Tool scope being set to the panel header
-// TODO: Drag/drop does not cause a refresh of scroll overflow when needed
-// TODO: Grid portlet throws errors on destroy (grid bug)
-// TODO: Z-index issues during drag
 
 Ext.define('Ext.app.Portal', {
 
     extend: 'Ext.container.Viewport',
-
-    uses: ['Ext.app.PortalPanel', 'Ext.app.PortalColumn', 'Ext.app.GridPortlet', 'Ext.app.ChartPortlet'],
+    requires: ['Ext.app.PortalPanel', 'Ext.app.PortalColumn', 'Ext.app.GridPortlet', 'Ext.app.ChartPortlet'],
 
     getTools: function(){
         return [{
             xtype: 'tool',
             type: 'gear',
-            handler: function(e, target, panelHeader, tool){
-                var portlet = panelHeader.ownerCt;
-                portlet.setLoading('Working...');
+            handler: function(e, target, header, tool){
+                var portlet = header.ownerCt;
+                portlet.setLoading('Loading...');
                 Ext.defer(function() {
                     portlet.setLoading(false);
                 }, 2000);
@@ -73,8 +52,8 @@ Ext.define('Ext.app.Portal', {
                     maxWidth: 400,
                     split: true,
                     collapsible: true,
-                    layout: 'accordion',
-                    layoutConfig:{
+                    layout:{
+                        type: 'accordion',
                         animate: true
                     },
                     items: [{
@@ -162,4 +141,3 @@ Ext.define('Ext.app.Portal', {
         }
     }
 });
-
