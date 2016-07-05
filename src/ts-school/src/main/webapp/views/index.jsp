@@ -38,7 +38,8 @@
         ]);
 
         Ext.onReady(function(){
-            Ext.create('Ext.app.Portal');
+            var portal = Ext.create('Ext.app.Portal');
+            portal.showMsg("初始化成功");
         });
 		
 		$(function(){
