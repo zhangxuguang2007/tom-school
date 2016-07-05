@@ -5,7 +5,7 @@
 <html>
 <head>
  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Portal Layout Sample</title>
+    <title>学校管理系统</title>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/admin/portal.css" />
 
 	<!-- jquery -->
@@ -14,7 +14,7 @@
 	<!-- shared -->
 	<script type="text/javascript" src="${contextPath}/resources/shared/include-ext.js"></script>
     <script type="text/javascript" src="${contextPath}/resources/shared/options-toolbar.js"></script>
-	<script type="text/javascript" src="${contextPath}/resources/shared/examples.js"></script>
+	
 
     <!-- page -->
     <script type="text/javascript">

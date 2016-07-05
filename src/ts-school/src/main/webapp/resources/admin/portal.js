@@ -24,7 +24,7 @@ Ext.define('Ext.app.Portal', {
     },
 
     initComponent: function(){
-        var content = '<div class="portlet-content">'+Ext.example.shortBogusMarkup+'</div>';
+        var content = '<div class="portlet-content">导航内容</div>';
 
         Ext.apply(this, {
             id: 'app-viewport',
@@ -98,7 +98,7 @@ Ext.define('Ext.app.Portal', {
                             id: 'portlet-3',
                             title: 'Portlet 3',
                             tools: this.getTools(),
-                            html: '<div class="portlet-content">'+Ext.example.bogusMarkup+'</div>',
+                            html: '<div class="portlet-content">面板内容</div>',
                             listeners: {
                                 'close': Ext.bind(this.onPortletClose, this)
                             }
