@@ -1,10 +1,5 @@
-/**
- * @class Ext.app.Portal
- * @extends Object A sample portal layout application class.
- */
-
-Ext.Loader.setPath('Tom.School.authority', Tom.School.path + '/resources/admin/authority');
 Ext.Loader.setPath('Ext.app', Tom.School.path + '/resources/admin/classes');
+Ext.Loader.setPath('Tom.School.authority', Tom.School.path + '/resources/admin/authority');
 
 Ext.require(['Tom.School.authority.UserAdmin']);
 

@@ -11,14 +11,35 @@
 
 	<script type="text/javascript" src="${contextPath}/resources/jquery/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/resources/shared/include-ext.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/shared/options-toolbar.js"></script>
     <script type="text/javascript" src="${contextPath}/resources/shared/tom-school.js"></script>
     <script type="text/javascript">
-        if(!Tom.School.path){
-        	Tom.School.path = "${contextPath}";
+        var jqueryLoaded = false;
+        var extLoaded = false;
+        var tomPackageLoaded = false;
+        
+        $(function(){
+        	jqueryLoaded = true;
+        	loadBusinessLogic();
+        });
+        
+        Ext.onReady(function(){
+        	extLoaded = true;
+        	loadBusinessLogic();
+        });
+        
+		Tom.School.onReady(function(){
+			tomPackageLoaded = true;
+        	loadBusinessLogic();
+        });
+        
+        function loadBusinessLogic(){
+        	if(jqueryLoaded && extLoaded && tomPackageLoaded){
+        		Tom.School.path = "${contextPath}";
+        		$.getScript("${contextPath}/resources/shared/options-toolbar.js");
+            	$.getScript("${contextPath}/resources/admin/index.js");
+        	}
         }
     </script>
-    <script type="text/javascript" src="${contextPath}/resources/admin/index.js"></script>
 </head>
 <body>
     <span id="app-msg" style="display:none;"></span>
