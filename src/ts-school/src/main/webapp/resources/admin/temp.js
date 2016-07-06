@@ -322,7 +322,7 @@ Ext.onReady(function() {
 				defaults : {
 					style : 'color:#fff;'
 				},
-				items : [ '->', '3M公司', '-', '©2014', '->', '->' ]
+				items : [ '->', 'Tom工作室', '-', '©2016', '->', '->' ]
 			}) ]
 		} ]
 	});
