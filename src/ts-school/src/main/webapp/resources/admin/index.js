@@ -3,12 +3,17 @@
  * @extends Object A sample portal layout application class.
  */
 
+Ext.Loader.setPath('Tom.School.authority', Tom.School.path + '/resources/admin/authority');
+Ext.Loader.setPath('Ext.app', Tom.School.path + '/resources/admin/classes');
+
+Ext.require([
+             'Tom.School.authority.UserAdmin'
+         ]);
+
 Ext.define('Ext.app.Portal', {
-
 	extend : 'Ext.container.Viewport',
-	requires : [ 'Ext.app.PortalPanel', 'Ext.app.PortalColumn',
-			'Ext.app.GridPortlet', 'Ext.app.ChartPortlet' ],
-
+	requires: ['Ext.app.PortalPanel', 'Ext.app.PortalColumn', 'Ext.app.GridPortlet', 'Ext.app.ChartPortlet'],
+	
 	getTools : function() {
 		return [ {
 			xtype : 'tool',
@@ -22,8 +27,10 @@ Ext.define('Ext.app.Portal', {
 			}
 		} ];
 	},
-
+	
 	initComponent : function() {
+		var content = '<div class="portlet-content">测试文字</div>';
+		
 		Ext.apply(this, {
 			id : 'app-viewport',
 			layout : {
@@ -71,7 +78,48 @@ Ext.define('Ext.app.Portal', {
 					id : 'app-portal',
 					xtype : 'portalpanel',
 					region : 'center',
-					items : []
+					items : [{
+                        id: 'col-1',
+                        items: [{
+                            id: 'portlet-1',
+                            title: 'Grid Portlet',
+                            tools: this.getTools(),
+                            items: Ext.create('Ext.app.GridPortlet'),
+                            listeners: {
+                                'close': Ext.bind(this.onPortletClose, this)
+                            }
+                        },{
+                            id: 'portlet-2',
+                            title: 'Portlet 2',
+                            tools: this.getTools(),
+                            html: content,
+                            listeners: {
+                                'close': Ext.bind(this.onPortletClose, this)
+                            }
+                        }]
+                    },{
+                        id: 'col-2',
+                        items: [{
+                            id: 'portlet-3',
+                            title: 'Portlet 3',
+                            tools: this.getTools(),
+                            html: '<div class="portlet-content">又一些测试文字</div>',
+                            listeners: {
+                                'close': Ext.bind(this.onPortletClose, this)
+                            }
+                        }]
+                    },{
+                        id: 'col-3',
+                        items: [{
+                            id: 'portlet-4',
+                            title: 'Stock Portlet',
+                            tools: this.getTools(),
+                            items: Ext.create('Ext.app.ChartPortlet'),
+                            listeners: {
+                                'close': Ext.bind(this.onPortletClose, this)
+                            }
+                        }]
+                    }]
 				} ]
 			} ]
 		});
@@ -81,16 +129,12 @@ Ext.define('Ext.app.Portal', {
 	onPortletClose : function(portlet) {
 		this.showMsg('"' + portlet.title + '" was removed');
 	},
-
+	
 	showMsg : function(msg) {
 		var el = Ext.get('app-msg'), msgId = Ext.id();
-
 		this.msgId = msgId;
 		el.update(msg).show();
-
 		Ext.defer(this.clearMsg, 3000, this, [ msgId ]);
-		
-		alert(msg);
 	},
 
 	clearMsg : function(msgId) {
@@ -98,4 +142,9 @@ Ext.define('Ext.app.Portal', {
 			Ext.get('app-msg').hide();
 		}
 	}
+});
+
+Ext.onReady(function(){
+    var portal = Ext.create('Ext.app.Portal');
+    portal.showMsg("初始化成功...");
 });

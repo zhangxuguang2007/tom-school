@@ -8,44 +8,19 @@
     <title>学校管理系统</title>
 	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/admin/portal.css" />
 
-	<!-- jquery -->
+	<!-- common -->
 	<script type="text/javascript" src="${contextPath}/resources/jquery/jquery-3.0.0.min.js"></script>
-	
-	<!-- shared -->
 	<script type="text/javascript" src="${contextPath}/resources/shared/include-ext.js"></script>
     <script type="text/javascript" src="${contextPath}/resources/shared/options-toolbar.js"></script>
+    <script type="text/javascript" src="${contextPath}/resources/shared/tom-school.js"></script>
 	
-
     <!-- page -->
     <script type="text/javascript">
-        Ext.Loader.setPath('Ext.app', '${contextPath}/resources/admin/classes');
+        if(!Tom.School.path){
+        	Tom.School.path = "${contextPath}";
+        }
     </script>
     <script type="text/javascript" src="${contextPath}/resources/admin/index.js"></script>
-    <script type="text/javascript">
-        Ext.require([
-            'Ext.layout.container.*',
-            'Ext.resizer.Splitter',
-            'Ext.fx.target.Element',
-            'Ext.fx.target.Component',
-            'Ext.window.Window',
-            'Ext.app.Portlet',
-            'Ext.app.PortalColumn',
-            'Ext.app.PortalPanel',
-            'Ext.app.Portlet',
-            'Ext.app.PortalDropZone',
-            'Ext.app.GridPortlet',
-            'Ext.app.ChartPortlet'
-        ]);
-
-        Ext.onReady(function(){
-            var portal = Ext.create('Ext.app.Portal');
-            portal.showMsg("初始化成功");
-        });
-		
-		$(function(){
-		});
-    </script>
-<title>学校管理系统</title>
 </head>
 <body>
     <span id="app-msg" style="display:none;"></span>
