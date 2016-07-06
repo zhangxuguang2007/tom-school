@@ -2,7 +2,7 @@
     color: #596F8F;
     font-size: 22px;
     font-weight: 200;
-    padding: 8px 15px;
+    padding: 3px 15px;
     text-shadow: 0 1px 0 #fff;
 }
 
@@ -56,13 +56,4 @@
 #app-options .portlet-content {
     padding: 5px;
     font-size: 12px;
-}
-.settings {
-    background-image:url(../shared/icons/folder_wrench.png);
-}
-.nav {
-    background-image:url(../shared/icons/folder_go.png);
-}
-.info {
-    background-image:url(../shared/icons/information.png);
 }

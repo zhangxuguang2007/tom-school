@@ -36,7 +36,9 @@
         	if(jqueryLoaded && extLoaded && tomPackageLoaded){
         		Tom.School.path = "${contextPath}";
         		$.getScript("${contextPath}/resources/shared/options-toolbar.js");
-            	$.getScript("${contextPath}/resources/admin/index.js");
+            	//$.getScript("${contextPath}/resources/admin/index.js");
+        		//$.getScript("${contextPath}/resources/admin/temp.js");
+        		$.getScript("${contextPath}/resources/admin/temp.js");
         	}
         }
     </script>

@@ -28,6 +28,7 @@ Ext.onReady(function() {
 	mainTab = Ext.create('Ext.TabPanel', {
 		region : 'center',
 		margins : '2 0 0 0',
+		border : false,
 		deferredRender : false,
 		activeTab : 0,
 		plugins : Ext.create('Ext.ux.TabCloseMenu', {
@@ -35,7 +36,7 @@ Ext.onReady(function() {
 			closeOthersTabsText : '关闭其他',
 			closeAllTabsText : '关闭所有'
 		}),
-		items : [ mainPortal ],
+		items : [ mainPortal],
 		listeners : {
 			tabchange : onTabChange,
 			afterrender : onAfterRender
@@ -326,4 +327,6 @@ Ext.onReady(function() {
 		} ]
 	});
 });
+
+
 
