@@ -20,7 +20,7 @@
     <script type="text/javascript">
         Ext.Loader.setPath('Ext.app', '${contextPath}/resources/admin/classes');
     </script>
-    <script type="text/javascript" src="${contextPath}/resources/admin/portal.js"></script>
+    <script type="text/javascript" src="${contextPath}/resources/admin/index.js"></script>
     <script type="text/javascript">
         Ext.require([
             'Ext.layout.container.*',

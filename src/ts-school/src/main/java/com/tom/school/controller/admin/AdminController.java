@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping(value="/")
-public class SchoolController {
+@RequestMapping(value="/admin")
+public class AdminController {
 
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String index(){
-		return "index";
+		return "admin/index";
 	}
 	
 }

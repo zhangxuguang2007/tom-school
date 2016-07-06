@@ -1,0 +1,1 @@
+alert("I am user admin page");
