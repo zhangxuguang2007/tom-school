@@ -48,7 +48,7 @@ Ext.define('Tom.School.authority.UserAdmin', {
                     type: 'Numeric',
                     position: 'left',
                     fields: ['djia'],
-                    title: 'Dow Jones Average',
+                    title: '平均值',
                     label: {
                         font: '11px Arial'
                     }
@@ -57,7 +57,7 @@ Ext.define('Tom.School.authority.UserAdmin', {
                     position: 'right',
                     grid: false,
                     fields: ['sp500'],
-                    title: 'S&P 500',
+                    title: '学生数',
                     label: {
                             font: '11px Arial'
                         }

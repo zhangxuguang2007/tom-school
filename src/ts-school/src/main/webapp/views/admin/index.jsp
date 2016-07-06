@@ -6,15 +6,13 @@
 <head>
  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>学校管理系统</title>
+    
 	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/admin/portal.css" />
 
-	<!-- common -->
 	<script type="text/javascript" src="${contextPath}/resources/jquery/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/resources/shared/include-ext.js"></script>
     <script type="text/javascript" src="${contextPath}/resources/shared/options-toolbar.js"></script>
     <script type="text/javascript" src="${contextPath}/resources/shared/tom-school.js"></script>
-	
-    <!-- page -->
     <script type="text/javascript">
         if(!Tom.School.path){
         	Tom.School.path = "${contextPath}";
