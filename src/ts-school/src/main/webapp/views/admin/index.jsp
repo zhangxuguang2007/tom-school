@@ -7,7 +7,7 @@
  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>学校管理系统</title>
     
-	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/admin/portal.css" />
+	<link rel="stylesheet" type="text/css" href="${contextPath}/resources/admin/index.css" />
 
 	<script type="text/javascript" src="${contextPath}/resources/jquery/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="${contextPath}/resources/shared/include-ext.js"></script>
