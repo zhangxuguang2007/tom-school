@@ -124,7 +124,7 @@ Ext.onReady(function() {
 				width : 55
 			}, {
 				id : 'app-header-title',
-				html : "学校管理系统",
+				html : "老猫学校",
 				width : 200
 			}, {
 				html : '欢迎您，' + userName,
@@ -322,7 +322,7 @@ Ext.onReady(function() {
 				defaults : {
 					style : 'color:#fff;'
 				},
-				items : [ '->', 'Tom工作室', '-', '©2016', '->', '->' ]
+				items : [ '->', '老猫工作室', '-', '©2016', '->', '->' ]
 			}) ]
 		} ]
 	});
