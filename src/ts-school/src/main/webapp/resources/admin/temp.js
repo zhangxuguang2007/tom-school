@@ -12,7 +12,7 @@ var mainTab;
 var globalPageSize = 20; // 全局分页大小
 var globalDateColumnWidth = 160; // 全局时间列宽度
 
-var userName = "Tom";
+var userName = "zhangxuguang2007@126.com";
 
 Ext.onReady(function() {
 	Ext.QuickTips.init();
@@ -25,8 +25,7 @@ Ext.onReady(function() {
 	var personalCenterMenu = {
 		xtype : 'button',
 		icon : Tom.School.path + '/resources/shared/icons/user.png',
-		text : '个人中心',
-		width : 120,
+		text : '个人中心 (' + userName + ")",
 		menu : [ {
 			text : '修改密码',
 			iconCls : 'icon_key',
@@ -225,10 +224,9 @@ Ext.onReady(function() {
 			id : 'app-header-title',
 			html : "老猫学校",
 			width : 200
-		}, {
-			html : '欢迎您，' + userName,
-			style : 'text-align:center;font-size:14px;',
-			flex : 1
+		}, {  
+			html : '',
+			flex : 1 //占满，从而Menu在最右端
 		}, personalCenterMenu ]
 	};
 
@@ -321,7 +319,7 @@ Ext.onReady(function() {
 	}
 
 	/* StatusBar * */
-	
+
 	var statusBar = {
 		region : 'south',
 		border : false,
@@ -339,6 +337,6 @@ Ext.onReady(function() {
 	/* Render * */
 	var viewport = Ext.create('Ext.Viewport', {
 		layout : 'border',
-		items : [ headerPanel, navigatePanel, contentTabPanel, statusBar]
+		items : [ headerPanel, navigatePanel, contentTabPanel, statusBar ]
 	});
 });
