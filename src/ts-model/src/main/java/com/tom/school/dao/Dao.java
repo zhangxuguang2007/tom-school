@@ -1,8 +1,11 @@
-package com.tom.school.dao.core;
+package com.tom.school.dao;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import com.tom.school.dao.BaseParameter;
+import com.tom.school.dao.QueryResult;
 
 public interface Dao<E> {
 	/**

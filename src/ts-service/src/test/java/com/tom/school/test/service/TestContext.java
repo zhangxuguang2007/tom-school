@@ -1,4 +1,4 @@
-package com.tom.school.test;
+package com.tom.school.test.service;
 
 import java.io.IOException;
 import java.io.InputStream;

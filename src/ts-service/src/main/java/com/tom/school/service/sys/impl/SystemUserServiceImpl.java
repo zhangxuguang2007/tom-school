@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
-import com.tom.school.service.core.BaseService;
+import com.tom.school.service.BaseService;
 import com.tom.school.service.sys.SystemUserService;
 
 @Service

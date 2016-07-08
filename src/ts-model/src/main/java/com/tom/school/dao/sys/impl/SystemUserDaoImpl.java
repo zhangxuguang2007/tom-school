@@ -2,7 +2,7 @@ package com.tom.school.dao.sys.impl;
 
 import org.springframework.stereotype.Repository;
 
-import com.tom.school.dao.core.BaseDao;
+import com.tom.school.dao.BaseDao;
 import com.tom.school.dao.sys.SystemUserDao;
 import com.tom.school.model.sys.SystemUser;
 

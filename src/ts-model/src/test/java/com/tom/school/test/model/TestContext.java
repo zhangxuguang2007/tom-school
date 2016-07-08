@@ -1,4 +1,4 @@
-package com.tom.school.test;
+package com.tom.school.test.model;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

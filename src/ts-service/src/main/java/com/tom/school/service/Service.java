@@ -1,4 +1,4 @@
-package com.tom.school.service.core;
+package com.tom.school.service;
 
 import java.io.Serializable;
 

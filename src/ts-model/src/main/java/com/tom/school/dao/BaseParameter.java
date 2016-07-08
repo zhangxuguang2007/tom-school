@@ -1,4 +1,4 @@
-package com.tom.school.dao.core;
+package com.tom.school.dao;
 
 import java.io.Serializable;
 import java.util.HashMap;

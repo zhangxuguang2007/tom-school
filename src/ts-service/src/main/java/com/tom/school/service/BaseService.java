@@ -1,11 +1,11 @@
-package com.tom.school.service.core;
+package com.tom.school.service;
 
 import java.io.Serializable;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tom.school.dao.core.Dao;
+import com.tom.school.dao.Dao;
 
 @Transactional
 public class BaseService<E> implements Service<E> {

@@ -13,7 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tom.school.service.core.Cache;
+import com.tom.school.service.support.Cache;
 
 public class AuthorityFilter implements Filter {
 

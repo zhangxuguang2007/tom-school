@@ -1,4 +1,4 @@
-package com.tom.school.service.core;
+package com.tom.school.service.support;
 
 import java.util.HashMap;
 import java.util.Map;

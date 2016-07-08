@@ -1,4 +1,4 @@
-package com.tom.school.dao.core;
+package com.tom.school.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tom.school.dao.BaseParameter;
+import com.tom.school.dao.QueryResult;
 import com.tom.school.utility.BeanUtility;
 
 @Transactional

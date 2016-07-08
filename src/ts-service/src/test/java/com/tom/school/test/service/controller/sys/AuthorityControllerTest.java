@@ -1,4 +1,4 @@
-package com.tom.school.controller.sys.test;
+package com.tom.school.test.service.controller.sys;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.tom.school.support.HttpReponseError;
 import com.tom.school.support.HttpRequestResult;
-import com.tom.school.test.TestContext;
+import com.tom.school.test.service.TestContext;
 import com.tom.school.utility.HttpRequestUtility;
 import com.tom.school.utility.JsonUtility;
 
