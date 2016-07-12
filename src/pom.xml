@@ -8,9 +8,9 @@
 	<name>Tom school root</name>
 	<modules>
 		<module>ts-core</module>
-		<module>ts-model</module>
-		<module>ts-service</module>
-		<module>ts-school</module>
+		<module>ts-db</module>
+		<module>ts-rest</module>
+		<module>ts-web</module>
 	</modules>
 	<properties>
 		<ts-school.version>0.0.1-SNAPSHOT</ts-school.version>
