@@ -138,6 +138,28 @@ public class AuthorityDaoTest {
 		assertNull(this.authorityDao.get(authority1.getId()));
 		assertNull(this.authorityDao.get(authority2.getId()));
 	}
+	
+	@Test
+	public void testUpdate(){
+		Authority authority = addAuthority();
+		modifyAutority(authority);
+		this.authorityDao.update(authority);
+		assertEquals(authority, this.authorityDao.get(authority.getId()));
+	}
+	
+	private void modifyAutority(Authority authority){
+		authority.setButtons(authority.getButtons() + "*");
+		authority.setChecked(authority.getChecked() ? false : true);
+		authority.setExpanded(authority.getExpanded() ? false : true);
+		authority.setIconCls(authority.getIconCls() + "*");
+		authority.setLeaf(authority.getLeaf() ? false : true);
+		authority.setMenuCode(authority.getMenuCode() + "*");
+		authority.setMenuConfig(authority.getMenuConfig() + "*");
+		authority.setMenuName(authority.getMenuName() + "*");
+		authority.setParentId(authority.getParentId() - 1);
+		authority.setSortOrder(authority.getSortOrder() - 1);
+		authority.setUrl(authority.getUrl() + "*");
+	}
 
 	@Test
 	public void testDoQueryAll() {
