@@ -85,6 +85,59 @@ public class AuthorityDaoTest {
 		assertNull(this.authorityDao.get(authority2.getId()));
 		assertNull(this.authorityDao.get(authority3.getId()));
 	}
+	
+	@Test
+	public void testDeleteByProperties(){
+		Authority authority1, authority2;
+		
+		/*
+		 * where : id = :id
+		 */
+		
+		authority1 = addAuthority();
+		String[] propName = new String[1];
+		Object[] propValue = new Object[1];
+		propName[0] = "id";
+		propValue[0] = authority1.getId();
+		this.authorityDao.deleteByProperties(propName, propValue);
+		assertNull(this.authorityDao.get(authority1.getId()));
+		
+		/*
+		 * where : id = :id, menu_name = :menu_name
+		 */
+		
+		authority1 = addAuthority();
+		propName = new String[2];
+		propValue = new Object[2];
+		propName[0] = "id";
+		propValue[0] = authority1.getId();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		this.authorityDao.deleteByProperties(propName, propValue);
+		assertNull(this.authorityDao.get(authority1.getId()));
+		
+		/*
+		 * where : id in array(:id1, :id2)
+		 */
+		
+		authority1 = addAuthority();
+		authority2 = addAuthority();
+		this.authorityDao.deleteByProperties("id", new Object[]{authority1.getId(), authority2.getId()});
+		assertNull(this.authorityDao.get(authority1.getId()));
+		assertNull(this.authorityDao.get(authority2.getId()));
+		
+		/*
+		 * where : mneuName in list(:menuName1, :menuName2)
+		 */
+		authority1 = addAuthority();
+		authority2 = addAuthority();
+		List<String> menuNameList = new ArrayList<String>();
+		menuNameList.add(authority1.getMenuName());
+		menuNameList.add(authority2.getMenuName());
+		this.authorityDao.deleteByProperties("menuName", menuNameList);
+		assertNull(this.authorityDao.get(authority1.getId()));
+		assertNull(this.authorityDao.get(authority2.getId()));
+	}
 
 	@Test
 	public void testDoQueryAll() {
