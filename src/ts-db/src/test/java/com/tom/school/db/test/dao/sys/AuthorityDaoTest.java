@@ -85,15 +85,15 @@ public class AuthorityDaoTest {
 		assertNull(this.authorityDao.get(authority2.getId()));
 		assertNull(this.authorityDao.get(authority3.getId()));
 	}
-	
+
 	@Test
-	public void testDeleteByProperties(){
+	public void testDeleteByProperties() {
 		Authority authority1, authority2;
-		
+
 		/*
 		 * where : id = :id
 		 */
-		
+
 		authority1 = addAuthority();
 		String[] propName = new String[1];
 		Object[] propValue = new Object[1];
@@ -101,11 +101,11 @@ public class AuthorityDaoTest {
 		propValue[0] = authority1.getId();
 		this.authorityDao.deleteByProperties(propName, propValue);
 		assertNull(this.authorityDao.get(authority1.getId()));
-		
+
 		/*
 		 * where : id = :id, menu_name = :menu_name
 		 */
-		
+
 		authority1 = addAuthority();
 		propName = new String[2];
 		propValue = new Object[2];
@@ -115,17 +115,17 @@ public class AuthorityDaoTest {
 		propValue[1] = authority1.getMenuName();
 		this.authorityDao.deleteByProperties(propName, propValue);
 		assertNull(this.authorityDao.get(authority1.getId()));
-		
+
 		/*
 		 * where : id in array(:id1, :id2)
 		 */
-		
+
 		authority1 = addAuthority();
 		authority2 = addAuthority();
-		this.authorityDao.deleteByProperties("id", new Object[]{authority1.getId(), authority2.getId()});
+		this.authorityDao.deleteByProperties("id", new Object[] { authority1.getId(), authority2.getId() });
 		assertNull(this.authorityDao.get(authority1.getId()));
 		assertNull(this.authorityDao.get(authority2.getId()));
-		
+
 		/*
 		 * where : mneuName in list(:menuName1, :menuName2)
 		 */
@@ -138,16 +138,51 @@ public class AuthorityDaoTest {
 		assertNull(this.authorityDao.get(authority1.getId()));
 		assertNull(this.authorityDao.get(authority2.getId()));
 	}
-	
+
 	@Test
-	public void testUpdate(){
+	public void testUpdate() {
 		Authority authority = addAuthority();
 		modifyAutority(authority);
 		this.authorityDao.update(authority);
 		assertEquals(authority, this.authorityDao.get(authority.getId()));
 	}
-	
-	private void modifyAutority(Authority authority){
+
+	@Test
+	public void testUpdateByProperties() {
+		Authority authority1, authority2;
+
+		/*
+		 * where : id = :id
+		 */
+
+		authority1 = addAuthority();
+
+		// Condition
+		String[] conditionName = new String[1];
+		Object[] conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = authority1.getId();
+		
+		//Property
+		String[] propName = new String[3];
+		Object[] propValue = new Object[3];
+		propName[0] = "leaf";
+		propValue[0] = authority1.getLeaf();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		propName[2] = "sortOrder";
+		propValue[2] = authority1.getSortOrder();
+		
+		this.authorityDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+		
+		Authority updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getLeaf(), authority1.getLeaf());
+		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
+		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
+	}
+
+	private void modifyAutority(Authority authority) {
 		authority.setButtons(authority.getButtons() + "*");
 		authority.setChecked(authority.getChecked() ? false : true);
 		authority.setExpanded(authority.getExpanded() ? false : true);
@@ -161,17 +196,7 @@ public class AuthorityDaoTest {
 		authority.setUrl(authority.getUrl() + "*");
 	}
 
-	@Test
-	public void testDoQueryAll() {
-
-		List<Authority> allAuthorities = this.authorityDao.doQueryAll();
-		for (Authority authority : allAuthorities) {
-			System.out.println(authority);
-		}
-
-	}
-	
-	private Authority addAuthority(){
+	private Authority addAuthority() {
 		Authority authority = generateAuthority();
 		this.authorityDao.persist(authority);
 		this.authorityList.add(authority);
