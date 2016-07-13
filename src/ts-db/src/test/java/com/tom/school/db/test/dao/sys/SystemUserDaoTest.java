@@ -1,4 +1,4 @@
-package com.tom.school.test.model.dao.sys;
+package com.tom.school.db.test.dao.sys;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,7 +20,7 @@ import com.tom.school.db.dao.QueryResult;
 import com.tom.school.db.dao.sys.SystemUserDao;
 import com.tom.school.db.model.sys.SystemUser;
 import com.tom.school.db.param.BaseParameter;
-import com.tom.school.test.model.TestContext;
+import com.tom.school.db.test.TestContext;
 
 public class SystemUserDaoTest {
 

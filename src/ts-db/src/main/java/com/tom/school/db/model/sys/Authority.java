@@ -148,4 +148,9 @@ public class Authority extends AuthorityParameter {
 		return serialVersionUID;
 	}
 
+	@Override
+	public String toString() {
+		return "Authority [id=" + id + ", sortOrder=" + sortOrder + ", menuCode=" + menuCode + ", menuName=" + menuName + ", menuConfig=" + menuConfig + ", buttons=" + buttons + ", expanded=" + expanded + ", checked=" + checked + ", leaf=" + leaf + ", ur=" + ur + ", iconCls=" + iconCls + ", parentId=" + parentId + "]";
+	}
+
 }

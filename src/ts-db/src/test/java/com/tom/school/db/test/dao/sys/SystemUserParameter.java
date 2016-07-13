@@ -1,4 +1,4 @@
-package com.tom.school.test.model.dao.sys;
+package com.tom.school.db.test.dao.sys;
 
 import com.tom.school.db.param.BaseParameter;
 
