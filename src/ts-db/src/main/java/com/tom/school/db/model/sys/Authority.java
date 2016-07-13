@@ -39,7 +39,7 @@ public class Authority extends AuthorityParameter {
 	@Column(name = "leaf", columnDefinition = "int default 0 not null")
 	private Boolean leaf; // 是否是叶子项
 	@Column(name = "url", length = 100)
-	private String ur; // 创建 Tab的路径
+	private String url; // 创建 Tab的路径
 	@Column(name = "icon_cls", length = 20)
 	private String iconCls; // 按钮样式
 	@Column(name = "parent_id")
@@ -120,12 +120,12 @@ public class Authority extends AuthorityParameter {
 		this.leaf = leaf;
 	}
 
-	public String getUr() {
-		return ur;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setUr(String ur) {
-		this.ur = ur;
+	public void setUrl(String ur) {
+		this.url = ur;
 	}
 
 	public String getIconCls() {
@@ -150,7 +150,32 @@ public class Authority extends AuthorityParameter {
 
 	@Override
 	public String toString() {
-		return "Authority [id=" + id + ", sortOrder=" + sortOrder + ", menuCode=" + menuCode + ", menuName=" + menuName + ", menuConfig=" + menuConfig + ", buttons=" + buttons + ", expanded=" + expanded + ", checked=" + checked + ", leaf=" + leaf + ", ur=" + ur + ", iconCls=" + iconCls + ", parentId=" + parentId + "]";
+		return "Authority [id=" + id + ", sortOrder=" + sortOrder + ", menuCode=" + menuCode + ", menuName=" + menuName + ", menuConfig=" + menuConfig + ", buttons=" + buttons + ", expanded=" + expanded + ", checked=" + checked + ", leaf=" + leaf + ", ur=" + url + ", iconCls=" + iconCls + ", parentId=" + parentId + "]";
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof Authority)) {
+			return false;
+		}
+		Authority otherAuthority = (Authority) other;
+		return this.id.equals(otherAuthority.id) &&
+				this.buttons.equals(otherAuthority.buttons) &&
+				this.checked.equals(otherAuthority.checked) &&
+				this.expanded.equals(otherAuthority.expanded) &&
+				this.iconCls.equals(otherAuthority.iconCls) &&
+				this.leaf.equals(otherAuthority.leaf) &&
+				this.menuCode.equals(otherAuthority.menuCode) &&
+				this.menuConfig.equals(otherAuthority.menuConfig) &&
+				this.menuName.equals(otherAuthority.menuName) &&
+				this.parentId.equals(otherAuthority.parentId) &&
+				this.sortOrder.equals(otherAuthority.sortOrder) &&
+				this.url.equals(otherAuthority.url);
+	}
+
+	
 
 }

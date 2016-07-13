@@ -26,9 +26,6 @@ public class SystemUserDaoTest {
 
 	private static int userIndex = 0;
 
-	private SystemUserDao systemUserDao;
-	private List<SystemUser> userList = new ArrayList<SystemUser>();
-
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		SystemUserDao systemUserDao = TestContext.getSystemUserDao();
@@ -55,6 +52,9 @@ public class SystemUserDaoTest {
 		long randomNumber = System.currentTimeMillis() + userIndex++;
 		return randomNumber + "";
 	}
+	
+	private SystemUserDao systemUserDao;
+	private List<SystemUser> userList = new ArrayList<SystemUser>();
 
 	public SystemUserDaoTest() {
 		this.systemUserDao = TestContext.getSystemUserDao();
