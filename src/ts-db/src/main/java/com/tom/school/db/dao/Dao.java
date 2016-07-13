@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-import com.tom.school.db.dao.BaseParameter;
-import com.tom.school.db.dao.QueryResult;
+import com.tom.school.db.param.BaseParameter;
 
 public interface Dao<E> {
 	/**

@@ -1,6 +1,6 @@
 package com.tom.school.test.model.dao.sys;
 
-import com.tom.school.db.dao.BaseParameter;
+import com.tom.school.db.param.BaseParameter;
 
 public class SystemUserParameter extends BaseParameter {
 

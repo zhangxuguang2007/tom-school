@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tom.school.core.utility.BeanUtility;
+import com.tom.school.db.param.BaseParameter;
 
 @Transactional
 public class BaseDao<E> implements Dao<E> {

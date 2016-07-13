@@ -1,4 +1,4 @@
-package com.tom.school.db.dao;
+package com.tom.school.db.param;
 
 import java.io.Serializable;
 import java.util.HashMap;
