@@ -1,8 +1,8 @@
-package com.tom.school.db.test.dao.sys;
+package com.tom.school.db.param.sys;
 
-import com.tom.school.db.param.BaseParameter;
+import com.tom.school.db.param.ExtJSBaseParameter;
 
-public class SystemUserParameter extends BaseParameter {
+public class SystemUserParameter extends ExtJSBaseParameter {
 
 	private static final long serialVersionUID = -7535843218319710434L;
 

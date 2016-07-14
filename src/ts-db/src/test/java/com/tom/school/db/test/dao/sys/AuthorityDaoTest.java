@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.tom.school.db.dao.sys.AuthorityDao;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.db.param.BaseParameter;
+import com.tom.school.db.param.sys.AuthorityParameter;
 import com.tom.school.db.test.TestContext;
 
 public class AuthorityDaoTest {
@@ -614,20 +615,80 @@ public class AuthorityDaoTest {
 		Long allAuthoiryCount = this.authorityDao.countAll();
 		assertEquals(allAuthories.size(), allAuthoiryCount.intValue());
 	}
+	
+	@Test
+	public void testDoCount(){
+		/*
+		 * like
+		 */
+		
+		String menuNamePatter = "menuName_" + getRandomNumber() + "_";
+		int authorityNumber = 10;
+		for(int i = 0; i < authorityNumber; i++){
+			addAuthorityWithMenuName(menuNamePatter + i);
+		}
+		AuthorityParameter param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$like_menuName", menuNamePatter);
+		Long count = this.authorityDao.doCount(param);
+		assertEquals(authorityNumber, count.intValue());
+		
+		/*
+		 * equal
+		 */
+		
+		Integer sortOrder = Integer.valueOf(1000);
+		for(int i = 0; i < authorityNumber; i++){
+			addAuthorityWithSortOrder(sortOrder);
+		}
+		param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$eq_sortOrder", sortOrder);
+		count = this.authorityDao.doCount(param);
+		assertEquals(authorityNumber, count.intValue());
+		
+		/*
+		 * equal
+		 */
+		Long[] ids = new Long[authorityNumber];
+		List<Long> idList = new ArrayList<Long>();
+		for(int i = 0; i < 10; i++){
+			Authority authority = addAuthority();
+			ids[i] = authority.getId();
+			idList.add(authority.getId());
+		}
+		param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$in_id", ids);
+		count = this.authorityDao.doCount(param);
+		assertEquals(authorityNumber, count.intValue());
+		
+		param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$in_id", idList);
+		count = this.authorityDao.doCount(param);
+		assertEquals(authorityNumber, count.intValue());
+	}
 
 	private Authority addAuthorityWithMenuName(String menuName) {
 		Authority authority = generateAuthority();
 		authority.setMenuName(menuName);
-		this.authorityDao.persist(authority);
-		this.authorityList.add(authority);
+		addAuthority(authority);
+		return authority;
+	}
+	
+	private Authority addAuthorityWithSortOrder(Integer sortOrder){
+		Authority authority = generateAuthority();
+		authority.setSortOrder(sortOrder);
+		addAuthority(authority);
 		return authority;
 	}
 
 	private Authority addAuthority() {
 		Authority authority = generateAuthority();
+		addAuthority(authority);
+		return authority;
+	}
+	
+	private void addAuthority(Authority authority){
 		this.authorityDao.persist(authority);
 		this.authorityList.add(authority);
-		return authority;
 	}
 
 }

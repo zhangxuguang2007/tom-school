@@ -20,6 +20,7 @@ import com.tom.school.db.dao.QueryResult;
 import com.tom.school.db.dao.sys.SystemUserDao;
 import com.tom.school.db.model.sys.SystemUser;
 import com.tom.school.db.param.BaseParameter;
+import com.tom.school.db.param.sys.SystemUserParameter;
 import com.tom.school.db.test.TestContext;
 
 public class SystemUserDaoTest {
