@@ -379,6 +379,18 @@ public class AuthorityDaoTest {
 		authority.setSortOrder(authority.getSortOrder() - 1);
 		authority.setUrl(authority.getUrl() + "*");
 	}
+	
+	@Test
+	public void testMerge(){
+		Authority authority1 = addAuthority();
+		Authority authority2 = this.authorityDao.merge(authority1);
+		
+		assertFalse(authority1 == authority2);
+		assertEquals(authority1, authority2);
+		
+		Authority authority3 = this.authorityDao.get(authority2.getId());
+		assertFalse(authority2 == authority3);
+	}
 
 	private Authority addAuthority() {
 		Authority authority = generateAuthority();
