@@ -450,207 +450,207 @@ public class AuthorityDaoTest {
 		Object[] propValue = new Object[1];
 		propName[0] = "menuName";
 		propValue[0] = menuName;
-		
-		//Sort
+
+		// Sort
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
-		
+
 		/*
 		 * where(array), sort, top
 		 */
-		
+
 		List<Authority> queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition, top);
 		assertEquals(queriedAuthorityList.size(), top);
-		
+
 		Long lastAuthorityId = Long.MAX_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
-			assertTrue(authority.getId() < lastAuthorityId);  //判断查询结构为升序排列
+			assertTrue(authority.getId() < lastAuthorityId); // 判断查询结构为升序排列
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(array), sort
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
-		
+
 		lastAuthorityId = Long.MAX_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() < lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(array), top
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedAuthorityList.size(), top);
-		
+
 		lastAuthorityId = Long.MIN_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() > lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(array)
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
-		
+
 		lastAuthorityId = Long.MIN_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() > lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(single), sort, top
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition, top);
 		assertEquals(queriedAuthorityList.size(), top);
-		
+
 		lastAuthorityId = Long.MAX_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() < lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(single), sort
 		 */
-		
+
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
-		
+
 		lastAuthorityId = Long.MAX_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() < lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(single), top
 		 */
-		
+
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedAuthorityList.size(), top);
-		
+
 		lastAuthorityId = Long.MIN_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() > lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
-		
+
 		/*
 		 * where(single)
 		 */
-		
+
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
-		
+
 		lastAuthorityId = Long.MIN_VALUE;
-		for(Authority authority : queriedAuthorityList){
+		for (Authority authority : queriedAuthorityList) {
 			assertTrue(authorityList.contains(authority));
 			assertTrue(authority.getId() > lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
 	}
-	
+
 	@Test
-	public void testCountAll(){
-		for(int i = 0; i < 10; i++){
+	public void testCountAll() {
+		for (int i = 0; i < 10; i++) {
 			addAuthority();
 		}
 		List<Authority> allAuthorities = this.authorityDao.doQueryAll();
 		Long allAuthorityCount = this.authorityDao.countAll();
 		assertEquals(allAuthorities.size(), allAuthorityCount.intValue());
 	}
-	
-	public void testDoQueryAll(){
+
+	public void testDoQueryAll() {
 		int top = 10;
-		for(int i = 0; i < top; i++){
+		for (int i = 0; i < top; i++) {
 			addAuthority();
 		}
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", BaseParameter.SORTED_DESC);
 		sortedCondition.put("codeName", BaseParameter.SORTED_ASC);
-		
+
 		/*
 		 * sort, top
 		 */
 		List<Authority> allAuthories = this.authorityDao.doQueryAll(sortedCondition, top);
 		assertEquals(allAuthories.size(), top);
-		
+
 		Long lastId = Long.MAX_VALUE;
-		for(Authority authority : allAuthories){
+		for (Authority authority : allAuthories) {
 			assertTrue(authority.getId() < lastId);
 			lastId = authority.getId();
 		}
-		
+
 		/*
 		 * top
 		 */
 		allAuthories = this.authorityDao.doQueryAll(top);
 		assertEquals(allAuthories.size(), top);
-		
+
 		lastId = Long.MIN_VALUE;
-		for(Authority authority : allAuthories){
+		for (Authority authority : allAuthories) {
 			assertTrue(authority.getId() > lastId);
 			lastId = authority.getId();
 		}
-		
+
 		/*
 		 * no sort, no top
 		 */
-		
+
 		allAuthories = this.authorityDao.doQueryAll();
 		Long allAuthoiryCount = this.authorityDao.countAll();
 		assertEquals(allAuthories.size(), allAuthoiryCount.intValue());
 	}
-	
+
 	@Test
-	public void testDoCount(){
+	public void testDoCount() {
 		/*
 		 * like
 		 */
-		
+
 		String menuNamePatter = "menuName_" + getRandomNumber() + "_";
 		int authorityNumber = 10;
-		for(int i = 0; i < authorityNumber; i++){
+		for (int i = 0; i < authorityNumber; i++) {
 			addAuthorityWithMenuName(menuNamePatter + i);
 		}
 		AuthorityParameter param = new AuthorityParameter();
 		param.getQueryDynamicConditions().put("$like_menuName", menuNamePatter);
 		Long count = this.authorityDao.doCount(param);
 		assertEquals(authorityNumber, count.intValue());
-		
+
 		/*
 		 * equal
 		 */
-		
+
 		Integer sortOrder = Integer.valueOf(1000);
-		for(int i = 0; i < authorityNumber; i++){
+		for (int i = 0; i < authorityNumber; i++) {
 			addAuthorityWithSortOrder(sortOrder);
 		}
 		param = new AuthorityParameter();
 		param.getQueryDynamicConditions().put("$eq_sortOrder", sortOrder);
 		count = this.authorityDao.doCount(param);
 		assertEquals(authorityNumber, count.intValue());
-		
+
 		/*
-		 * equal
+		 * in
 		 */
 		Long[] ids = new Long[authorityNumber];
 		List<Long> idList = new ArrayList<Long>();
-		for(int i = 0; i < 10; i++){
+		for (int i = 0; i < 10; i++) {
 			Authority authority = addAuthority();
 			ids[i] = authority.getId();
 			idList.add(authority.getId());
@@ -659,11 +659,68 @@ public class AuthorityDaoTest {
 		param.getQueryDynamicConditions().put("$in_id", ids);
 		count = this.authorityDao.doCount(param);
 		assertEquals(authorityNumber, count.intValue());
-		
+
 		param = new AuthorityParameter();
 		param.getQueryDynamicConditions().put("$in_id", idList);
 		count = this.authorityDao.doCount(param);
 		assertEquals(authorityNumber, count.intValue());
+	}
+
+	@Test
+	public void testDoQuery() {
+		/*
+		 * like
+		 */
+
+		String menuNamePatter = "menuName_" + getRandomNumber() + "_";
+		int authorityNumber = 10;
+		List<Authority> addAuthorityList = new ArrayList<Authority>();
+		for (int i = 0; i < authorityNumber; i++) {
+			addAuthorityList.add(addAuthorityWithMenuName(menuNamePatter + i));
+		}
+		AuthorityParameter param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$like_menuName", menuNamePatter);
+		List<Authority> queryAuthorityList = this.authorityDao.doQuery(param);
+		assertEquals(authorityNumber, queryAuthorityList.size());
+		for (Authority authority : addAuthorityList) {
+			assertTrue(addAuthorityList.contains(authority));
+		}
+
+		/*
+		 * equal
+		 */
+
+		Integer sortOrder = Integer.valueOf(1000);
+		for (int i = 0; i < authorityNumber; i++) {
+			addAuthorityList.add(addAuthorityWithSortOrder(sortOrder));
+		}
+		param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$eq_sortOrder", sortOrder);
+		queryAuthorityList = this.authorityDao.doQuery(param);
+		assertEquals(authorityNumber, queryAuthorityList.size());
+		for (Authority authority : addAuthorityList) {
+			assertTrue(addAuthorityList.contains(authority));
+		}
+
+		/*
+		 * in
+		 */
+
+		Long[] ids = new Long[authorityNumber];
+		List<Long> idList = new ArrayList<Long>();
+		for (int i = 0; i < 10; i++) {
+			Authority authority = addAuthority();
+			addAuthorityList.add(authority);
+			ids[i] = authority.getId();
+			idList.add(authority.getId());
+		}
+		param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$in_id", ids);
+		queryAuthorityList = this.authorityDao.doQuery(param);
+		assertEquals(authorityNumber, queryAuthorityList.size());
+		for (Authority authority : addAuthorityList) {
+			assertTrue(addAuthorityList.contains(authority));
+		}
 	}
 
 	private Authority addAuthorityWithMenuName(String menuName) {
@@ -672,8 +729,8 @@ public class AuthorityDaoTest {
 		addAuthority(authority);
 		return authority;
 	}
-	
-	private Authority addAuthorityWithSortOrder(Integer sortOrder){
+
+	private Authority addAuthorityWithSortOrder(Integer sortOrder) {
 		Authority authority = generateAuthority();
 		authority.setSortOrder(sortOrder);
 		addAuthority(authority);
@@ -685,8 +742,8 @@ public class AuthorityDaoTest {
 		addAuthority(authority);
 		return authority;
 	}
-	
-	private void addAuthority(Authority authority){
+
+	private void addAuthority(Authority authority) {
 		this.authorityDao.persist(authority);
 		this.authorityList.add(authority);
 	}
