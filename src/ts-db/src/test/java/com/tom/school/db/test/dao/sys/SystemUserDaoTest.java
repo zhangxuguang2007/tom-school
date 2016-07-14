@@ -152,7 +152,8 @@ public class SystemUserDaoTest {
 		SystemUser user1, user2;
 
 		/*
-		 * where : id = :id
+		 * where (in array) : id = :id
+		 * value (in array)
 		 */
 
 		user1 = addUser();
@@ -180,7 +181,8 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), user1.getPassword());
 
 		/*
-		 * where : id = :id, name = :name
+		 * where (in array) : id = :id, name = :name
+		 * value (in array)
 		 */
 
 		user1 = addUser();
@@ -210,7 +212,8 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), user1.getPassword());
 
 		/*
-		 * where : id in array(:id1, :id2)
+		 * where (in array) : id in array(:id1, :id2)
+		 * value (in array)
 		 */
 
 		user1 = addUser();
@@ -238,7 +241,8 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), newPassword);
 
 		/*
-		 * where : name in list(:name1, :name2)
+		 * where (in array) : name in list(:name1, :name2)
+		 * value (in array)
 		 */
 
 		user1 = addUser();
@@ -269,7 +273,7 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), newPassword);
 
 		/**
-		 * polymorphic function1
+		 * where (single), value (in array)
 		 */
 
 		user1 = addUser();
@@ -295,7 +299,7 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getPassword(), user1.getPassword());
 
 		/*
-		 * polymorphic function2
+		 * where (in array), value (single)
 		 */
 
 		user1 = addUser();
@@ -318,7 +322,7 @@ public class SystemUserDaoTest {
 		assertEquals(updatedUser.getName(), user1.getName());
 
 		/*
-		 * polymorphic function3
+		 * where (single), value (single)
 		 */
 
 		user1 = addUser();
@@ -383,6 +387,10 @@ public class SystemUserDaoTest {
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
 
+		/*
+		 * with sorted condition
+		 */
+		
 		SystemUser gotUser = this.systemUserDao.getByProperties(propName,
 				propValue, sortedCondition);
 		assertEquals(gotUser, user2);
@@ -393,8 +401,9 @@ public class SystemUserDaoTest {
 		assertEquals(gotUser, user1);
 
 		/*
-		 * polymorphic
+		 * no sorted condition
 		 */
+		
 		gotUser = this.systemUserDao.getByProperties(propName, propValue);
 		assertEquals(gotUser, user1);
 	}
@@ -419,7 +428,7 @@ public class SystemUserDaoTest {
 		sortedCondition.put("id", "desc");
 		
 		/*
-		 * where(array), sort, top
+		 * where (in array), sort, top
 		 */
 
 		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, top);
@@ -433,7 +442,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(array), sort
+		 * where (in array), sort
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -446,7 +455,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(array), top
+		 * where (in array), top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedUserList.size(), top);
@@ -459,7 +468,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(array)
+		 * where (in array)
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -472,7 +481,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(single), sort, top
+		 * where (single), sort, top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition, top);
 		assertEquals(queriedUserList.size(), top);
@@ -485,7 +494,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(single), sort
+		 * where (single), sort
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -498,7 +507,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(single), top
+		 * where (single), top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], top);
 		assertEquals(queriedUserList.size(), top);
@@ -511,7 +520,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * where(single)
+		 * where (single)
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0]);
 		assertEquals(queriedUserList.size(), this.userList.size());
@@ -552,8 +561,9 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic1
+		 * sort, top
 		 */
+		
 		allUsers = this.systemUserDao.doQueryAll(10);
 		assertEquals(allUsers.size(), 10);
 
@@ -564,8 +574,9 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic2
+		 * no sort, no top
 		 */
+		
 		allUsers = this.systemUserDao.doQueryAll();
 		Long allUsersCount = this.systemUserDao.countAll();
 		assertEquals(allUsers.size(), allUsersCount.intValue());
@@ -576,6 +587,7 @@ public class SystemUserDaoTest {
 		/*
 		 * like
 		 */
+		
 		String userNamePatter1 = "name" + getRandomNumber() + "_";
 		String userNamePatter2 = "name" + getRandomNumber() + "_";
 		String passworkPattern = "pass" + getRandomNumber() + "_";
@@ -596,6 +608,7 @@ public class SystemUserDaoTest {
 		/*
 		 * equal
 		 */
+		
 		String password = "pass_" + getRandomNumber();
 		for (int i = 0; i < 10; i++) {
 			addUser(password);
@@ -608,6 +621,7 @@ public class SystemUserDaoTest {
 		/*
 		 * in
 		 */
+		
 		Long[] ids = new Long[10];
 		List<Long> idList = new ArrayList<Long>();
 		for (int i = 0; i < 10; i++) {
@@ -631,6 +645,7 @@ public class SystemUserDaoTest {
 		/*
 		 * like
 		 */
+		
 		String userNamePatter1 = "name" + getRandomNumber() + "_";
 		String userNamePatter2 = "name" + getRandomNumber() + "_";
 		String passworkPattern = "pass" + getRandomNumber() + "_";
@@ -655,6 +670,7 @@ public class SystemUserDaoTest {
 		/*
 		 * equal
 		 */
+		
 		String password = "pass_" + getRandomNumber();
 		addUserList = new ArrayList<SystemUser>();
 		for (int i = 0; i < 10; i++) {
@@ -671,6 +687,7 @@ public class SystemUserDaoTest {
 		/*
 		 * in
 		 */
+		
 		Long[] ids = new Long[10];
 		List<Long> idList = new ArrayList<Long>();
 		for (int i = 0; i < 10; i++) {

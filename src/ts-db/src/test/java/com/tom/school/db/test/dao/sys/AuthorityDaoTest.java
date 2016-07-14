@@ -156,8 +156,8 @@ public class AuthorityDaoTest {
 		Authority authority1, authority2;
 
 		/*
-		 * array condition : id = :id
-		 * array property
+		 * where (in array) : id = :id
+		 * value (in array)
 		 */
 
 		authority1 = addAuthority();
@@ -188,8 +188,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/*
-		 * array condition : id = :id, menuCode = :menuCode
-		 * array property
+		 * where (in array) : id = :id, menuCode = :menuCode
+		 * value (in array)
 		 */
 
 		authority1 = addAuthority();
@@ -222,8 +222,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/*
-		 * array condition : id in array(:id1, :id2)
-		 * array property
+		 * where (in array) : id in array(:id1, :id2)
+		 * value (in array)
 		 */
 
 		authority1 = addAuthority();
@@ -260,8 +260,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
 
 		/*
-		 * list condition : menuCode in list(:menuCode1, :menuCode2)
-		 * array property
+		 * where (in array) : menuCode in list(:menuCode1, :menuCode2)
+		 * value (in array)
 		 */
 
 		authority1 = addAuthority();
@@ -301,7 +301,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
 
 		/**
-		 * single condition, array property
+		 * where (single), value (in array)
 		 */
 
 		authority1 = addAuthority();
@@ -330,7 +330,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/**
-		 * array condition, single property
+		 * where (in array), value (single)
 		 */
 
 		authority1 = addAuthority();
@@ -353,7 +353,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
 
 		/**
-		 * single condition, single property
+		 * where (single), value (single)
 		 */
 
 		authority1 = addAuthority();
@@ -480,7 +480,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(array), sort
+		 * where (in array), sort
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
@@ -493,7 +493,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(array), top
+		 * where (in array), top
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedAuthorityList.size(), top);
@@ -506,7 +506,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(array)
+		 * where (in array)
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
 		assertEquals(queriedAuthorityList.size(), authorityList.size());
@@ -519,7 +519,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(single), sort, top
+		 * where (single), sort, top
 		 */
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition, top);
 		assertEquals(queriedAuthorityList.size(), top);
@@ -532,7 +532,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(single), sort
+		 * where (single), sort
 		 */
 
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
@@ -546,7 +546,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(single), top
+		 * where (single), top
 		 */
 
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
@@ -560,7 +560,7 @@ public class AuthorityDaoTest {
 		}
 
 		/*
-		 * where(single)
+		 * where (single)
 		 */
 
 		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
