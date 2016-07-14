@@ -379,17 +379,28 @@ public class AuthorityDaoTest {
 		authority.setSortOrder(authority.getSortOrder() - 1);
 		authority.setUrl(authority.getUrl() + "*");
 	}
-	
+
 	@Test
-	public void testMerge(){
+	public void testMerge() {
 		Authority authority1 = addAuthority();
 		Authority authority2 = this.authorityDao.merge(authority1);
-		
+
 		assertFalse(authority1 == authority2);
 		assertEquals(authority1, authority2);
-		
+
 		Authority authority3 = this.authorityDao.get(authority2.getId());
 		assertFalse(authority2 == authority3);
+	}
+
+	@Test
+	public void testLoad() {
+		Authority authority = addAuthority();
+		try {
+			Authority gotAuthority = this.authorityDao.load(authority.getId());
+			System.out.println(gotAuthority.getMenuName());  //抛出异常，因为此时的session已经关闭，延迟加载会失败
+			fail();
+		} catch (Exception e) {
+		}
 	}
 
 	private Authority addAuthority() {
