@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.tom.school.db.dao.sys.AuthorityDao;
 import com.tom.school.db.model.sys.Authority;
-import com.tom.school.db.model.sys.SystemUser;
 import com.tom.school.db.test.TestContext;
 
 public class AuthorityDaoTest {
@@ -416,23 +415,151 @@ public class AuthorityDaoTest {
 		Object[] propValue = new Object[1];
 		propName[0] = "menuName";
 		propValue[0] = menuName;
-		
-		//Sort
+
+		// Sort
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
-		
+
 		Authority gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
 		assertEquals(gotAuthority, authority2);
-		
+
 		sortedCondition.replace("id", "asc");
 		gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
 		assertEquals(gotAuthority, authority1);
-		
+
 		/*
 		 * polymorphic
 		 */
 		gotAuthority = this.authorityDao.getByProperties(propName, propValue);
 		assertEquals(gotAuthority, authority1);
+	}
+
+	@Test
+	public void testQueryByProperties() {
+		String menuName = "m_" + getRandomNumber();
+		int top = 5;
+		List<Authority> authorityList = new ArrayList<Authority>();
+		for (int i = 0; i < 10; i++) {
+			authorityList.add(addAuthorityWithMenuName(menuName));
+		}
+
+		// Condition
+		String[] propName = new String[1];
+		Object[] propValue = new Object[1];
+		propName[0] = "menuName";
+		propValue[0] = menuName;
+		
+		//Sort
+		Map<String, String> sortedCondition = new HashMap<String, String>();
+		sortedCondition.put("id", "desc");
+		
+		/*
+		 * where(array), sort, top
+		 */
+		
+		List<Authority> queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition, top);
+		assertEquals(queriedAuthorityList.size(), top);
+		
+		Long lastAuthorityId = Long.MAX_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() < lastAuthorityId);  //判断查询结构为升序排列
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(array), sort
+		 */
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
+		assertEquals(queriedAuthorityList.size(), authorityList.size());
+		
+		lastAuthorityId = Long.MAX_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() < lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(array), top
+		 */
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
+		assertEquals(queriedAuthorityList.size(), top);
+		
+		lastAuthorityId = Long.MIN_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() > lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(array)
+		 */
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
+		assertEquals(queriedAuthorityList.size(), authorityList.size());
+		
+		lastAuthorityId = Long.MIN_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() > lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(single), sort, top
+		 */
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition, top);
+		assertEquals(queriedAuthorityList.size(), top);
+		
+		lastAuthorityId = Long.MAX_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() < lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(single), sort
+		 */
+		
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, sortedCondition);
+		assertEquals(queriedAuthorityList.size(), authorityList.size());
+		
+		lastAuthorityId = Long.MAX_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() < lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(single), top
+		 */
+		
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue, top);
+		assertEquals(queriedAuthorityList.size(), top);
+		
+		lastAuthorityId = Long.MIN_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() > lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
+		
+		/*
+		 * where(single)
+		 */
+		
+		queriedAuthorityList = this.authorityDao.queryByProperties(propName, propValue);
+		assertEquals(queriedAuthorityList.size(), authorityList.size());
+		
+		lastAuthorityId = Long.MIN_VALUE;
+		for(Authority authority : queriedAuthorityList){
+			assertTrue(authorityList.contains(authority));
+			assertTrue(authority.getId() > lastAuthorityId);
+			lastAuthorityId = authority.getId();
+		}
 	}
 
 	private Authority addAuthorityWithMenuName(String menuName) {

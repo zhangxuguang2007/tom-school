@@ -416,6 +416,10 @@ public class SystemUserDaoTest {
 		// Sort
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
+		
+		/*
+		 * where(array), sort, top
+		 */
 
 		List<SystemUser> queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition, top);
 		assertEquals(queriedUserList.size(), top);
@@ -428,7 +432,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic1
+		 * where(array), sort
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -441,7 +445,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic2
+		 * where(array), top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue, top);
 		assertEquals(queriedUserList.size(), top);
@@ -454,7 +458,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic3
+		 * where(array)
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName, propValue);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -467,7 +471,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic3
+		 * where(single), sort, top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition, top);
 		assertEquals(queriedUserList.size(), top);
@@ -480,7 +484,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic4
+		 * where(single), sort
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], sortedCondition);
 		assertEquals(queriedUserList.size(), userList.size());
@@ -493,7 +497,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic5
+		 * where(single), top
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0], top);
 		assertEquals(queriedUserList.size(), top);
@@ -506,7 +510,7 @@ public class SystemUserDaoTest {
 		}
 
 		/*
-		 * polymorphic6
+		 * where(single)
 		 */
 		queriedUserList = this.systemUserDao.queryByProperties(propName[0], propValue[0]);
 		assertEquals(queriedUserList.size(), this.userList.size());
