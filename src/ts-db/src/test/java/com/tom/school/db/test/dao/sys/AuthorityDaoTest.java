@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.tom.school.db.dao.QueryResult;
 import com.tom.school.db.dao.sys.AuthorityDao;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.db.param.BaseParameter;
@@ -720,6 +721,29 @@ public class AuthorityDaoTest {
 		assertEquals(authorityNumber, queryAuthorityList.size());
 		for (Authority authority : addAuthorityList) {
 			assertTrue(addAuthorityList.contains(authority));
+		}
+	}
+	
+	@Test
+	public void testDoPaginationQuery(){
+		String menuNamePatter = "menuName_" + getRandomNumber() + "_";
+		int authorityNumber = 10;
+		List<Authority> addAuthorityList = new ArrayList<Authority>();
+		for (int i = 0; i < authorityNumber; i++) {
+			addAuthorityList.add(addAuthorityWithMenuName(menuNamePatter + i));
+		}
+		AuthorityParameter param = new AuthorityParameter();
+		param.getQueryDynamicConditions().put("$like_menuName", menuNamePatter);
+		param.getSortedConditions().put("id", BaseParameter.SORTED_ASC);
+		param.setFirstResult(3);
+		param.setMaxResults(3);
+		QueryResult<Authority> queryResult = this.authorityDao.doPaginationQuery(param);
+		assertEquals(authorityNumber, queryResult.getTotalCount().intValue());
+		assertEquals(3, queryResult.getResultList().size());
+		for(int i = 0; i < 3; i++){
+			Authority authority1 = addAuthorityList.get(i + 3);
+			Authority authority2 = queryResult.getResultList().get(i);
+			assertEquals(authority1, authority2);
 		}
 	}
 
