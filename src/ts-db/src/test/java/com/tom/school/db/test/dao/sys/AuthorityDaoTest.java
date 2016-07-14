@@ -162,8 +162,9 @@ public class AuthorityDaoTest {
 		Object[] conditionValue = new Object[1];
 		conditionName[0] = "id";
 		conditionValue[0] = authority1.getId();
-		
-		//Property
+
+		// Property
+		modifyAutority(authority1);
 		String[] propName = new String[3];
 		Object[] propValue = new Object[3];
 		propName[0] = "leaf";
@@ -172,14 +173,197 @@ public class AuthorityDaoTest {
 		propValue[1] = authority1.getMenuName();
 		propName[2] = "sortOrder";
 		propValue[2] = authority1.getSortOrder();
-		
+
 		this.authorityDao.updateByProperties(conditionName, conditionValue,
 				propName, propValue);
-		
+
 		Authority updatedAuthority = this.authorityDao.get(authority1.getId());
 		assertEquals(updatedAuthority.getLeaf(), authority1.getLeaf());
 		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
+
+		/*
+		 * where : id = :id, menuCode = :menuCode
+		 */
+
+		authority1 = addAuthority();
+
+		// Condition
+		conditionName = new String[2];
+		conditionValue = new Object[2];
+		conditionName[0] = "id";
+		conditionValue[0] = authority1.getId();
+		conditionName[1] = "menuCode";
+		conditionValue[1] = authority1.getMenuCode();
+
+		// Property
+		modifyAutority(authority1);
+		propName = new String[3];
+		propValue = new Object[3];
+		propName[0] = "leaf";
+		propValue[0] = authority1.getLeaf();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		propName[2] = "sortOrder";
+		propValue[2] = authority1.getSortOrder();
+
+		this.authorityDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getLeaf(), authority1.getLeaf());
+		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
+		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
+
+		/*
+		 * where : id in array(:id1, :id2)
+		 */
+
+		authority1 = addAuthority();
+		authority2 = addAuthority();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = new Object[] { authority1.getId(), authority2.getId() };
+
+		// Property
+		modifyAutority(authority1);
+		propName = new String[3];
+		propValue = new Object[3];
+		propName[0] = "leaf";
+		propValue[0] = authority1.getLeaf();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		propName[2] = "sortOrder";
+		propValue[2] = authority1.getSortOrder();
+
+		this.authorityDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getLeaf(), propValue[0]);
+		assertEquals(updatedAuthority.getMenuName(), propValue[1]);
+		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
+
+		updatedAuthority = this.authorityDao.get(authority2.getId());
+		assertEquals(updatedAuthority.getLeaf(), propValue[0]);
+		assertEquals(updatedAuthority.getMenuName(), propValue[1]);
+		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
+
+		/*
+		 * where : menuCode in list(:menuCode1, :menuCode2)
+		 */
+
+		authority1 = addAuthority();
+		authority2 = addAuthority();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		conditionName[0] = "menuCode";
+		List<String> menuCodeList = new ArrayList<String>();
+		menuCodeList.add(authority1.getMenuCode());
+		menuCodeList.add(authority2.getMenuCode());
+		conditionValue[0] = menuCodeList;
+
+		// Property
+		modifyAutority(authority1);
+		propName = new String[3];
+		propValue = new Object[3];
+		propName[0] = "leaf";
+		propValue[0] = authority1.getLeaf();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		propName[2] = "sortOrder";
+		propValue[2] = authority1.getSortOrder();
+
+		this.authorityDao.updateByProperties(conditionName, conditionValue,
+				propName, propValue);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getLeaf(), propValue[0]);
+		assertEquals(updatedAuthority.getMenuName(), propValue[1]);
+		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
+
+		updatedAuthority = this.authorityDao.get(authority2.getId());
+		assertEquals(updatedAuthority.getLeaf(), propValue[0]);
+		assertEquals(updatedAuthority.getMenuName(), propValue[1]);
+		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
+
+		/**
+		 * polymorphic function1
+		 */
+
+		authority1 = addAuthority();
+
+		// Condition
+		String singleConditionName = "id";
+		Object singleConditionValue = authority1.getId();
+
+		// Property
+		modifyAutority(authority1);
+		propName = new String[3];
+		propValue = new Object[3];
+		propName[0] = "leaf";
+		propValue[0] = authority1.getLeaf();
+		propName[1] = "menuName";
+		propValue[1] = authority1.getMenuName();
+		propName[2] = "sortOrder";
+		propValue[2] = authority1.getSortOrder();
+
+		this.authorityDao.updateByProperties(singleConditionName, singleConditionValue,
+				propName, propValue);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getLeaf(), authority1.getLeaf());
+		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
+		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
+
+		/**
+		 * polymorphic function2
+		 */
+
+		authority1 = addAuthority();
+
+		// Condition
+		conditionName = new String[1];
+		conditionValue = new Object[1];
+		conditionName[0] = "id";
+		conditionValue[0] = authority1.getId();
+
+		// Property
+		modifyAutority(authority1);
+		String singlePropName = "menuName";
+		Object singlePropVale = authority1.getMenuName();
+
+		this.authorityDao.updateByProperties(conditionName, conditionValue,
+				singlePropName, singlePropVale);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
+
+		/**
+		 * polymorphic function3
+		 */
+
+		authority1 = addAuthority();
+
+		// Condition
+		singleConditionName = "id";
+		singleConditionValue = authority1.getId();
+
+		// Property
+		modifyAutority(authority1);
+		singlePropName = "menuName";
+		singlePropVale = authority1.getMenuName();
+
+		this.authorityDao.updateByProperties(singleConditionName, singleConditionValue,
+				singlePropName, singlePropVale);
+
+		updatedAuthority = this.authorityDao.get(authority1.getId());
+		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
 	}
 
 	private void modifyAutority(Authority authority) {
