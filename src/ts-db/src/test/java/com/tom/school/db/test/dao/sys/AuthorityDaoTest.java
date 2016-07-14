@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.tom.school.db.dao.sys.AuthorityDao;
 import com.tom.school.db.model.sys.Authority;
+import com.tom.school.db.param.BaseParameter;
 import com.tom.school.db.test.TestContext;
 
 public class AuthorityDaoTest {
@@ -560,6 +561,58 @@ public class AuthorityDaoTest {
 			assertTrue(authority.getId() > lastAuthorityId);
 			lastAuthorityId = authority.getId();
 		}
+	}
+	
+	@Test
+	public void testCountAll(){
+		for(int i = 0; i < 10; i++){
+			addAuthority();
+		}
+		List<Authority> allAuthorities = this.authorityDao.doQueryAll();
+		Long allAuthorityCount = this.authorityDao.countAll();
+		assertEquals(allAuthorities.size(), allAuthorityCount.intValue());
+	}
+	
+	public void testDoQueryAll(){
+		int top = 10;
+		for(int i = 0; i < top; i++){
+			addAuthority();
+		}
+		Map<String, String> sortedCondition = new HashMap<String, String>();
+		sortedCondition.put("id", BaseParameter.SORTED_DESC);
+		sortedCondition.put("codeName", BaseParameter.SORTED_ASC);
+		
+		/*
+		 * sort, top
+		 */
+		List<Authority> allAuthories = this.authorityDao.doQueryAll(sortedCondition, top);
+		assertEquals(allAuthories.size(), top);
+		
+		Long lastId = Long.MAX_VALUE;
+		for(Authority authority : allAuthories){
+			assertTrue(authority.getId() < lastId);
+			lastId = authority.getId();
+		}
+		
+		/*
+		 * top
+		 */
+		allAuthories = this.authorityDao.doQueryAll(top);
+		assertEquals(allAuthories.size(), top);
+		
+		lastId = Long.MIN_VALUE;
+		for(Authority authority : allAuthories){
+			assertTrue(authority.getId() > lastId);
+			lastId = authority.getId();
+		}
+		
+		/*
+		 * no sort, no top
+		 */
+		
+		allAuthories = this.authorityDao.doQueryAll();
+		Long allAuthoiryCount = this.authorityDao.countAll();
+		assertEquals(allAuthories.size(), allAuthoiryCount.intValue());
 	}
 
 	private Authority addAuthorityWithMenuName(String menuName) {
