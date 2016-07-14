@@ -156,7 +156,8 @@ public class AuthorityDaoTest {
 		Authority authority1, authority2;
 
 		/*
-		 * where : id = :id
+		 * array condition : id = :id
+		 * array property
 		 */
 
 		authority1 = addAuthority();
@@ -187,7 +188,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/*
-		 * where : id = :id, menuCode = :menuCode
+		 * array condition : id = :id, menuCode = :menuCode
+		 * array property
 		 */
 
 		authority1 = addAuthority();
@@ -220,7 +222,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/*
-		 * where : id in array(:id1, :id2)
+		 * array condition : id in array(:id1, :id2)
+		 * array property
 		 */
 
 		authority1 = addAuthority();
@@ -257,7 +260,8 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
 
 		/*
-		 * where : menuCode in list(:menuCode1, :menuCode2)
+		 * list condition : menuCode in list(:menuCode1, :menuCode2)
+		 * array property
 		 */
 
 		authority1 = addAuthority();
@@ -297,7 +301,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), propValue[2]);
 
 		/**
-		 * polymorphic function1
+		 * single condition, array property
 		 */
 
 		authority1 = addAuthority();
@@ -326,7 +330,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getSortOrder(), authority1.getSortOrder());
 
 		/**
-		 * polymorphic function2
+		 * array condition, single property
 		 */
 
 		authority1 = addAuthority();
@@ -349,7 +353,7 @@ public class AuthorityDaoTest {
 		assertEquals(updatedAuthority.getMenuName(), authority1.getMenuName());
 
 		/**
-		 * polymorphic function3
+		 * single condition, single property
 		 */
 
 		authority1 = addAuthority();
@@ -423,6 +427,10 @@ public class AuthorityDaoTest {
 		Map<String, String> sortedCondition = new HashMap<String, String>();
 		sortedCondition.put("id", "desc");
 
+		/*
+		 * with sorted condition
+		 */
+		
 		Authority gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
 		assertEquals(gotAuthority, authority2);
 
@@ -431,8 +439,9 @@ public class AuthorityDaoTest {
 		assertEquals(gotAuthority, authority1);
 
 		/*
-		 * polymorphic
+		 * no sorted condition
 		 */
+		
 		gotAuthority = this.authorityDao.getByProperties(propName, propValue);
 		assertEquals(gotAuthority, authority1);
 	}
@@ -587,6 +596,7 @@ public class AuthorityDaoTest {
 		/*
 		 * sort, top
 		 */
+		
 		List<Authority> allAuthories = this.authorityDao.doQueryAll(sortedCondition, top);
 		assertEquals(allAuthories.size(), top);
 
@@ -599,6 +609,7 @@ public class AuthorityDaoTest {
 		/*
 		 * top
 		 */
+		
 		allAuthories = this.authorityDao.doQueryAll(top);
 		assertEquals(allAuthories.size(), top);
 
@@ -649,6 +660,7 @@ public class AuthorityDaoTest {
 		/*
 		 * in
 		 */
+		
 		Long[] ids = new Long[authorityNumber];
 		List<Long> idList = new ArrayList<Long>();
 		for (int i = 0; i < 10; i++) {
