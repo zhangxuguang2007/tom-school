@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -397,10 +399,48 @@ public class AuthorityDaoTest {
 		Authority authority = addAuthority();
 		try {
 			Authority gotAuthority = this.authorityDao.load(authority.getId());
-			System.out.println(gotAuthority.getMenuName());  //抛出异常，因为此时的session已经关闭，延迟加载会失败
+			System.out.println(gotAuthority.getMenuName()); // 抛出异常，因为此时的session已经关闭，延迟加载会失败
 			fail();
 		} catch (Exception e) {
 		}
+	}
+
+	@Test
+	public void testGetByProperties() {
+		String menuName = "m_" + getRandomNumber();
+		Authority authority1 = addAuthorityWithMenuName(menuName);
+		Authority authority2 = addAuthorityWithMenuName(menuName);
+
+		// Condition
+		String[] propName = new String[1];
+		Object[] propValue = new Object[1];
+		propName[0] = "menuName";
+		propValue[0] = menuName;
+		
+		//Sort
+		Map<String, String> sortedCondition = new HashMap<String, String>();
+		sortedCondition.put("id", "desc");
+		
+		Authority gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
+		assertEquals(gotAuthority, authority2);
+		
+		sortedCondition.replace("id", "asc");
+		gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
+		assertEquals(gotAuthority, authority1);
+		
+		/*
+		 * polymorphic
+		 */
+		gotAuthority = this.authorityDao.getByProperties(propName, propValue);
+		assertEquals(gotAuthority, authority1);
+	}
+
+	private Authority addAuthorityWithMenuName(String menuName) {
+		Authority authority = generateAuthority();
+		authority.setMenuName(menuName);
+		this.authorityDao.persist(authority);
+		this.authorityList.add(authority);
+		return authority;
 	}
 
 	private Authority addAuthority() {
