@@ -15,11 +15,11 @@ import com.tom.school.db.param.BaseParameter;
 import com.tom.school.rest.core.ListView;
 import com.tom.school.rest.service.Service;
 
-public abstract class ExtJSBaseController<E> {
+public abstract class BaseController<E> {
 
 	protected Service<E> service;
 
-	public ExtJSBaseController() {
+	public BaseController() {
 	}
 
 	@RequestMapping(value = { "/list" }, method = { RequestMethod.GET, RequestMethod.POST })

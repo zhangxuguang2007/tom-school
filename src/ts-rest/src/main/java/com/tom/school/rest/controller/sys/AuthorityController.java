@@ -18,13 +18,13 @@ import com.tom.school.core.entity.ContentType;
 import com.tom.school.db.dao.sys.AuthorityDao;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.db.param.sys.AuthorityParameter;
-import com.tom.school.rest.controller.ExtJSBaseController;
+import com.tom.school.rest.controller.BaseController;
 import com.tom.school.rest.core.Cache;
 import com.tom.school.rest.service.sys.AuthorityService;
 
 @Controller
 @RequestMapping(value = "/authority")
-public class AuthorityController extends ExtJSBaseController<Authority> {
+public class AuthorityController extends BaseController<Authority> {
 	
 	private AuthorityService authorityService;
 	
