@@ -132,7 +132,7 @@ public interface Dao<E> {
 	public E load(Serializable id);
 	
 	/**
-	 * c
+	 * get an entity by properties
 	 * 
 	 * @param propName
 	 * @param propValue
@@ -149,6 +149,23 @@ public interface Dao<E> {
 	 * @return
 	 */
 	public E getByProperties(String[] propName, Object[] propValue, Map<String, String> sortedCondition);
+	
+	/**
+	 * get an entity by properties and sorted condition
+	 * @param propName
+	 * @param propValue
+	 * @param sortedCondition
+	 * @return
+	 */
+	public E getByProperties(String propName, Object propValue, Map<String, String> sortedCondition);
+	
+	/**
+	 * get an entity by properties
+	 * @param propName
+	 * @param propValue
+	 * @return
+	 */
+	public E getByProperties(String propName, Object propValue);
 	
 	/**
 	 * query by property
@@ -262,7 +279,7 @@ public interface Dao<E> {
 	 * @param top
 	 * @return
 	 */
-	public List<E> doQueryAll(Map<String, String> soredCondition, Integer top);
+	public List<E> doQueryAll(Map<String, String> sortedCondition, Integer top);
 	
 	/**
 	 * Query all

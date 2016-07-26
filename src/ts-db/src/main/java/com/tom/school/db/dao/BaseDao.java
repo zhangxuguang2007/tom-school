@@ -174,10 +174,20 @@ public class BaseDao<E> implements Dao<E> {
 	public E load(Serializable id) {
 		return (E) getSession().load(this.entityClass, id);
 	}
-
+	
 	@Override
 	public E getByProperties(String[] propName, Object[] propValue) {
 		return getByProperties(propName, propValue, null);
+	}
+	
+	@Override
+	public E getByProperties(String propName, Object propValue) {
+		return getByProperties(new String[] { propName }, new Object[] { propValue }, null);
+	}
+	
+	@Override
+	public E getByProperties(String propName, Object propValue, Map<String, String> sortedCondition) {
+		return getByProperties(new String[] { propName }, new Object[] { propValue }, sortedCondition);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -486,4 +496,8 @@ public class BaseDao<E> implements Dao<E> {
 		}
 		return MAP_METHOD.get(name);
 	}
+
+	
+
+	
 }

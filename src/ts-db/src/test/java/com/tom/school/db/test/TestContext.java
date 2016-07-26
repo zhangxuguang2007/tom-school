@@ -12,8 +12,7 @@ public class TestContext {
 
 	private static ApplicationContext getApplicationContext() {
 		if (applicationContext == null) {
-			applicationContext = new ClassPathXmlApplicationContext(
-					"applicationContext.xml");
+			applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 		}
 		return applicationContext;
 	}
@@ -21,7 +20,7 @@ public class TestContext {
 	public static SystemUserDao getSystemUserDao() {
 		return getApplicationContext().getBean(SystemUserDao.class);
 	}
-	
+
 	public static AuthorityDao getAuthorityDao() {
 		return getApplicationContext().getBean(AuthorityDao.class);
 	}

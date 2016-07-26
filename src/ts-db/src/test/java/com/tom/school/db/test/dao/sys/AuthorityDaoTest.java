@@ -428,7 +428,7 @@ public class AuthorityDaoTest {
 		sortedCondition.put("id", "desc");
 
 		/*
-		 * with sorted condition
+		 * array prop, with sorted condition
 		 */
 		
 		Authority gotAuthority = this.authorityDao.getByProperties(propName, propValue, sortedCondition);
@@ -439,10 +439,27 @@ public class AuthorityDaoTest {
 		assertEquals(gotAuthority, authority1);
 
 		/*
-		 * no sorted condition
+		 * array prop, no sorted condition
 		 */
 		
 		gotAuthority = this.authorityDao.getByProperties(propName, propValue);
+		assertEquals(gotAuthority, authority1);
+		
+		/*
+		 * single prop, with sorted condition
+		 */
+		sortedCondition.replace("id", "desc");
+		gotAuthority = this.authorityDao.getByProperties(propName[0], propValue[0], sortedCondition);
+		assertEquals(gotAuthority, authority2);
+		
+		sortedCondition.replace("id", "asc");
+		gotAuthority = this.authorityDao.getByProperties(propName[0], propValue[0], sortedCondition);
+		assertEquals(gotAuthority, authority1);
+		
+		/*
+		 * single prop, no sorted condition
+		 */
+		gotAuthority = this.authorityDao.getByProperties(propName[0], propValue[0]);
 		assertEquals(gotAuthority, authority1);
 	}
 

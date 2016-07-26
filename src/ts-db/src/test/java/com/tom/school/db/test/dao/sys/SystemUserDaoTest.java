@@ -388,7 +388,7 @@ public class SystemUserDaoTest {
 		sortedCondition.put("id", "desc");
 
 		/*
-		 * with sorted condition
+		 * array prop, with sorted condition
 		 */
 		
 		SystemUser gotUser = this.systemUserDao.getByProperties(propName,
@@ -401,10 +401,29 @@ public class SystemUserDaoTest {
 		assertEquals(gotUser, user1);
 
 		/*
-		 * no sorted condition
+		 * array prop, no sorted condition
 		 */
 		
 		gotUser = this.systemUserDao.getByProperties(propName, propValue);
+		assertEquals(gotUser, user1);
+		
+		/*
+		 * single prop, with sorted condition
+		 */
+		
+		sortedCondition.replace("id", "desc");
+		gotUser = this.systemUserDao.getByProperties(propName[0], propValue[0], sortedCondition);
+		assertEquals(gotUser, user2);
+		
+		sortedCondition.replace("id", "asc");
+		gotUser = this.systemUserDao.getByProperties(propName[0], propValue[0], sortedCondition);
+		assertEquals(gotUser, user1);
+		
+		/*
+		 * single prop, no sorted condition
+		 */
+		
+		gotUser = this.systemUserDao.getByProperties(propName[0], propValue[0]);
 		assertEquals(gotUser, user1);
 	}
 
