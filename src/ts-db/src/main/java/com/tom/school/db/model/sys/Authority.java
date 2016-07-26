@@ -44,8 +44,8 @@ public class Authority extends AuthorityParameter {
 	private String iconCls; // 按钮样式
 	@Column(name = "parent_id")
 	private Long parentId; // 父节点ID
-	
-	public Authority(){
+
+	public Authority() {
 	}
 
 	public Long getId() {
@@ -175,7 +175,5 @@ public class Authority extends AuthorityParameter {
 				this.sortOrder.equals(otherAuthority.sortOrder) &&
 				this.url.equals(otherAuthority.url);
 	}
-
-	
 
 }
