@@ -4,7 +4,6 @@ import static com.tom.school.core.utility.HttpResponseUtility.autorityError;
 import static com.tom.school.core.utility.HttpResponseUtility.missingArugment;
 import static com.tom.school.core.utility.HttpResponseUtility.write;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,8 +68,8 @@ public class AuthorityController extends BaseController<Authority> {
 		JSONArray parentMenuJsonArray = new JSONArray();
 		for (Authority parentAuthority : parentAuthorityList) {
 			JSONObject parentMenuJsonObject = createMenuJsonObject(parentAuthority);
+			parentMenuJsonArray.put(parentMenuJsonObject);
 
-			// Add children menu
 			List<Authority> childAutorityList = this.authorityService.queryChildrenByParentIdAndRole(parentAuthority.getId(), role);
 			JSONArray childMenuJsonArray = new JSONArray();
 			for (Authority childAuthority : childAutorityList) {
@@ -79,8 +77,6 @@ public class AuthorityController extends BaseController<Authority> {
 				childMenuJsonArray.put(childMenuJsonObject);
 			}
 			parentMenuJsonObject.put("children", childMenuJsonArray);
-
-			parentMenuJsonArray.put(parentMenuJsonObject);
 		}
 		HttpResponseUtility.write(response, parentMenuJsonArray.toString(), ContentType.JSON);
 	}
