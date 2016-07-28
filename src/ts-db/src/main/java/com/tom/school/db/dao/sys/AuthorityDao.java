@@ -7,7 +7,7 @@ import com.tom.school.db.model.sys.Authority;
 
 public interface AuthorityDao extends Dao<Authority> {
 
-	List<Authority> queryByParentidAndRole(Short role);
+	List<Authority> queryParentByRole(Short role);
 	List<Authority> queryChildrenByParentIdAndRole(Long parentId, Short role);
 	
 }

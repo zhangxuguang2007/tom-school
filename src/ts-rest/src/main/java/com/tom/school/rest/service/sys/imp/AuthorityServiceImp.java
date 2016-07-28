@@ -24,7 +24,7 @@ public class AuthorityServiceImp extends BaseService<Authority> implements Autho
 
 	@Override
 	public List<Authority> queryByParentIdAndRole(Short role) {
-		return this.authorityDao.queryByParentidAndRole(role);
+		return this.authorityDao.queryParentByRole(role);
 	}
 
 	@Override

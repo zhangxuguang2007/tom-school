@@ -775,6 +775,27 @@ public class AuthorityDaoTest {
 			assertEquals(authority1, authority2);
 		}
 	}
+	
+	@Test
+	public void testQueryParentByRole(){
+		List<Authority> parentAuthorityList = this.authorityDao.queryParentByRole(null);
+		for(Authority parentAuthority : parentAuthorityList){
+			assertEquals(null, parentAuthority.getParentId());
+			System.out.println(parentAuthority);
+		}
+	}
+	
+	@Test
+	public void testQueryChildrenByParentIdAndRole(){
+		List<Authority> parentAuthorityList = this.authorityDao.queryParentByRole(null);
+		for(Authority parentAuthority : parentAuthorityList){
+			List<Authority> childAuthorityList = this.authorityDao.queryChildrenByParentIdAndRole(parentAuthority.getId(), null);
+			for(Authority childAuthority : childAuthorityList){
+				assertEquals(parentAuthority.getId(), childAuthority.getParentId());
+				System.out.println(childAuthority);
+			}
+		}
+	}
 
 	private Authority addAuthorityWithMenuName(String menuName) {
 		Authority authority = generateAuthority();

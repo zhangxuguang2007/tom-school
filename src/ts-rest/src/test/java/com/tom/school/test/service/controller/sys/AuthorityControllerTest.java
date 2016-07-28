@@ -1,25 +1,29 @@
 package com.tom.school.test.service.controller.sys;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.tom.school.core.entity.HttpReponseError;
 import com.tom.school.core.entity.HttpRequestResult;
 import com.tom.school.core.utility.HttpRequestUtility;
 import com.tom.school.core.utility.JsonUtility;
 import com.tom.school.db.model.sys.Authority;
-import com.tom.school.rest.core.ListView;
 import com.tom.school.test.service.TestContext;
 
 public class AuthorityControllerTest {
+	
+	@BeforeClass
+	public static void setupBeforeClass() {
+		testLogin();
+	}
 
-	@Test
-	public void testLogin() {
+	private static void testLogin() {
 		/*
 		 * Missing arguments
 		 */
@@ -62,8 +66,27 @@ public class AuthorityControllerTest {
 		for(int i = 0; i < jsonArray.length(); i++){
 			JSONObject jsonAuthorityObject = jsonArray.getJSONObject(i);
 			Authority authority = JsonUtility.decode(jsonAuthorityObject.toString(), Authority.class);
-			//System.out.println(authority);
+			System.out.println(authority);
 		}
+	}
+	
+	@Test
+	public void testGetAuthority(){
+		String url = TestContext.ServiceUrl + String.format("/authority/getAuthority?token=%s", TestContext.Token);
+		HttpRequestResult responseResult = HttpRequestUtility.doGet(url);
+		String jsonStr = new String(responseResult.getData());
+		JSONArray parentMenuJsonArray = new JSONArray(jsonStr);
+		for(int i = 0; i < parentMenuJsonArray.length(); i++){
+			JSONObject parentMenuJsonObject = parentMenuJsonArray.getJSONObject(i);
+			assertFalse(parentMenuJsonObject.getBoolean("leaf"));
+			
+			JSONArray childMenuJsonArray =  parentMenuJsonObject.getJSONArray("children");
+			for(int j = 0; j < childMenuJsonArray.length(); j++){
+				JSONObject childMenuJsonObject = childMenuJsonArray.getJSONObject(j);
+				assertTrue(childMenuJsonObject.getBoolean("leaf"));
+			}
+		}
+		System.out.println(jsonStr);
 	}
 
 }
