@@ -4,6 +4,7 @@ import static com.tom.school.core.utility.HttpResponseUtility.autorityError;
 import static com.tom.school.core.utility.HttpResponseUtility.missingArugment;
 import static com.tom.school.core.utility.HttpResponseUtility.write;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.tom.school.core.entity.ContentType;
+import com.tom.school.core.security.Token;
 import com.tom.school.core.utility.HttpResponseUtility;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.rest.controller.BaseController;
 import com.tom.school.rest.core.Cache;
+import com.tom.school.rest.core.security.SecurityTool;
 import com.tom.school.rest.service.sys.AuthorityService;
 
 @Controller
@@ -44,13 +47,23 @@ public class AuthorityController extends BaseController<Authority> {
 			missingArugment(response);
 		} else {
 			if (userName.equals("tom") && password.equals("Cogent01")) {
-				String token = UUID.randomUUID().toString();
-				Cache.Tokens.put(token, userName);
-				write(response, token, ContentType.Text_PLAIN);
+				Token token = new Token();
+				token.setValue(UUID.randomUUID().toString());
+				token.setUserName(userName);
+				token.setVisitdTime(new Date());
+				Cache.Tokens.put(token.getValue(), token);
+				write(response, token.getValue(), ContentType.Text_PLAIN);
 			} else {
 				autorityError(response);
 			}
 		}
+	}
+	
+	@RequestMapping(value = "/checkToken", method = RequestMethod.GET)
+	public void checkToken(HttpServletRequest request, HttpServletResponse response){
+		String token = request.getParameter("token");
+		boolean checkResult = SecurityTool.checkToken(token);
+		write(response, Boolean.valueOf(checkResult).toString(), ContentType.Text_PLAIN);
 	}
 
 	@RequestMapping(value = "/getAuthority")

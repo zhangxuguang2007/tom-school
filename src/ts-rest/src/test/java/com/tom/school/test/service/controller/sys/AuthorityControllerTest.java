@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.UUID;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
@@ -52,6 +54,19 @@ public class AuthorityControllerTest {
 		assertEquals(responseResult.getStatus(), 200);
 		TestContext.Token = new String(responseResult.getData());
 		System.out.println("token:" + TestContext.Token);
+	}
+	
+	@Test
+	public void testCheckToken(){
+		String url = TestContext.ServiceUrl + String.format("/authority/checkToken?token=%s", TestContext.Token);
+		HttpRequestResult responseResult = HttpRequestUtility.doGet(url);
+		String resultStr = new String(responseResult.getData());
+		assertEquals("true", resultStr);
+		
+		url = TestContext.ServiceUrl + String.format("/authority/checkToken?token=%s", UUID.randomUUID());
+		responseResult = HttpRequestUtility.doGet(url);
+		resultStr = new String(responseResult.getData());
+		assertEquals("false", resultStr);
 	}
 	
 	@Test
