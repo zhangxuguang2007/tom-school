@@ -1,5 +1,5 @@
-Ext.Loader.setPath('Ext.app', Tom.School.path + '/resources/admin/classes');
-Ext.Loader.setPath('Ext.ux', Tom.School.path + '/resources/ext4.2/ux');
+Ext.Loader.setPath('Ext.app', Tom.School.Context.Path + '/resources/admin/classes');
+Ext.Loader.setPath('Ext.ux', Tom.School.Context.Path + '/resources/ext4.2/ux');
 
 Ext.Ajax.timeout = 60000;
 Ext.Loader.setConfig({
@@ -24,7 +24,7 @@ Ext.onReady(function() {
 
 	var personalCenterMenu = {
 		xtype : 'button',
-		icon : Tom.School.path + '/resources/shared/icons/user.png',
+		icon : Tom.School.Context.Path + '/resources/shared/icons/user.png',
 		text : '个人中心 (' + userName + ")",
 		menu : [ {
 			text : '修改密码',
@@ -38,7 +38,7 @@ Ext.onReady(function() {
 		}, '-', {
 			text : '安全退出',
 			handler : function() {
-				top.location.href = Tom.School.path + '/sys/sysuser/logout';
+				top.location.href = Tom.School.Context.Path + '/sys/sysuser/logout';
 			}
 		} ]
 	};
@@ -218,7 +218,7 @@ Ext.onReady(function() {
 			xtype : 'component'
 		},
 		items : [ {
-			html : '<img src = "' + Tom.School.path + '/resources/shared/images/logo.png" width="45" height="45" />',
+			html : '<img src = "' + Tom.School.Context.Path + '/resources/shared/images/logo.png" width="45" height="45" />',
 			width : 55
 		}, {
 			id : 'app-header-title',
