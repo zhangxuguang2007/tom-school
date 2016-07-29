@@ -44,5 +44,10 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.tom.school</groupId>
+			<artifactId>ts-core</artifactId>
+			<version>${ts-school.version}</version>
+		</dependency>
 	</dependencies>
 </project>
