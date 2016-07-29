@@ -12,7 +12,7 @@ import com.tom.school.core.http.HttpResponseUtility;
 import com.tom.school.core.json.JsonUtility;
 import com.tom.school.db.dao.QueryResult;
 import com.tom.school.db.param.BaseParameter;
-import com.tom.school.rest.core.ListView;
+import com.tom.school.rest.core.data.ListView;
 import com.tom.school.rest.service.Service;
 
 public abstract class BaseController<E> {

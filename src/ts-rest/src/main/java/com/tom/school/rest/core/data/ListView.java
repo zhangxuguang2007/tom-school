@@ -1,4 +1,4 @@
-package com.tom.school.rest.core;
+package com.tom.school.rest.core.data;
 
 import java.util.List;
 
