@@ -38,10 +38,7 @@
         		Tom.School.Context.Token = "${token}";
     			Tom.School.Context.BaseRESTUrl = "${baseRESTUrl}";
         		$.getScript("${contextPath}/resources/shared/options-toolbar.js");
-        		$.getScript("${contextPath}/resources/admin/temp.js");
-        		
-            	//$.getScript("${contextPath}/resources/admin/index.js");
-        		//$.getScript("${contextPath}/resources/admin/temp.js");
+        		$.getScript("${contextPath}/resources/admin/index.js");
         	}
         }
     </script>
