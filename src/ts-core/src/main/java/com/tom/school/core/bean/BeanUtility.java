@@ -1,4 +1,4 @@
-package com.tom.school.core.utility;
+package com.tom.school.core.bean;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;

@@ -1,4 +1,4 @@
-package com.tom.school.core.utility;
+package com.tom.school.core.json;
 
 import java.io.IOException;
 import java.io.StringWriter;

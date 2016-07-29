@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tom.school.core.utility.BeanUtility;
+import com.tom.school.core.bean.BeanUtility;
 import com.tom.school.db.param.BaseParameter;
 
 @Transactional

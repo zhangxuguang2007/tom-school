@@ -11,8 +11,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.tom.school.core.entity.HttpRequestResult;
-import com.tom.school.core.utility.HttpRequestUtility;
+import com.tom.school.core.http.HttpRequestResult;
+import com.tom.school.core.http.HttpRequestUtility;
 import com.tom.school.web.core.ServerContext;
 
 public class AdminAuthorityFilter implements Filter {

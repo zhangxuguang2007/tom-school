@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.tom.school.core.entity.HttpReponseError;
-import com.tom.school.core.entity.HttpRequestResult;
-import com.tom.school.core.utility.HttpRequestUtility;
-import com.tom.school.core.utility.JsonUtility;
+import com.tom.school.core.http.HttpReponseError;
+import com.tom.school.core.http.HttpRequestResult;
+import com.tom.school.core.http.HttpRequestUtility;
+import com.tom.school.core.json.JsonUtility;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.test.service.TestContext;
 

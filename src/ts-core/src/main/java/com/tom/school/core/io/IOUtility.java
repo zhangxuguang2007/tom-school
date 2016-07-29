@@ -1,4 +1,4 @@
-package com.tom.school.core.utility;
+package com.tom.school.core.io;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

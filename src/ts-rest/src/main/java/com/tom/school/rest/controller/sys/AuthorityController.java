@@ -1,8 +1,8 @@
 package com.tom.school.rest.controller.sys;
 
-import static com.tom.school.core.utility.HttpResponseUtility.autorityError;
-import static com.tom.school.core.utility.HttpResponseUtility.missingArugment;
-import static com.tom.school.core.utility.HttpResponseUtility.write;
+import static com.tom.school.core.http.HttpResponseUtility.autorityError;
+import static com.tom.school.core.http.HttpResponseUtility.missingArugment;
+import static com.tom.school.core.http.HttpResponseUtility.write;
 
 import java.util.Date;
 import java.util.List;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tom.school.core.entity.ContentType;
+import com.tom.school.core.http.ContentType;
+import com.tom.school.core.http.HttpResponseUtility;
 import com.tom.school.core.security.Token;
-import com.tom.school.core.utility.HttpResponseUtility;
 import com.tom.school.db.model.sys.Authority;
 import com.tom.school.rest.controller.BaseController;
 import com.tom.school.rest.core.Cache;

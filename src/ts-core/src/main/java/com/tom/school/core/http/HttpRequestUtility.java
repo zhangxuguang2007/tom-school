@@ -1,4 +1,4 @@
-package com.tom.school.core.utility;
+package com.tom.school.core.http;
 
 import java.io.IOException;
 
@@ -10,8 +10,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-
-import com.tom.school.core.entity.HttpRequestResult;
 
 public class HttpRequestUtility {
 

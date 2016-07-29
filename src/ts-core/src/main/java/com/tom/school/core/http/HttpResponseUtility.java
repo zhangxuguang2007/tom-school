@@ -1,12 +1,11 @@
-package com.tom.school.core.utility;
+package com.tom.school.core.http;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.tom.school.core.entity.ContentType;
-import com.tom.school.core.entity.HttpReponseError;
+import com.tom.school.core.json.JsonUtility;
 
 public class HttpResponseUtility {
 	

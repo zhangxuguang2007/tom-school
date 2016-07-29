@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.tom.school.core.utility.BeanUtility;
+import com.tom.school.core.bean.BeanUtility;
 
 public class BeanUtilityTest {
 

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tom.school.core.entity.ContentType;
-import com.tom.school.core.utility.HttpResponseUtility;
-import com.tom.school.core.utility.JsonUtility;
+import com.tom.school.core.http.ContentType;
+import com.tom.school.core.http.HttpResponseUtility;
+import com.tom.school.core.json.JsonUtility;
 import com.tom.school.db.dao.QueryResult;
 import com.tom.school.db.param.BaseParameter;
 import com.tom.school.rest.core.ListView;

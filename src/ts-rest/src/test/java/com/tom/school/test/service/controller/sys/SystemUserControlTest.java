@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.tom.school.core.entity.HttpRequestResult;
-import com.tom.school.core.utility.HttpRequestUtility;
-import com.tom.school.core.utility.JsonUtility;
+import com.tom.school.core.http.HttpRequestResult;
+import com.tom.school.core.http.HttpRequestUtility;
+import com.tom.school.core.json.JsonUtility;
 import com.tom.school.db.model.sys.SystemUser;
 import com.tom.school.test.service.TestContext;
 
