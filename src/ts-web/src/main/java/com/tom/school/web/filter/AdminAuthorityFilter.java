@@ -14,7 +14,7 @@ import com.tom.school.core.entity.HttpRequestResult;
 import com.tom.school.core.utility.HttpRequestUtility;
 import com.tom.school.web.core.ServerContext;
 
-public class AuthorityFilter implements Filter {
+public class AdminAuthorityFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
