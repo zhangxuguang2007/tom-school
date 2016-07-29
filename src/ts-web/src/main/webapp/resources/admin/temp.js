@@ -226,11 +226,23 @@ Ext.onReady(function() {
 			width : 200
 		}, {  
 			html : '',
-			flex : 1 //占满，从而Menu在最右端
+			flex : 1 // 占满，从而Menu在最右端
 		}, personalCenterMenu ]
 	};
 
 	/* Navigate panel * */
+	
+	var menuTreeStore = Ext.create('Ext.data.TreeStore', {
+		autoLoad : true,
+		proxy : {
+			type : 'ajax',
+			url : Tom.School.Context.BaseRESTUrl + 'authority/getAuthority?token=' + Tom.School.Context.Token,
+			reader : {
+				type : 'json',
+				root : 'children'
+			}
+		}
+	});
 
 	var navigatePanel = Ext.create('Ext.tree.Panel', {
 		id : 'menuTree',
@@ -245,17 +257,7 @@ Ext.onReady(function() {
 		animCollapse : true,
 		xtype : 'treepanel',
 		rootVisible : false,
-		root : {
-			text : '树根',
-			expanded : true,
-			children : [ {
-				text : '节点一',
-				leaf : true
-			}, {
-				text : '节点二',
-				leaf : true
-			} ]
-		}
+		store : menuTreeStore
 	});
 
 	/* Content panel * */
