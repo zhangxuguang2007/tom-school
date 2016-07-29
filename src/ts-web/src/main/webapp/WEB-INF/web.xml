@@ -5,6 +5,11 @@
     
     <display-name>ts-school</display-name>
     
+    <!-- Application init -->
+	<listener>
+		<listener-class>com.tom.school.web.listener.InitListener</listener-class>
+	</listener>
+    
     <!--  Spring application context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
