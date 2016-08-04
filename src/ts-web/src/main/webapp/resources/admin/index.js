@@ -1,5 +1,6 @@
-Ext.Loader.setPath('Ext.app', Tom.School.Context.Path + '/resources/admin/classes');
 Ext.Loader.setPath('Ext.ux', Tom.School.Context.Path + '/resources/ext4.2/ux');
+Ext.Loader.setPath('Ext.app', Tom.School.Context.Path + '/resources/ext4.2/app');
+Ext.Loader.setPath('School.app', Tom.School.Context.Path + '/resources/admin/');
 
 Ext.Ajax.timeout = 60000;
 Ext.Loader.setConfig({
@@ -272,7 +273,7 @@ Ext.onReady(function() {
 
 	/* Content panel * */
 
-	var welcomeTab = Ext.create('Ext.app.Home', {
+	var welcomeTab = Ext.create('School.app.home.Welcome', {
 		title : '欢迎'
 	});
 
@@ -305,7 +306,7 @@ Ext.onReady(function() {
 				layout : 'fit',
 				autoScroll : true,
 				border : true,
-				items : typeof (contentId) == 'string' ? Ext.create('Ext.app.' + contentId, contentConfig) : contentId
+				items : typeof (contentId) == 'string' ? Ext.create('School.app.' + contentId, contentConfig) : contentId
 			});
 			contentTabPanel.add(tab);
 			contentTabPanel.setLoading(false);

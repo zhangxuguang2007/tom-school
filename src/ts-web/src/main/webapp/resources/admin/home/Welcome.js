@@ -1,4 +1,4 @@
-Ext.define('Ext.app.Home',{ // 起始页
+Ext.define('School.app.home.Welcome',{
 	extend : 'Ext.form.Panel',
 	initComponent : function() {
 		Ext.apply(this,{
@@ -14,7 +14,7 @@ Ext.define('Ext.app.Home',{ // 起始页
 				items : [ {
 					id : 'p1',
 					style : 'padding:10px; line-height:22px;',
-					html : '<center><img src = "' + Tom.School.Context.Path + '/resources/admin/classes/imags/welcome.png" width = "800" height="532"/></center>'
+					html : '<center><img src = "' + Tom.School.Context.Path + '/resources/admin/home/imags/welcome.png" width = "800" height="532"/></center>'
 				} ]
 			} ],
 			isReLayout : false
