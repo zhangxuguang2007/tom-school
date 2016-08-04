@@ -8,7 +8,6 @@ Ext.Loader.setConfig({
 
 Ext.require([ 'Ext.util.History', 'Ext.ux.statusbar.StatusBar', 'Ext.app.PortalPanel', 'Ext.ux.TabScrollerMenu', 'Ext.state.*', 'Ext.window.MessageBox', 'Ext.tip.*' ]);
 
-var mainTab;
 var globalPageSize = 20; // 全局分页大小
 var globalDateColumnWidth = 160; // 全局时间列宽度
 
@@ -257,16 +256,27 @@ Ext.onReady(function() {
 		animCollapse : true,
 		xtype : 'treepanel',
 		rootVisible : false,
-		store : menuTreeStore
+		store : menuTreeStore,
+		listeners: {
+			itemclick: function(e, record){
+				if(record.data.leaf){
+					openTab(record.data.id, record.data.text, record.raw.url, {
+						cButtons : record.raw.buttons ? record.raw.buttons.split(',') : [],
+						cName : record.raw.menuCode,
+						cParams : record.raw.menuConfig
+					});
+				}
+			}
+		}
 	});
 
 	/* Content panel * */
 
-	var mainPortal = Ext.create('Ext.app.Home', {
+	var welcomeTab = Ext.create('Ext.app.Home', {
 		title : '欢迎'
 	});
 
-	contentTabPanel = Ext.create('Ext.TabPanel', {
+	var contentTabPanel = Ext.create('Ext.TabPanel', {
 		region : 'center',
 		margins : '2 0 0 0',
 		border : false,
@@ -277,12 +287,31 @@ Ext.onReady(function() {
 			closeOthersTabsText : '关闭其他',
 			closeAllTabsText : '关闭所有'
 		}),
-		items : [ mainPortal ],
+		items : [ welcomeTab ],
 		listeners : {
 			tabchange : onTabChange,
 			afterrender : onAfterRender
 		}
 	});
+	
+	function openTab(id, title, contentId, contentConfig){
+		var tab = contentTabPanel.getComponent("tab" + id);
+		if(!tab){
+			contentTabPanel.setLoading('Loading...');
+			tab = Ext.create('Ext.panel.Panel', {
+				closable : true,
+				id : 'tab' + id,
+				title : title,
+				layout : 'fit',
+				autoScroll : true,
+				border : true,
+				items : typeof (contentId) == 'string' ? Ext.create('Ext.app.' + contentId, contentConfig) : contentId
+			});
+			contentTabPanel.add(tab);
+			contentTabPanel.setLoading(false);
+		}
+		contentTabPanel.setActiveTab(tab);
+	}
 
 	function onTabChange(tabPanel, tab) {
 		var tabs = [], ownerCt = tabPanel.ownerCt, oldToken, newToken;

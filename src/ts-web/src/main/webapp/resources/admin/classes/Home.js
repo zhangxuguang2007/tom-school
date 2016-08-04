@@ -1,10 +1,3 @@
-/**
- * @class Ext.app.Home
- * @extends Ext.form.Panel
- * 起始页
- */
-
-
 Ext.define('Ext.app.Home',{ // 起始页
 	extend : 'Ext.form.Panel',
 	initComponent : function() {
@@ -20,7 +13,6 @@ Ext.define('Ext.app.Home',{ // 起始页
 				id : 'c1',
 				items : [ {
 					id : 'p1',
-					//title : '欢迎语',
 					style : 'padding:10px; line-height:22px;',
 					html : '<center><img src = "' + Tom.School.Context.Path + '/resources/admin/classes/imags/welcome.png" width = "800" height="532"/></center>'
 				} ]

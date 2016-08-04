@@ -55,9 +55,10 @@ CREATE TABLE `authority` (
 
 INSERT INTO `authority` VALUES (1, NULL, NULL, 1, NULL, 0, 'SchoolManagement', NULL, '学校管理', NULL, 100, NULL);
 INSERT INTO `authority` VALUES (2, NULL, NULL, 1, NULL, 0, 'SystemManagement', NULL, '系统管理', NULL, 200, NULL);
-INSERT INTO `authority` VALUES (11, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Course', NULL, '课程管理', 1, 1001, NULL);
-INSERT INTO `authority` VALUES (12, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Teacher', NULL, '教师管理', 1, 1002, NULL);
-INSERT INTO `authority` VALUES (13, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Classes', NULL, '班级管理', 1, 1003, NULL);
-INSERT INTO `authority` VALUES (14, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Student', NULL, '学生管理', 1, 1004, NULL);
-INSERT INTO `authority` VALUES (21, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Role', NULL, '角色管理', 2, 2001, NULL);
-INSERT INTO `authority` VALUES (22, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'User', NULL, '用户管理', 2, 2002, NULL);
+INSERT INTO `authority` VALUES (11, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Course', NULL, '课程管理', 1, 1001, 'schoolManagement.course');
+INSERT INTO `authority` VALUES (12, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Teacher', NULL, '教师管理', 1, 1002, 'schoolManagement.teacher');
+INSERT INTO `authority` VALUES (13, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Classes', NULL, '班级管理', 1, 1003, 'schoolManagement.classess');
+INSERT INTO `authority` VALUES (14, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Student', NULL, '学生管理', 1, 1004, 'schoolManagement.student');
+INSERT INTO `authority` VALUES (21, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'Role', NULL, '角色管理', 2, 2001, 'systemManagement.role');
+INSERT INTO `authority` VALUES (22, 'Add,Edit,Delete,View', NULL, 1, NULL, 1, 'User', NULL, '用户管理', 2, 2002, 'systemManagement.user');
+
