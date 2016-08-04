@@ -311,7 +311,7 @@ Ext.onReady(function() {
 				});
 				contentTabPanel.add(tab);
 			} catch(ex){
-				Ext.MessageBox.alert('老猫工作室', '加载"' + title + '"失败');
+				Ext.MessageBox.alert('提示', '加载"' + title + '"失败');
 			}
 			contentTabPanel.setLoading(false);
 		}
