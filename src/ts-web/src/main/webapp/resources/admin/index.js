@@ -299,16 +299,20 @@ Ext.onReady(function() {
 		var tab = contentTabPanel.getComponent("tab" + id);
 		if(!tab){
 			contentTabPanel.setLoading('Loading...');
-			tab = Ext.create('Ext.panel.Panel', {
-				closable : true,
-				id : 'tab' + id,
-				title : title,
-				layout : 'fit',
-				autoScroll : true,
-				border : true,
-				items : typeof (contentId) == 'string' ? Ext.create('School.app.' + contentId, contentConfig) : contentId
-			});
-			contentTabPanel.add(tab);
+			try{
+				tab = Ext.create('Ext.panel.Panel', {
+					closable : true,
+					id : 'tab' + id,
+					title : title,
+					layout : 'fit',
+					autoScroll : true,
+					border : true,
+					items : typeof (contentId) == 'string' ? Ext.create('School.app.' + contentId, contentConfig) : contentId
+				});
+				contentTabPanel.add(tab);
+			} catch(ex){
+				Ext.MessageBox.alert('老猫工作室', '加载"' + title + '"失败');
+			}
 			contentTabPanel.setLoading(false);
 		}
 		contentTabPanel.setActiveTab(tab);
